@@ -4,9 +4,11 @@ import { BarChart3, BookOpen, CheckCircle2, Target, TrendingUp } from 'lucide-re
 
 import { ReportCard, StatCard, Text, Title } from '@/forge';
 import type { SidebarItem } from '@/forge';
+import { ReportPreviewModal } from '@/forge/patterns';
 import { DashboardLayout } from '@/forge/layouts';
 import { colors } from '@/forge/tokens';
 import { reports, competencies } from '@/data/reports';
+import type { Report } from '@/types/report';
 
 // ─── Shared constants ─────────────────────────────────────────────────────────
 
@@ -40,6 +42,7 @@ export const Route = createLazyFileRoute('/insights')({
 
 function InsightsPage() {
   const [period, setPeriod] = useState<Period>('month');
+  const [selectedReport, setSelectedReport] = useState<Report | null>(null);
 
   const availableReports = reports.filter((r) => r.available);
   const totalReports = reports.length;
@@ -163,7 +166,7 @@ function InsightsPage() {
                 period="Leadership Assessment 2026"
                 status={report.available ? 'published' : 'draft'}
                 generatedAt={report.available ? new Date('2026-02-20') : undefined}
-                onView={report.available ? () => {} : undefined}
+                onView={report.available ? () => setSelectedReport(report) : undefined}
                 onDownload={report.available ? () => {} : undefined}
               />
             ))}
@@ -172,6 +175,12 @@ function InsightsPage() {
 
         <div className="h-8" aria-hidden="true" />
       </div>
+
+      <ReportPreviewModal
+        report={selectedReport}
+        open={selectedReport !== null}
+        onClose={() => setSelectedReport(null)}
+      />
     </DashboardLayout>
   );
 }

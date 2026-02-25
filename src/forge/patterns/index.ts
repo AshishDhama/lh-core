@@ -40,6 +40,10 @@ export {
 } from './PlanEditor';
 export { ChatFAB } from './ChatFAB';
 export { IdpWizard, type IdpWizardProps } from './IdpWizard';
+export {
+  ReportPreviewModal,
+  type ReportPreviewModalProps,
+} from './ReportPreviewModal';
 export { Sidebar, type SidebarProps, type SidebarItem } from './Sidebar';
 export {
   SystemCheckPanel,
