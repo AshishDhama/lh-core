@@ -1,6 +1,12 @@
 // Forge patterns — barrel export
 export { Header, type HeaderProps, type HeaderUser } from './Header';
 export {
+  CenterGrid,
+  type CenterGridProps,
+  type CenterItem,
+  type CenterStatus,
+} from './CenterGrid';
+export {
   ExerciseList,
   type ExerciseListProps,
   type Exercise,
