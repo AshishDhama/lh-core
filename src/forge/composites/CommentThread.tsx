@@ -103,8 +103,9 @@ function CommentItem({ comment, isReply = false, onReply }: CommentItemProps) {
             type="button"
             className="flex items-center gap-1 self-start px-1 text-xs text-[#94a3b8] hover:text-[#475569] transition-colors"
             onClick={() => setShowReplyInput((prev) => !prev)}
+            aria-expanded={showReplyInput}
           >
-            <Reply size={12} />
+            <Reply size={12} aria-hidden="true" />
             Reply
           </button>
         )}
@@ -115,6 +116,7 @@ function CommentItem({ comment, isReply = false, onReply }: CommentItemProps) {
               value={replyText}
               onChange={(e) => setReplyText(e.target.value)}
               placeholder="Write a reply..."
+              aria-label="Write a reply"
               size="small"
               className="rounded-lg"
               onPressEnter={handleSubmitReply}

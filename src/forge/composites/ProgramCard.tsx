@@ -138,8 +138,8 @@ export function ProgramCard({
           )}
         </div>
 
-        {/* Trailing icon */}
-        <div className="mt-3 shrink-0">
+        {/* Trailing icon — decorative, hidden from screen readers */}
+        <div className="mt-3 shrink-0" aria-hidden="true">
           {isLocked ? (
             <Lock size={18} className={`text-[${colors.content.tertiary}]`} />
           ) : (

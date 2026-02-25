@@ -111,6 +111,7 @@ export function SearchBar({
             </button>
           ) : null
         }
+        aria-label={placeholder}
         className="rounded-lg"
         allowClear={false}
       />

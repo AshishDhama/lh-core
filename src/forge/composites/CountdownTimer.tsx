@@ -137,7 +137,7 @@ export function CountdownTimer({
   const includeDays = format === 'dd:hh:mm:ss';
 
   return (
-    <div className={cn('inline-flex items-start', className)} role="timer" aria-live="off">
+    <div className={cn('inline-flex items-start', className)} role="timer" aria-live="polite" aria-atomic="true">
       {includeDays && (
         <Segment value={timeLeft.days} label="days" size={size} showLabels={showLabels} />
       )}

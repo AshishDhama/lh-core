@@ -1,7 +1,7 @@
 import { Input } from 'antd';
 import type { ReactNode } from 'react';
 
-import { Label, Text } from '@/forge/primitives';
+import { Label } from '@/forge/primitives';
 import { cn } from '@/forge/utils';
 
 export interface FormFieldProps {
@@ -34,6 +34,7 @@ export function FormField({
   disabled,
 }: FormFieldProps) {
   const hasError = Boolean(error);
+  const descId = hasError ? `${name}-error` : helperText ? `${name}-hint` : undefined;
 
   return (
     <div className={cn('flex flex-col gap-1.5', className)}>
@@ -59,20 +60,26 @@ export function FormField({
           onChange={onChange}
           disabled={disabled}
           status={hasError ? 'error' : undefined}
+          aria-describedby={descId}
+          aria-invalid={hasError || undefined}
           className="rounded-lg"
         />
       )}
 
       {hasError && (
-        <Text size="xs" color="error" className="flex items-center gap-1">
+        <span
+          id={`${name}-error`}
+          role="alert"
+          className="flex items-center gap-1 text-xs text-[#b91c1c]"
+        >
           {error}
-        </Text>
+        </span>
       )}
 
       {!hasError && helperText && (
-        <Text size="xs" color="tertiary">
+        <span id={`${name}-hint`} className="text-xs text-[#64748b]">
           {helperText}
-        </Text>
+        </span>
       )}
     </div>
   );
