@@ -20,32 +20,36 @@ const SchedulingRoute = SchedulingRouteImport.update({
   id: '/scheduling',
   path: '/scheduling',
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any).lazy(() => import('./routes/scheduling.lazy').then((d) => d.Route))
 const InsightsRoute = InsightsRouteImport.update({
   id: '/insights',
   path: '/insights',
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any).lazy(() => import('./routes/insights.lazy').then((d) => d.Route))
 const DiscoveryRoute = DiscoveryRouteImport.update({
   id: '/discovery',
   path: '/discovery',
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any).lazy(() => import('./routes/discovery.lazy').then((d) => d.Route))
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
 const ProgramsProgramIdIndexRoute = ProgramsProgramIdIndexRouteImport.update({
   id: '/programs/$programId/',
   path: '/programs/$programId/',
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any).lazy(() =>
+  import('./routes/programs/$programId/index.lazy').then((d) => d.Route),
+)
 const ProgramsProgramIdTasksRoute = ProgramsProgramIdTasksRouteImport.update({
   id: '/programs/$programId/tasks',
   path: '/programs/$programId/tasks',
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any).lazy(() =>
+  import('./routes/programs/$programId/tasks.lazy').then((d) => d.Route),
+)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
