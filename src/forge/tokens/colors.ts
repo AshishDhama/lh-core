@@ -35,6 +35,9 @@ export const colors = {
   warning: { light: '#fde047', DEFAULT: '#eab308', dark: '#a16207' },
   error: { light: '#fca5a5', DEFAULT: '#ef4444', dark: '#b91c1c' },
 
+  // Border
+  border: '#e2e8f0',
+
   // Surfaces (light mode)
   surface: {
     primary: '#ffffff',
