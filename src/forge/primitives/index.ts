@@ -10,3 +10,4 @@ export {
   type ParagraphProps,
   type LabelProps,
 } from './Typography';
+export { Icon, type IconProps, type IconName } from './Icon';
