@@ -1,4 +1,11 @@
 // Forge patterns — barrel export
 export { Header, type HeaderProps, type HeaderUser } from './Header';
+export {
+  ExerciseList,
+  type ExerciseListProps,
+  type Exercise,
+  type ExerciseStatus,
+  type ExerciseType,
+} from './ExerciseList';
 export { HeroBanner, type HeroBannerProps } from './HeroBanner';
 export { Sidebar, type SidebarProps, type SidebarItem } from './Sidebar';
