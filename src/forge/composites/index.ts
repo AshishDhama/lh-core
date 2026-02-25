@@ -11,6 +11,12 @@ export {
   type ChatMessageSender,
   type ChatMessageType,
 } from './ChatMessage';
+export {
+  CommentThread,
+  type CommentThreadProps,
+  type Comment,
+  type CommentReply,
+} from './CommentThread';
 export { CountdownTimer, type CountdownTimerProps } from './CountdownTimer';
 export { FormField, type FormFieldProps } from './FormField';
 export {
