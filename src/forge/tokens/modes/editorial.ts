@@ -1,40 +1,23 @@
-/**
- * Editorial mode — serif-adjacent, thin borders, muted palette.
- *
- * Characteristics: very tight border radii (almost square), light gray
- * background, uppercase section labels with letter-spacing, section separators
- * replace card containers (cards have no border/background, just border-top).
- * Designed for a clean publication / editorial aesthetic.
- */
-import type { ModeTokenOverrides } from './types';
+import type { ModeTokenOverrides } from './utils';
 
 export const editorialTokens: ModeTokenOverrides = {
-  radii: {
-    card: '4px',
-    button: '4px',
-    sm: '4px',
-    input: '3px',
-    modal: '4px',
+  meta: {
+    key: 'editorial',
+    name: 'Editorial',
+    description: 'Magazine-like design with strong typographic hierarchy and bold contrasts',
   },
-  shadows: {
-    card: 'none',
-    button: 'none',
-  },
-  card: {
-    padding: '24px 0',
-    borderWidth: '1px',
-    borderAccent: 'none',
-    background: 'transparent',
-  },
-  typography: {
-    fontFamily: "'DM Sans', sans-serif",
-    headingLetterSpacing: '-1px',
-    sectionLabel: 'caps',
-  },
-  colors: {
-    pageBg: '#FAFAFA',
-    secondaryBg: '#F0F0F0',
-    cardBg: 'transparent',
-    border: 'rgba(0, 0, 0, 0.08)',
+  antd: {
+    token: {
+      colorPrimary: '#0f172a',
+      colorInfo: '#475569',
+      borderRadius: 2,
+      fontFamily: "'DM Sans', sans-serif",
+      fontSize: 16,
+    },
+    components: {
+      Button: { borderRadius: 2, controlHeight: 40 },
+      Card: { borderRadiusLG: 2 },
+      Input: { borderRadius: 2 },
+    },
   },
 };

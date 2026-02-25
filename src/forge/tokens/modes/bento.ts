@@ -1,39 +1,23 @@
-/**
- * Bento mode — grid-heavy, rounded cards, colorful accents.
- *
- * Characteristics: larger border radii, thicker 1.5px borders, very subtle
- * card shadow for dimensionality, gray page background to make the grid pop.
- * Designed for a "dashboard mosaic" aesthetic.
- */
-import type { ModeTokenOverrides } from './types';
+import type { ModeTokenOverrides } from './utils';
 
 export const bentoTokens: ModeTokenOverrides = {
-  radii: {
-    card: '20px',
-    button: '12px',
-    sm: '14px',
-    input: '10px',
-    modal: '20px',
+  meta: {
+    key: 'bento',
+    name: 'Bento',
+    description: 'Grid-based, structured design with clear compartments and teal accents',
   },
-  shadows: {
-    card: '0 1px 4px rgba(0, 0, 0, 0.03)',
-    button: 'none',
-  },
-  card: {
-    padding: '20px',
-    borderWidth: '1.5px',
-    borderAccent: 'none',
-    background: '#ffffff',
-  },
-  typography: {
-    fontFamily: "'DM Sans', sans-serif",
-    headingLetterSpacing: '-1px',
-    sectionLabel: 'default',
-  },
-  colors: {
-    pageBg: '#F4F5F7',
-    secondaryBg: '#EEF6FA',
-    cardBg: '#ffffff',
-    border: 'rgba(0, 44, 119, 0.07)',
+  antd: {
+    token: {
+      colorPrimary: '#008575',
+      colorInfo: '#002C77',
+      borderRadius: 4,
+      fontFamily: "'DM Sans', sans-serif",
+      fontSize: 14,
+    },
+    components: {
+      Button: { borderRadius: 4, controlHeight: 36 },
+      Card: { borderRadiusLG: 4 },
+      Input: { borderRadius: 4 },
+    },
   },
 };
