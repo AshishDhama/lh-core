@@ -1,18 +1,23 @@
 import { QueryClientProvider } from '@tanstack/react-query';
 import { createRootRoute, Outlet } from '@tanstack/react-router';
 import { App as AntApp, ConfigProvider } from 'antd';
+import { useMemo } from 'react';
 
 import { queryClient } from '@/api/queryClient';
-import { antTheme } from '@/forge/tokens';
+import { getAntTheme } from '@/forge/tokens';
+import { useThemeStore } from '@/stores/useThemeStore';
 
 export const Route = createRootRoute({
   component: RootLayout,
 });
 
 function RootLayout() {
+  const mode = useThemeStore((s) => s.mode);
+  const themeConfig = useMemo(() => getAntTheme(mode), [mode]);
+
   return (
     <QueryClientProvider client={queryClient}>
-      <ConfigProvider theme={antTheme}>
+      <ConfigProvider theme={themeConfig}>
         <AntApp>
           <Outlet />
         </AntApp>

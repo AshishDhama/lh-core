@@ -22,4 +22,30 @@ body {
   font-family: 'DM Sans', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: var(--color-surface-primary);
+  color: var(--color-content-primary);
+}
+
+/* --- Semantic color custom properties (light/dark) --- */
+
+:root {
+  --color-surface-primary: #ffffff;
+  --color-surface-secondary: #fafbfc;
+  --color-surface-tertiary: #f1f5f9;
+  --color-surface-elevated: #ffffff;
+  --color-content-primary: #0f172a;
+  --color-content-secondary: #475569;
+  --color-content-tertiary: #94a3b8;
+  --color-content-inverse: #ffffff;
+}
+
+.dark {
+  --color-surface-primary: #0f172a;
+  --color-surface-secondary: #1e293b;
+  --color-surface-tertiary: #334155;
+  --color-surface-elevated: #1e293b;
+  --color-content-primary: #f8fafc;
+  --color-content-secondary: #cbd5e1;
+  --color-content-tertiary: #64748b;
+  --color-content-inverse: #0f172a;
 }

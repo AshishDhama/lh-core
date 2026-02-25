@@ -43,12 +43,28 @@ export const colors = {
     elevated: '#ffffff',
   },
 
-  // Content
+  // Surfaces (dark mode)
+  surfaceDark: {
+    primary: '#0f172a',
+    secondary: '#1e293b',
+    tertiary: '#334155',
+    elevated: '#1e293b',
+  },
+
+  // Content (light mode)
   content: {
     primary: '#0f172a',
     secondary: '#475569',
     // #64748b gives 4.76:1 on white — meets WCAG AA (was #94a3b8 at 2.56:1)
     tertiary: '#64748b',
     inverse: '#ffffff',
+  },
+
+  // Content (dark mode)
+  contentDark: {
+    primary: '#f8fafc',
+    secondary: '#cbd5e1',
+    tertiary: '#64748b',
+    inverse: '#0f172a',
   },
 };

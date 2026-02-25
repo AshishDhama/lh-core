@@ -1,5 +1,5 @@
 export { colors } from './colors';
-export { antTheme } from './antTheme';
+export { antTheme, getAntTheme } from './antTheme';
 export { spacing } from './spacing';
 export { typography } from './typography';
 export { radii } from './radii';
