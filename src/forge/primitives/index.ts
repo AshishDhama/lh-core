@@ -5,8 +5,22 @@ export {
   type AvatarProps,
   type AvatarGroupProps,
 } from './Avatar';
+export {
+  Badge,
+  StatusBadge,
+  type BadgeProps,
+  type StatusBadgeProps,
+} from './Badge';
 export { Button, type ButtonProps } from './Button';
 export { Icon, type IconProps, type IconName } from './Icon';
+export {
+  Input,
+  Password,
+  TextArea,
+  type InputProps,
+  type PasswordProps,
+  type TextAreaProps,
+} from './Input';
 export {
   Title,
   Text,
@@ -17,9 +31,3 @@ export {
   type ParagraphProps,
   type LabelProps,
 } from './Typography';
-export {
-  Badge,
-  StatusBadge,
-  type BadgeProps,
-  type StatusBadgeProps,
-} from './Badge';
