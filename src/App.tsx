@@ -1,18 +1,17 @@
-import { App as AntApp, ConfigProvider } from 'antd';
+import { RouterProvider, createRouter } from '@tanstack/react-router';
 
-import { antTheme } from '@/forge/tokens';
+import { routeTree } from './routeTree.gen';
+
+const router = createRouter({ routeTree });
+
+declare module '@tanstack/react-router' {
+  interface Register {
+    router: typeof router;
+  }
+}
 
 function App() {
-  return (
-    <ConfigProvider theme={antTheme}>
-      <AntApp>
-        <div>
-          <h1>Lighthouse</h1>
-          <p>Foundation scaffold ready.</p>
-        </div>
-      </AntApp>
-    </ConfigProvider>
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;
