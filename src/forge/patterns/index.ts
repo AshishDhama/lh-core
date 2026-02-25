@@ -1,2 +1,2 @@
 // Forge patterns — barrel export
-// Components added here as they are created
+export { Header, type HeaderProps, type HeaderUser } from './Header';
