@@ -1,0 +1,53 @@
+export const colors = {
+  // Brand
+  navy: {
+    DEFAULT: '#002C77',
+    50: '#EEF6FA',
+    100: '#D0E2F2',
+    200: '#A3C5E5',
+    300: '#6A9FD4',
+    400: '#3575BC',
+    500: '#002C77',
+    600: '#002361',
+    700: '#001A4A',
+    800: '#001234',
+    900: '#000A1E',
+  },
+  teal: {
+    DEFAULT: '#008575',
+    50: '#E6F7F5',
+    100: '#B3E8E2',
+    200: '#80D9CF',
+    300: '#4DCABC',
+    400: '#26BBA9',
+    500: '#008575',
+    600: '#006B5E',
+    700: '#005147',
+    800: '#003730',
+    900: '#001D19',
+  },
+  purple: {
+    DEFAULT: '#7B61FF',
+  },
+
+  // Semantic
+  success: { light: '#86efac', DEFAULT: '#22c55e', dark: '#15803d' },
+  warning: { light: '#fde047', DEFAULT: '#eab308', dark: '#a16207' },
+  error: { light: '#fca5a5', DEFAULT: '#ef4444', dark: '#b91c1c' },
+
+  // Surfaces (light mode)
+  surface: {
+    primary: '#ffffff',
+    secondary: '#fafbfc',
+    tertiary: '#f1f5f9',
+    elevated: '#ffffff',
+  },
+
+  // Content
+  content: {
+    primary: '#0f172a',
+    secondary: '#475569',
+    tertiary: '#94a3b8',
+    inverse: '#ffffff',
+  },
+};
