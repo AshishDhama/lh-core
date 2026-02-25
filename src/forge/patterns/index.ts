@@ -31,6 +31,12 @@ export {
   type CalendarView,
   type EventType,
 } from './ScheduleCalendar';
+export {
+  PlanEditor,
+  type PlanEditorProps,
+  type Goal,
+  type Milestone,
+} from './PlanEditor';
 export { Sidebar, type SidebarProps, type SidebarItem } from './Sidebar';
 export {
   SystemCheckPanel,
