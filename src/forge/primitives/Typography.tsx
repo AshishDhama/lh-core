@@ -16,13 +16,13 @@ type FontWeight = 'normal' | 'medium' | 'semibold' | 'bold';
 type TextAlign = 'left' | 'center' | 'right';
 
 const colorClasses: Record<TextColor, string> = {
-  primary: 'text-[#0f172a]',
-  secondary: 'text-[#475569]',
-  tertiary: 'text-[#94a3b8]',
+  primary: 'text-[#0f172a]',     // 17.85:1 on white ✓
+  secondary: 'text-[#475569]',   // 7.58:1 on white ✓
+  tertiary: 'text-[#64748b]',    // 4.76:1 on white ✓ (WCAG AA — updated from #94a3b8)
   inverse: 'text-white',
-  success: 'text-[#22c55e]',
-  error: 'text-[#ef4444]',
-  warning: 'text-[#eab308]',
+  success: 'text-[#15803d]',     // 5.02:1 on white ✓ (dark variant — was #22c55e at 2.28:1)
+  error: 'text-[#b91c1c]',       // 6.47:1 on white ✓ (dark variant — was #ef4444 at 3.76:1)
+  warning: 'text-[#a16207]',     // 4.92:1 on white ✓ (dark variant — was #eab308 at 1.92:1)
 };
 
 const weightClasses: Record<FontWeight, string> = {
@@ -207,7 +207,7 @@ export function Label({
     >
       {children}
       {required && (
-        <span className="ml-0.5 text-[#ef4444]" aria-hidden="true">
+        <span className="ml-0.5 text-[#b91c1c]" aria-hidden="true">
           *
         </span>
       )}

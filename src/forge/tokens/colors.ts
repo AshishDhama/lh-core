@@ -47,7 +47,8 @@ export const colors = {
   content: {
     primary: '#0f172a',
     secondary: '#475569',
-    tertiary: '#94a3b8',
+    // #64748b gives 4.76:1 on white — meets WCAG AA (was #94a3b8 at 2.56:1)
+    tertiary: '#64748b',
     inverse: '#ffffff',
   },
 };
