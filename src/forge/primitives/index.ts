@@ -17,3 +17,9 @@ export {
   type ParagraphProps,
   type LabelProps,
 } from './Typography';
+export {
+  Badge,
+  StatusBadge,
+  type BadgeProps,
+  type StatusBadgeProps,
+} from './Badge';
