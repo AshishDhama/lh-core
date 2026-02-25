@@ -62,7 +62,7 @@ export const StatCard = memo(function StatCard({
   return (
     <div
       className={cn(
-        'rounded-[14px] border border-slate-200 bg-white shadow-sm p-4',
+        'rounded-[14px] border border-slate-200 bg-surface-primary shadow-sm p-4',
         'flex flex-col gap-3',
         className,
       )}

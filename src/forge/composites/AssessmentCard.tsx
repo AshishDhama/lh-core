@@ -8,7 +8,6 @@ import {
   PlayCircle,
   Wrench,
 } from 'lucide-react';
-import { memo } from 'react';
 
 import { Button, Text } from '@/forge/primitives';
 import { cn } from '@/forge/utils';
@@ -36,20 +35,20 @@ const typeConfig: Record<
   quiz: {
     label: 'Quiz',
     icon: <FileQuestion size={16} />,
-    color: 'var(--color-navy-400)',
-    bg: 'var(--color-navy-50)',
+    color: '#3575BC',
+    bg: '#EEF6FA',
   },
   practical: {
     label: 'Practical',
     icon: <Wrench size={16} />,
-    color: 'var(--color-teal)',
-    bg: 'var(--color-teal-50)',
+    color: '#008575',
+    bg: '#E6F7F5',
   },
   observation: {
     label: 'Observation',
     icon: <Eye size={16} />,
-    color: 'var(--color-purple)',
-    bg: '#F3F0FF' /* purple bg – no token */,
+    color: '#7B61FF',
+    bg: '#F3F0FF',
   },
 };
 
@@ -57,10 +56,10 @@ const statusConfig: Record<
   AssessmentStatus,
   { label: string; color: string; bg: string }
 > = {
-  pending: { label: 'Pending', color: 'var(--color-content-secondary)', bg: 'var(--color-surface-tertiary)' },
-  inProgress: { label: 'In Progress', color: 'var(--color-warning-dark)', bg: '#fef9c3' /* warning bg – no token */ },
-  completed: { label: 'Completed', color: 'var(--color-success-dark)', bg: '#dcfce7' /* success bg – no token */ },
-  locked: { label: 'Locked', color: 'var(--color-content-tertiary)', bg: '#f8fafc' /* no token */ },
+  pending: { label: 'Pending', color: '#475569', bg: '#f1f5f9' },
+  inProgress: { label: 'In Progress', color: '#a16207', bg: '#fef9c3' },
+  completed: { label: 'Completed', color: '#15803d', bg: '#dcfce7' },
+  locked: { label: 'Locked', color: '#94a3b8', bg: '#f8fafc' },
 };
 
 function formatDueDate(date: Date | string): string {
@@ -75,7 +74,7 @@ function formatTimeLimit(minutes: number): string {
   return m > 0 ? `${h}h ${m}m` : `${h}h`;
 }
 
-export const AssessmentCard = memo(function AssessmentCard({
+export function AssessmentCard({
   title,
   type,
   score,
@@ -98,7 +97,7 @@ export const AssessmentCard = memo(function AssessmentCard({
   return (
     <div
       className={cn(
-        'flex flex-col gap-4 rounded-xl border border-surface-tertiary bg-white p-4 shadow-sm transition-shadow hover:shadow-md',
+        'flex flex-col gap-4 rounded-xl border border-[#f1f5f9] bg-surface-primary p-4 shadow-sm transition-shadow hover:shadow-md',
         isLocked && 'opacity-60',
         className,
       )}
@@ -157,8 +156,8 @@ export const AssessmentCard = memo(function AssessmentCard({
           <Progress
             percent={scorePercent}
             showInfo={false}
-            strokeColor={scorePercent >= 70 ? 'var(--color-success)' : 'var(--color-warning)'}
-            trailColor="var(--color-surface-tertiary)"
+            strokeColor={scorePercent >= 70 ? '#22c55e' : '#eab308'}
+            trailColor="#f1f5f9"
             size="small"
           />
         </div>
@@ -167,13 +166,13 @@ export const AssessmentCard = memo(function AssessmentCard({
       {/* Meta */}
       <div className="flex items-center gap-4">
         {dueDate && (
-          <span className="flex items-center gap-1.5 text-xs text-content-tertiary">
+          <span className="flex items-center gap-1.5 text-xs text-[#94a3b8]">
             <CheckCircle2 size={13} />
             Due {formatDueDate(dueDate)}
           </span>
         )}
         {timeLimit && (
-          <span className="flex items-center gap-1.5 text-xs text-content-tertiary">
+          <span className="flex items-center gap-1.5 text-xs text-[#94a3b8]">
             <Clock size={13} />
             {formatTimeLimit(timeLimit)}
           </span>
@@ -203,4 +202,4 @@ export const AssessmentCard = memo(function AssessmentCard({
       )}
     </div>
   );
-});
+}

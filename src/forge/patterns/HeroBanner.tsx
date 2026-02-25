@@ -26,7 +26,7 @@ export function HeroBanner({
     <div
       className={cn(
         'relative w-full min-h-48 flex items-end overflow-hidden rounded-2xl',
-        'bg-navy', // navy fallback when no image
+        'bg-[#002C77]', // navy fallback when no image
         className,
       )}
     >
@@ -66,7 +66,7 @@ export function HeroBanner({
             <Button
               variant="secondary"
               onClick={ctaAction}
-              className="bg-white text-navy border-white hover:bg-navy-50 hover:border-navy-50"
+              className="bg-surface-primary text-[#002C77] border-white hover:bg-[#EEF6FA] hover:border-[#EEF6FA]"
             >
               {ctaText}
             </Button>

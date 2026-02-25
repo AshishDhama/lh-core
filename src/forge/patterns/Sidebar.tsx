@@ -44,8 +44,8 @@ function NavItem({ item, activeKey, collapsed, depth = 0, onSelect }: NavItemPro
         'transition-colors duration-150',
         depth > 0 && 'ml-6',
         isActive
-          ? 'bg-navy-50 text-navy'
-          : 'text-content-secondary hover:bg-surface-tertiary hover:text-content-primary',
+          ? 'bg-[#EEF6FA] text-[#002C77]'
+          : 'text-[#475569] hover:bg-[#f1f5f9] hover:text-[#0f172a]',
       )}
       onClick={() => onSelect?.(item.key)}
       role="button"
@@ -64,7 +64,7 @@ function NavItem({ item, activeKey, collapsed, depth = 0, onSelect }: NavItemPro
           size="md"
           className={cn(
             'flex-shrink-0',
-            isActive ? 'text-navy' : 'text-content-tertiary',
+            isActive ? 'text-[#002C77]' : 'text-[#64748b]',
           )}
         />
       )}
@@ -74,18 +74,18 @@ function NavItem({ item, activeKey, collapsed, depth = 0, onSelect }: NavItemPro
           weight={isActive ? 'semibold' : 'medium'}
           className={cn(
             'flex-1 truncate',
-            isActive ? 'text-navy' : 'text-content-secondary',
+            isActive ? 'text-[#002C77]' : 'text-[#475569]',
           )}
         >
           {item.label}
         </Text>
       )}
       {!collapsed && hasChildren && (
-        <Icon name="ChevronRight" size="sm" className="text-content-tertiary" />
+        <Icon name="ChevronRight" size="sm" className="text-[#94a3b8]" />
       )}
       {isActive && (
         <span
-          className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 rounded-r-full bg-navy"
+          className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 rounded-r-full bg-[#002C77]"
           aria-hidden="true"
         />
       )}
@@ -150,7 +150,7 @@ export function Sidebar({
     <aside
       className={cn(
         'flex flex-col h-full',
-        'border-r border-border bg-white',
+        'border-r border-[#e2e8f0] bg-surface-primary',
         'transition-all duration-200 ease-in-out',
         collapsed ? 'w-16' : 'w-60',
         className,
@@ -160,7 +160,7 @@ export function Sidebar({
       {/* Logo / header area */}
       <div
         className={cn(
-          'flex items-center h-16 px-3 border-b border-border flex-shrink-0',
+          'flex items-center h-16 px-3 border-b border-[#e2e8f0] flex-shrink-0',
           collapsed ? 'justify-center' : 'justify-between gap-2',
         )}
       >
@@ -171,7 +171,7 @@ export function Sidebar({
           onClick={() => onCollapse?.(!collapsed)}
           className={cn(
             'flex items-center justify-center w-8 h-8 rounded-lg',
-            'text-content-tertiary hover:bg-surface-tertiary hover:text-content-primary',
+            'text-[#64748b] hover:bg-[#f1f5f9] hover:text-[#0f172a]',
             'transition-colors duration-150 flex-shrink-0',
           )}
           aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
@@ -197,9 +197,9 @@ export function Sidebar({
 
       {/* Bottom collapse toggle (always visible shortcut) */}
       {!collapsed && (
-        <div className="flex-shrink-0 px-3 py-3 border-t border-border">
+        <div className="flex-shrink-0 px-3 py-3 border-t border-[#e2e8f0]">
           <div
-            className="flex items-center gap-2 text-content-tertiary cursor-pointer hover:text-content-secondary transition-colors"
+            className="flex items-center gap-2 text-[#94a3b8] cursor-pointer hover:text-[#475569] transition-colors"
             onClick={() => onCollapse?.(true)}
             role="button"
             tabIndex={0}
