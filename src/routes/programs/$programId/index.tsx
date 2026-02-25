@@ -185,8 +185,7 @@ function ProgramInstructionsPage() {
           <Button
             variant="primary"
             size="lg"
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            onClick={() => navigate({ to: '/programs/$programId/tasks' as any, params: { programId } as any })}
+            onClick={() => navigate({ to: '/programs/$programId/tasks', params: { programId } })}
           >
             {program.pct > 0 ? 'Continue Program' : 'Start Program'}
           </Button>
