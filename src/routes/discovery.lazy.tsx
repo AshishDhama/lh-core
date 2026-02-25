@@ -62,7 +62,7 @@ function Subsection({ title, children }: { title: string; children: React.ReactN
 
 function DiscoveryPage() {
   return (
-    <div className="min-h-screen bg-[#fafbfc]">
+    <div className="min-h-screen bg-surface-secondary">
       <div className="mx-auto max-w-5xl px-6 py-12">
 
         {/* Header */}

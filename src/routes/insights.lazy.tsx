@@ -67,7 +67,7 @@ function InsightsPage() {
           </div>
 
           {/* Period selector */}
-          <div className="flex items-center gap-1 rounded-lg border border-[#e2e8f0] bg-white p-1">
+          <div className="flex items-center gap-1 rounded-lg border border-border bg-white p-1">
             {(Object.keys(PERIOD_LABELS) as Period[]).map((p) => (
               <button
                 key={p}
@@ -76,8 +76,8 @@ function InsightsPage() {
                 className={[
                   'px-3 py-1.5 rounded-md text-sm font-medium transition-colors',
                   period === p
-                    ? 'bg-[#002C77] text-white'
-                    : 'text-[#475569] hover:text-[#0f172a] hover:bg-[#f1f5f9]',
+                    ? 'bg-navy text-white'
+                    : 'text-content-secondary hover:text-content-primary hover:bg-surface-tertiary',
                 ].join(' ')}
               >
                 {PERIOD_LABELS[p]}
@@ -123,7 +123,7 @@ function InsightsPage() {
           <Title level={4} weight="semibold" color="primary" className="mb-4">
             Competency Scores
           </Title>
-          <div className="rounded-xl border border-[#e2e8f0] bg-white p-5 space-y-4">
+          <div className="rounded-xl border border-border bg-white p-5 space-y-4">
             {competencies.map((comp) => (
               <div key={comp.label}>
                 <div className="flex items-center justify-between mb-1.5">
@@ -133,7 +133,7 @@ function InsightsPage() {
                     <Text size="sm" weight="bold" color="primary">{comp.score}%</Text>
                   </div>
                 </div>
-                <div className="h-2 rounded-full bg-[#f1f5f9] overflow-hidden">
+                <div className="h-2 rounded-full bg-surface-tertiary overflow-hidden">
                   <div
                     className="h-full rounded-full transition-all duration-700"
                     style={{ width: `${comp.score}%`, backgroundColor: comp.color }}

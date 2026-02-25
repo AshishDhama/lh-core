@@ -38,7 +38,7 @@ function SlotRow({ slot, isBooked, accentColor, onBook, onCancel }: SlotRowProps
   const isUrgent = slot.remaining > 0 && slot.remaining <= 2;
 
   return (
-    <div className="flex flex-wrap items-center gap-4 rounded-xl border border-[#e2e8f0] bg-white px-4 py-3">
+    <div className="flex flex-wrap items-center gap-4 rounded-xl border border-border bg-white px-4 py-3">
       {/* Date / time */}
       <div className="flex items-start gap-2 min-w-[160px]">
         <div
@@ -147,7 +147,7 @@ function SchedulingPage() {
               {myBookings.map((booking) => (
                 <div
                   key={booking.id}
-                  className="flex flex-wrap items-center gap-4 rounded-xl border border-[#e2e8f0] bg-[#f0fdf4] px-4 py-3"
+                  className="flex flex-wrap items-center gap-4 rounded-xl border border-border bg-[#f0fdf4] px-4 py-3"
                 >
                   <CheckCircle size={16} style={{ color: colors.success.DEFAULT }} />
                   <div>

@@ -120,7 +120,7 @@ function ProgramInstructionsPage() {
           <Title level={4} weight="semibold" color="primary" className="mb-4">
             Before You Begin
           </Title>
-          <div className="rounded-xl border border-[#e2e8f0] bg-white p-5 space-y-3">
+          <div className="rounded-xl border border-border bg-white p-5 space-y-3">
             {program.instructions.map((instruction, idx) => (
               <div key={idx} className="flex gap-3">
                 <div
@@ -146,7 +146,7 @@ function ProgramInstructionsPage() {
             {program.seqExercises.map((exercise) => (
               <div
                 key={exercise.id}
-                className="flex items-center gap-3 rounded-xl border border-[#e2e8f0] bg-white px-4 py-3"
+                className="flex items-center gap-3 rounded-xl border border-border bg-white px-4 py-3"
               >
                 <div
                   className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg"
