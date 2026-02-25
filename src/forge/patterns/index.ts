@@ -19,6 +19,7 @@ export {
   type ExerciseType,
 } from './ExerciseList';
 export { HeroBanner, type HeroBannerProps } from './HeroBanner';
+export { IdpBuilder, type IdpBuilderProps } from './IdpBuilder';
 export {
   InsightsGrid,
   type InsightsGridProps,
