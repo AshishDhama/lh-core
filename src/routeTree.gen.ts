@@ -9,9 +9,23 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SchedulingRouteImport } from './routes/scheduling'
+import { Route as InsightsRouteImport } from './routes/insights'
 import { Route as DiscoveryRouteImport } from './routes/discovery'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ProgramsProgramIdIndexRouteImport } from './routes/programs/$programId/index'
+import { Route as ProgramsProgramIdTasksRouteImport } from './routes/programs/$programId/tasks'
 
+const SchedulingRoute = SchedulingRouteImport.update({
+  id: '/scheduling',
+  path: '/scheduling',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InsightsRoute = InsightsRouteImport.update({
+  id: '/insights',
+  path: '/insights',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DiscoveryRoute = DiscoveryRouteImport.update({
   id: '/discovery',
   path: '/discovery',
@@ -22,35 +36,94 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ProgramsProgramIdIndexRoute = ProgramsProgramIdIndexRouteImport.update({
+  id: '/programs/$programId/',
+  path: '/programs/$programId/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProgramsProgramIdTasksRoute = ProgramsProgramIdTasksRouteImport.update({
+  id: '/programs/$programId/tasks',
+  path: '/programs/$programId/tasks',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/discovery': typeof DiscoveryRoute
+  '/insights': typeof InsightsRoute
+  '/scheduling': typeof SchedulingRoute
+  '/programs/$programId/tasks': typeof ProgramsProgramIdTasksRoute
+  '/programs/$programId/': typeof ProgramsProgramIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/discovery': typeof DiscoveryRoute
+  '/insights': typeof InsightsRoute
+  '/scheduling': typeof SchedulingRoute
+  '/programs/$programId/tasks': typeof ProgramsProgramIdTasksRoute
+  '/programs/$programId': typeof ProgramsProgramIdIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/discovery': typeof DiscoveryRoute
+  '/insights': typeof InsightsRoute
+  '/scheduling': typeof SchedulingRoute
+  '/programs/$programId/tasks': typeof ProgramsProgramIdTasksRoute
+  '/programs/$programId/': typeof ProgramsProgramIdIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/discovery'
+  fullPaths:
+    | '/'
+    | '/discovery'
+    | '/insights'
+    | '/scheduling'
+    | '/programs/$programId/tasks'
+    | '/programs/$programId/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/discovery'
-  id: '__root__' | '/' | '/discovery'
+  to:
+    | '/'
+    | '/discovery'
+    | '/insights'
+    | '/scheduling'
+    | '/programs/$programId/tasks'
+    | '/programs/$programId'
+  id:
+    | '__root__'
+    | '/'
+    | '/discovery'
+    | '/insights'
+    | '/scheduling'
+    | '/programs/$programId/tasks'
+    | '/programs/$programId/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   DiscoveryRoute: typeof DiscoveryRoute
+  InsightsRoute: typeof InsightsRoute
+  SchedulingRoute: typeof SchedulingRoute
+  ProgramsProgramIdTasksRoute: typeof ProgramsProgramIdTasksRoute
+  ProgramsProgramIdIndexRoute: typeof ProgramsProgramIdIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/scheduling': {
+      id: '/scheduling'
+      path: '/scheduling'
+      fullPath: '/scheduling'
+      preLoaderRoute: typeof SchedulingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/insights': {
+      id: '/insights'
+      path: '/insights'
+      fullPath: '/insights'
+      preLoaderRoute: typeof InsightsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/discovery': {
       id: '/discovery'
       path: '/discovery'
@@ -65,12 +138,30 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/programs/$programId/': {
+      id: '/programs/$programId/'
+      path: '/programs/$programId'
+      fullPath: '/programs/$programId/'
+      preLoaderRoute: typeof ProgramsProgramIdIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/programs/$programId/tasks': {
+      id: '/programs/$programId/tasks'
+      path: '/programs/$programId/tasks'
+      fullPath: '/programs/$programId/tasks'
+      preLoaderRoute: typeof ProgramsProgramIdTasksRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   DiscoveryRoute: DiscoveryRoute,
+  InsightsRoute: InsightsRoute,
+  SchedulingRoute: SchedulingRoute,
+  ProgramsProgramIdTasksRoute: ProgramsProgramIdTasksRoute,
+  ProgramsProgramIdIndexRoute: ProgramsProgramIdIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
