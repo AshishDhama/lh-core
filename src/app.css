@@ -3,6 +3,73 @@
 
 @import 'tailwindcss';
 
+/* ─── Forge brand color tokens → Tailwind v4 utilities ────────────────────────
+   Registers colors from src/forge/tokens/colors.ts as Tailwind CSS theme vars.
+   Usage: bg-navy-500, text-teal-300, border-success, text-error-dark, etc.
+   ─────────────────────────────────────────────────────────────────────────── */
+
+@theme {
+  /* Navy */
+  --color-navy:     #002C77;
+  --color-navy-50:  #EEF6FA;
+  --color-navy-100: #D0E2F2;
+  --color-navy-200: #A3C5E5;
+  --color-navy-300: #6A9FD4;
+  --color-navy-400: #3575BC;
+  --color-navy-500: #002C77;
+  --color-navy-600: #002361;
+  --color-navy-700: #001A4A;
+  --color-navy-800: #001234;
+  --color-navy-900: #000A1E;
+
+  /* Teal */
+  --color-teal:     #008575;
+  --color-teal-50:  #E6F7F5;
+  --color-teal-100: #B3E8E2;
+  --color-teal-200: #80D9CF;
+  --color-teal-300: #4DCABC;
+  --color-teal-400: #26BBA9;
+  --color-teal-500: #008575;
+  --color-teal-600: #006B5E;
+  --color-teal-700: #005147;
+  --color-teal-800: #003730;
+  --color-teal-900: #001D19;
+
+  /* Purple */
+  --color-purple: #7B61FF;
+
+  /* Semantic — success */
+  --color-success:       #22c55e;
+  --color-success-light: #86efac;
+  --color-success-dark:  #15803d;
+
+  /* Semantic — warning */
+  --color-warning:       #eab308;
+  --color-warning-light: #fde047;
+  --color-warning-dark:  #a16207;
+
+  /* Semantic — error */
+  --color-error:       #ef4444;
+  --color-error-light: #fca5a5;
+  --color-error-dark:  #b91c1c;
+
+  /* Border */
+  --color-border: #e2e8f0;
+}
+
+/* ─── Semantic surface + content tokens (dynamic — responds to .dark) ─────── */
+
+@theme inline {
+  --color-surface-primary:   var(--lh-surface-primary);
+  --color-surface-secondary: var(--lh-surface-secondary);
+  --color-surface-tertiary:  var(--lh-surface-tertiary);
+  --color-surface-elevated:  var(--lh-surface-elevated);
+  --color-content-primary:   var(--lh-content-primary);
+  --color-content-secondary: var(--lh-content-secondary);
+  --color-content-tertiary:  var(--lh-content-tertiary);
+  --color-content-inverse:   var(--lh-content-inverse);
+}
+
 /* Global resets and base styles */
 *,
 *::before,
@@ -22,30 +89,30 @@ body {
   font-family: 'DM Sans', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: var(--color-surface-primary);
-  color: var(--color-content-primary);
+  background-color: var(--lh-surface-primary);
+  color: var(--lh-content-primary);
 }
 
-/* --- Semantic color custom properties (light/dark) --- */
+/* --- Semantic color raw values (light/dark) — referenced by @theme inline --- */
 
 :root {
-  --color-surface-primary: #ffffff;
-  --color-surface-secondary: #fafbfc;
-  --color-surface-tertiary: #f1f5f9;
-  --color-surface-elevated: #ffffff;
-  --color-content-primary: #0f172a;
-  --color-content-secondary: #475569;
-  --color-content-tertiary: #94a3b8;
-  --color-content-inverse: #ffffff;
+  --lh-surface-primary:   #ffffff;
+  --lh-surface-secondary: #fafbfc;
+  --lh-surface-tertiary:  #f1f5f9;
+  --lh-surface-elevated:  #ffffff;
+  --lh-content-primary:   #0f172a;
+  --lh-content-secondary: #475569;
+  --lh-content-tertiary:  #64748b;
+  --lh-content-inverse:   #ffffff;
 }
 
 .dark {
-  --color-surface-primary: #0f172a;
-  --color-surface-secondary: #1e293b;
-  --color-surface-tertiary: #334155;
-  --color-surface-elevated: #1e293b;
-  --color-content-primary: #f8fafc;
-  --color-content-secondary: #cbd5e1;
-  --color-content-tertiary: #64748b;
-  --color-content-inverse: #0f172a;
+  --lh-surface-primary:   #0f172a;
+  --lh-surface-secondary: #1e293b;
+  --lh-surface-tertiary:  #334155;
+  --lh-surface-elevated:  #1e293b;
+  --lh-content-primary:   #f8fafc;
+  --lh-content-secondary: #cbd5e1;
+  --lh-content-tertiary:  #64748b;
+  --lh-content-inverse:   #0f172a;
 }
