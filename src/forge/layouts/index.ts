@@ -1,2 +1,2 @@
 // Forge layouts — barrel export
-// Components added here as they are created
+export { DashboardLayout, type DashboardLayoutProps } from './DashboardLayout';
