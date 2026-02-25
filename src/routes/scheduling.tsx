@@ -2,10 +2,12 @@ import { createFileRoute } from '@tanstack/react-router';
 import { Calendar, CheckCircle, Clock, MapPin, Users } from 'lucide-react';
 
 import { Button, Text, Title } from '@/forge';
+import { ScheduleCalendar } from '@/forge/patterns/ScheduleCalendar';
+import type { CalendarEvent } from '@/forge/patterns/ScheduleCalendar';
 import { DashboardLayout } from '@/forge/layouts';
 import { colors } from '@/forge/tokens';
 import { useScheduleStore } from '@/stores/useScheduleStore';
-import type { ScheduleSlot } from '@/types/schedule';
+import type { ScheduleSlot, SchedulingProgram } from '@/types/schedule';
 import { useTranslation } from '@/i18n';
 import { useThemeStore } from '@/stores/useThemeStore';
 import { useSidebarItems } from '@/hooks';
@@ -16,6 +18,56 @@ const MOCK_USER = {
   name: 'Priya Sharma',
   role: 'Senior Manager',
 };
+
+// ─── Helpers ──────────────────────────────────────────────────────────────────
+
+/**
+ * Converts SchedulingProgram[] (slot-based format) into CalendarEvent[] for
+ * the ScheduleCalendar component. Each slot produces one CalendarEvent.
+ */
+function programsToCalendarEvents(programs: SchedulingProgram[]): CalendarEvent[] {
+  const events: CalendarEvent[] = [];
+
+  for (const prog of programs) {
+    for (const center of prog.centers) {
+      for (const slot of center.slots) {
+        // Attempt to parse the human-readable date string (e.g. "Mar 10, 2026")
+        const dateObj = new Date(slot.date);
+        // Fall back to today if parsing fails
+        const dateStr = isNaN(dateObj.getTime())
+          ? new Date().toISOString().slice(0, 10)
+          : dateObj.toISOString().slice(0, 10);
+
+        // Parse start time from slot.time (e.g. "9:00 AM – 10:30 AM")
+        const timeParts = slot.time.split('–').map((s) => s.trim());
+        const startTimeStr = timeParts[0] ?? '9:00 AM';
+        const endTimeStr = timeParts[1] ?? startTimeStr;
+
+        const startDate = new Date(`${dateStr} ${startTimeStr}`);
+        const endDate = new Date(`${dateStr} ${endTimeStr}`);
+
+        // Use valid dates or fall back to midnight on dateStr
+        const startISO = isNaN(startDate.getTime())
+          ? `${dateStr}T09:00:00`
+          : startDate.toISOString();
+        const endISO = isNaN(endDate.getTime())
+          ? `${dateStr}T10:00:00`
+          : endDate.toISOString();
+
+        events.push({
+          id: slot.id,
+          title: `${prog.programName} — ${center.name}`,
+          start: startISO,
+          end: endISO,
+          type: 'assessment',
+          color: center.color,
+        });
+      }
+    }
+  }
+
+  return events;
+}
 
 // ─── Route ────────────────────────────────────────────────────────────────────
 
@@ -136,6 +188,15 @@ function SchedulingPage() {
             {t('schedule.subtitle')}
           </Text>
         </div>
+
+        {/* Calendar view — all slots as CalendarEvents */}
+        <ScheduleCalendar
+          events={programsToCalendarEvents(events)}
+          onDateSelect={(date) => {
+            // Selecting an empty date navigates to today's date in the URL or store
+            void date;
+          }}
+        />
 
         {/* My bookings */}
         {myBookings.length > 0 && (
