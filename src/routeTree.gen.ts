@@ -15,6 +15,7 @@ import { Route as DiscoveryRouteImport } from './routes/discovery'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ProgramsProgramIdIndexRouteImport } from './routes/programs/$programId/index'
 import { Route as ProgramsProgramIdTasksRouteImport } from './routes/programs/$programId/tasks'
+import { Route as ProgramsProgramIdPrecheckRouteImport } from './routes/programs/$programId/precheck'
 
 const SchedulingRoute = SchedulingRouteImport.update({
   id: '/scheduling',
@@ -50,12 +51,21 @@ const ProgramsProgramIdTasksRoute = ProgramsProgramIdTasksRouteImport.update({
 } as any).lazy(() =>
   import('./routes/programs/$programId/tasks.lazy').then((d) => d.Route),
 )
+const ProgramsProgramIdPrecheckRoute =
+  ProgramsProgramIdPrecheckRouteImport.update({
+    id: '/programs/$programId/precheck',
+    path: '/programs/$programId/precheck',
+    getParentRoute: () => rootRouteImport,
+  } as any).lazy(() =>
+    import('./routes/programs/$programId/precheck.lazy').then((d) => d.Route),
+  )
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/discovery': typeof DiscoveryRoute
   '/insights': typeof InsightsRoute
   '/scheduling': typeof SchedulingRoute
+  '/programs/$programId/precheck': typeof ProgramsProgramIdPrecheckRoute
   '/programs/$programId/tasks': typeof ProgramsProgramIdTasksRoute
   '/programs/$programId/': typeof ProgramsProgramIdIndexRoute
 }
@@ -64,6 +74,7 @@ export interface FileRoutesByTo {
   '/discovery': typeof DiscoveryRoute
   '/insights': typeof InsightsRoute
   '/scheduling': typeof SchedulingRoute
+  '/programs/$programId/precheck': typeof ProgramsProgramIdPrecheckRoute
   '/programs/$programId/tasks': typeof ProgramsProgramIdTasksRoute
   '/programs/$programId': typeof ProgramsProgramIdIndexRoute
 }
@@ -73,6 +84,7 @@ export interface FileRoutesById {
   '/discovery': typeof DiscoveryRoute
   '/insights': typeof InsightsRoute
   '/scheduling': typeof SchedulingRoute
+  '/programs/$programId/precheck': typeof ProgramsProgramIdPrecheckRoute
   '/programs/$programId/tasks': typeof ProgramsProgramIdTasksRoute
   '/programs/$programId/': typeof ProgramsProgramIdIndexRoute
 }
@@ -83,6 +95,7 @@ export interface FileRouteTypes {
     | '/discovery'
     | '/insights'
     | '/scheduling'
+    | '/programs/$programId/precheck'
     | '/programs/$programId/tasks'
     | '/programs/$programId/'
   fileRoutesByTo: FileRoutesByTo
@@ -91,6 +104,7 @@ export interface FileRouteTypes {
     | '/discovery'
     | '/insights'
     | '/scheduling'
+    | '/programs/$programId/precheck'
     | '/programs/$programId/tasks'
     | '/programs/$programId'
   id:
@@ -99,6 +113,7 @@ export interface FileRouteTypes {
     | '/discovery'
     | '/insights'
     | '/scheduling'
+    | '/programs/$programId/precheck'
     | '/programs/$programId/tasks'
     | '/programs/$programId/'
   fileRoutesById: FileRoutesById
@@ -108,6 +123,7 @@ export interface RootRouteChildren {
   DiscoveryRoute: typeof DiscoveryRoute
   InsightsRoute: typeof InsightsRoute
   SchedulingRoute: typeof SchedulingRoute
+  ProgramsProgramIdPrecheckRoute: typeof ProgramsProgramIdPrecheckRoute
   ProgramsProgramIdTasksRoute: typeof ProgramsProgramIdTasksRoute
   ProgramsProgramIdIndexRoute: typeof ProgramsProgramIdIndexRoute
 }
@@ -156,6 +172,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProgramsProgramIdTasksRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/programs/$programId/precheck': {
+      id: '/programs/$programId/precheck'
+      path: '/programs/$programId/precheck'
+      fullPath: '/programs/$programId/precheck'
+      preLoaderRoute: typeof ProgramsProgramIdPrecheckRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -164,6 +187,7 @@ const rootRouteChildren: RootRouteChildren = {
   DiscoveryRoute: DiscoveryRoute,
   InsightsRoute: InsightsRoute,
   SchedulingRoute: SchedulingRoute,
+  ProgramsProgramIdPrecheckRoute: ProgramsProgramIdPrecheckRoute,
   ProgramsProgramIdTasksRoute: ProgramsProgramIdTasksRoute,
   ProgramsProgramIdIndexRoute: ProgramsProgramIdIndexRoute,
 }
