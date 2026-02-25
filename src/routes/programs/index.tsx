@@ -1,9 +1,7 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router';
-import { BookOpen, CalendarDays, Target } from 'lucide-react';
 
 import { ProgramCard, Text, Title } from '@/forge';
 import { DashboardLayout } from '@/forge/layouts';
-import { colors } from '@/forge/tokens';
 import { programList } from '@/data/programs';
 import type { Program } from '@/types/program';
 import { useTranslation } from '@/i18n';

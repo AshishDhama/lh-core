@@ -17,4 +17,4 @@ export {
   m3Tokens,
   resolveModeTokens,
 } from './modes';
-export type { ModeTokenOverrides, ResolvedModeTokens } from './modes';
+export type { ModeTokenOverrides, ModeKey } from './modes';

@@ -188,7 +188,6 @@ export function Sidebar({
   items,
   activeKey,
   collapsed = false,
-  onCollapse,
   onSelect,
   logo,
   className,
