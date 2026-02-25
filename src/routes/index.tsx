@@ -80,7 +80,7 @@ function DashboardPage() {
         </div>
 
         {/* Stats row */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <StatCard
             title="Active Programs"
             value={activePrograms.length}
@@ -115,7 +115,7 @@ function DashboardPage() {
           <Title level={4} weight="semibold" color="primary" className="mb-4">
             My Programs
           </Title>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {programList.map((program) => (
               <ProgramCard
                 key={program.id}

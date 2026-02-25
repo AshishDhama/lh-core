@@ -240,11 +240,11 @@ function ProgramTasksPage() {
           </Text>
         </div>
 
-        {/* Two-column layout: exercise list + detail */}
-        <div className="flex gap-5">
+        {/* Two-column layout: exercise list + detail (stacks on mobile) */}
+        <div className="flex flex-col lg:flex-row gap-5">
 
           {/* Left: exercise list */}
-          <aside className="w-72 shrink-0 space-y-4">
+          <aside className="w-full lg:w-72 shrink-0 space-y-4">
 
             {program.seqExercises.length > 0 && (
               <div>
@@ -296,7 +296,7 @@ function ProgramTasksPage() {
             <Title level={4} weight="semibold" color="primary" className="mb-4">
               Assessment Centers
             </Title>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
               {program.centers.map((center) => {
                 const isLocked = center.status === 'locked';
                 return (
