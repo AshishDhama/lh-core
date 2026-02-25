@@ -26,4 +26,5 @@ export {
   type ReportStatus,
 } from './ReportCard';
 export { SearchBar, type SearchBarProps, type SearchFilterOption } from './SearchBar';
+export { SkillCard, type SkillCardProps } from './SkillCard';
 export { StatCard, type StatCardProps, type StatTrend } from './StatCard';
