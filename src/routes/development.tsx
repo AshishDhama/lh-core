@@ -177,7 +177,6 @@ function DevelopmentPage() {
         <div className="h-8" aria-hidden="true" />
       </div>
 
-      {wizardOpen && <IdpWizard onClose={() => setWizardOpen(false)} />}
     </DashboardLayout>
 
     {wizardOpen && <IdpWizard onClose={() => setWizardOpen(false)} />}
