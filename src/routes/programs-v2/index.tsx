@@ -73,20 +73,20 @@ function ExerciseCard({ exercise }: { exercise: Exercise }) {
   return (
     <div
       className={cn(
-        'group relative flex w-44 shrink-0 snap-start flex-col overflow-hidden rounded-xl border border-solid border-border bg-surface-primary shadow-sm transition-all duration-200',
+        'group relative flex w-48 shrink-0 snap-start flex-col overflow-hidden rounded-2xl border border-solid border-border bg-surface-primary shadow-sm transition-all duration-200',
         isLocked
-          ? 'opacity-60 grayscale-[40%]'
+          ? 'opacity-55 grayscale-[40%]'
           : 'cursor-pointer hover:shadow-lg hover:-translate-y-0.5',
       )}
     >
-      {/* Illustration area — tinted with exercise accent color */}
+      {/* Illustration area — tinted with exercise accent */}
       <div
-        className="relative flex items-center justify-center px-3 pt-3 pb-2"
+        className="relative flex items-center justify-center p-5"
         style={{ backgroundColor: `${accentColor}08` }}
       >
-        {/* Status badge — top-right */}
+        {/* Status badge */}
         <span
-          className="absolute top-2 right-2 z-10 inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-bold leading-tight"
+          className="absolute top-3 right-3 z-10 inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[10px] font-bold leading-none"
           style={{ backgroundColor: status.bg, color: status.color }}
         >
           {status.icon}
@@ -95,10 +95,10 @@ function ExerciseCard({ exercise }: { exercise: Exercise }) {
 
         <Illustration name={exercise.illustration ?? ''} size="lg" />
 
-        {/* Completed checkmark overlay */}
+        {/* Completed indicator */}
         {isComplete && (
           <div
-            className="absolute bottom-1 left-2 flex size-5 items-center justify-center rounded-full"
+            className="absolute bottom-2 left-3 flex size-5 items-center justify-center rounded-full"
             style={{ backgroundColor: colors.success.DEFAULT, color: '#fff' }}
           >
             <CheckCircle2 size={12} />
@@ -106,20 +106,20 @@ function ExerciseCard({ exercise }: { exercise: Exercise }) {
         )}
       </div>
 
-      {/* Content area */}
-      <div className="flex flex-1 flex-col px-3 pt-2 pb-3">
+      {/* Content area — generous padding for breathing room */}
+      <div className="flex flex-1 flex-col items-center px-4 pt-3 pb-4">
         <Text size="xs" weight="semibold" color="primary" className="text-center leading-snug line-clamp-2">
           {exercise.name}
         </Text>
 
-        <div className="mt-1.5 flex items-center justify-center gap-1">
+        <div className="mt-2 flex items-center gap-1.5">
           <Clock size={11} className="text-content-tertiary" />
           <Text size="xs" color="tertiary">{exercise.time}</Text>
         </div>
 
-        {/* Progress bar for in-progress exercises */}
+        {/* Progress bar for in-progress */}
         {isProgress && exercise.pct > 0 && (
-          <div className="mt-2">
+          <div className="mt-3 w-full">
             <Progress
               percent={exercise.pct}
               showInfo={false}
@@ -174,16 +174,15 @@ function ScrollRow({ children }: { children: React.ReactNode }) {
   }, [checkScroll]);
 
   const scroll = (dir: 'left' | 'right') => {
-    scrollRef.current?.scrollBy({ left: dir === 'left' ? -220 : 220, behavior: 'smooth' });
+    scrollRef.current?.scrollBy({ left: dir === 'left' ? -240 : 240, behavior: 'smooth' });
   };
 
   return (
-    <div className="relative group/scroll">
-      {/* Left arrow */}
+    <div className="relative">
       {canScrollLeft && (
         <button
           onClick={() => scroll('left')}
-          className="absolute -left-3 top-1/2 z-10 -translate-y-1/2 flex size-8 items-center justify-center rounded-full border border-solid border-border bg-surface-elevated shadow-md transition hover:bg-surface-tertiary"
+          className="absolute -left-4 top-1/2 z-10 -translate-y-1/2 flex size-9 items-center justify-center rounded-full border border-solid border-border bg-surface-elevated shadow-md transition hover:bg-surface-tertiary"
           aria-label="Scroll left"
         >
           <ChevronLeft size={16} className="text-content-secondary" />
@@ -192,17 +191,16 @@ function ScrollRow({ children }: { children: React.ReactNode }) {
 
       <div
         ref={scrollRef}
-        className="flex gap-3 overflow-x-auto scroll-smooth snap-x snap-mandatory py-1 px-0.5"
+        className="flex gap-5 overflow-x-auto scroll-smooth snap-x snap-mandatory py-1 px-1"
         style={{ scrollbarWidth: 'none' }}
       >
         {children}
       </div>
 
-      {/* Right arrow */}
       {canScrollRight && (
         <button
           onClick={() => scroll('right')}
-          className="absolute -right-3 top-1/2 z-10 -translate-y-1/2 flex size-8 items-center justify-center rounded-full border border-solid border-border bg-surface-elevated shadow-md transition hover:bg-surface-tertiary"
+          className="absolute -right-4 top-1/2 z-10 -translate-y-1/2 flex size-9 items-center justify-center rounded-full border border-solid border-border bg-surface-elevated shadow-md transition hover:bg-surface-tertiary"
           aria-label="Scroll right"
         >
           <ChevronRight size={16} className="text-content-secondary" />
@@ -221,26 +219,25 @@ function ProgramSection({ program }: { program: Program }) {
   const iconName = iconMap[program.icon] ?? 'ChartBar';
 
   return (
-    <section
-      className="overflow-hidden rounded-2xl border border-solid border-border bg-surface-primary shadow-sm"
-    >
-      {/* Program header — with accent-tinted top strip */}
+    <section className="overflow-hidden rounded-2xl border border-solid border-border bg-surface-primary shadow-sm">
+      {/* Program header */}
       <div
-        className="px-5 pt-5 pb-4"
+        className="px-7 pt-7 pb-6"
         style={{
-          background: `linear-gradient(to bottom, ${program.accent}06, transparent)`,
+          background: `linear-gradient(180deg, ${program.accent}06 0%, transparent 100%)`,
         }}
       >
         <div
-          className="flex items-start gap-3 cursor-pointer"
+          className="flex items-start gap-4 cursor-pointer"
           onClick={() => navigate({ to: '/programs/$programId', params: { programId: program.id } })}
         >
           <div
-            className="flex size-11 shrink-0 items-center justify-center rounded-xl"
-            style={{ backgroundColor: `${program.accent}15`, color: program.accent }}
+            className="flex size-12 shrink-0 items-center justify-center rounded-xl"
+            style={{ backgroundColor: `${program.accent}12`, color: program.accent }}
           >
             <Icon name={iconName} size="lg" />
           </div>
+
           <div className="min-w-0 flex-1">
             <div className="flex items-center gap-2">
               <Title level={4} weight="bold" color="primary">
@@ -248,14 +245,15 @@ function ProgramSection({ program }: { program: Program }) {
               </Title>
               <ChevronRight size={16} className="shrink-0 text-content-tertiary" />
             </div>
-            <Text size="sm" color="secondary" className="mt-0.5 block leading-relaxed">
+
+            <Text size="sm" color="secondary" className="mt-1.5 block leading-relaxed">
               {program.desc}
             </Text>
           </div>
         </div>
 
-        {/* Progress row */}
-        <div className="mt-3 ml-14 flex items-center gap-4">
+        {/* Progress row — aligned with title text */}
+        <div className="mt-5 ml-16 flex items-center gap-5">
           <Progress
             percent={program.pct}
             strokeColor={program.accent}
@@ -266,14 +264,14 @@ function ProgramSection({ program }: { program: Program }) {
               <Text size="xs" weight="semibold" color="tertiary">{pct}%</Text>
             )}
           />
-          <span className="flex items-center gap-1.5">
-            <Text size="xs" color="tertiary">
-              {completedCount}/{allExercises.length} done
-            </Text>
-          </span>
+
+          <Text size="xs" color="tertiary">
+            {completedCount}/{allExercises.length} done
+          </Text>
+
           {program.daysLeft > 0 && (
             <span
-              className="inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-semibold"
+              className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-semibold"
               style={{
                 backgroundColor: program.daysLeft <= 14
                   ? `${colors.error.DEFAULT}12`
@@ -288,12 +286,12 @@ function ProgramSection({ program }: { program: Program }) {
         </div>
       </div>
 
-      {/* Separator */}
-      <div className="mx-5 border-t border-border" />
+      {/* Separator with spacing */}
+      <div className="mx-7 border-t border-border" />
 
-      {/* Exercise cards */}
+      {/* Exercise cards — generous padding for negative space */}
       {allExercises.length > 0 && (
-        <div className="px-5 py-4">
+        <div className="px-7 py-6">
           <ScrollRow>
             {allExercises.map((exercise) => (
               <ExerciseCard key={exercise.id} exercise={exercise} />
@@ -327,54 +325,60 @@ function ProgramsV2IndexPage() {
       title="Lighthouse"
       activeKey="programs"
     >
-      <div className="p-6 space-y-8 max-w-7xl mx-auto">
-        {/* Header */}
+      <div className="px-8 py-10 space-y-12 max-w-7xl mx-auto">
+        {/* Page header */}
         <div>
           <Title level={3} weight="bold" color="primary">
             {t('programs.title')}
           </Title>
-          <Text color="secondary" size="sm" className="mt-1">
+          <Text color="secondary" size="sm" className="mt-2">
             {programList.length} {t('nav.programs').toLowerCase()} · {activePrograms.length} {t('status.active').toLowerCase()}
           </Text>
         </div>
 
         {/* Active programs */}
         {activePrograms.length > 0 && (
-          <div className="space-y-5">
+          <div className="space-y-6">
             <Title level={4} weight="semibold" color="primary">
               {t('status.active')} ({activePrograms.length})
             </Title>
-            {activePrograms.map((program) => (
-              <ProgramSection key={program.id} program={program} />
-            ))}
+            <div className="space-y-8">
+              {activePrograms.map((program) => (
+                <ProgramSection key={program.id} program={program} />
+              ))}
+            </div>
           </div>
         )}
 
         {/* Completed programs */}
         {completedPrograms.length > 0 && (
-          <div className="space-y-5">
+          <div className="space-y-6">
             <Title level={4} weight="semibold" color="primary">
               {t('status.completed')} ({completedPrograms.length})
             </Title>
-            {completedPrograms.map((program) => (
-              <ProgramSection key={program.id} program={program} />
-            ))}
+            <div className="space-y-8">
+              {completedPrograms.map((program) => (
+                <ProgramSection key={program.id} program={program} />
+              ))}
+            </div>
           </div>
         )}
 
         {/* Locked programs */}
         {lockedPrograms.length > 0 && (
-          <div className="space-y-5">
+          <div className="space-y-6">
             <Title level={4} weight="semibold" color="primary">
               {t('status.upcoming')} ({lockedPrograms.length})
             </Title>
-            {lockedPrograms.map((program) => (
-              <ProgramSection key={program.id} program={program} />
-            ))}
+            <div className="space-y-8">
+              {lockedPrograms.map((program) => (
+                <ProgramSection key={program.id} program={program} />
+              ))}
+            </div>
           </div>
         )}
 
-        <div className="h-8" aria-hidden="true" />
+        <div className="h-12" aria-hidden="true" />
       </div>
     </DashboardLayout>
   );
