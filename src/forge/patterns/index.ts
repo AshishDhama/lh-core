@@ -20,6 +20,11 @@ export {
 } from './ExerciseList';
 export { HeroBanner, type HeroBannerProps } from './HeroBanner';
 export {
+  InsightsGrid,
+  type InsightsGridProps,
+  type ChartConfig,
+} from './InsightsGrid';
+export {
   ScheduleCalendar,
   type ScheduleCalendarProps,
   type CalendarEvent,
