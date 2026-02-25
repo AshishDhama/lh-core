@@ -90,19 +90,23 @@ run_iteration() {
     return 1  # Signal completion
   fi
 
-  # Run claude
-  local result
-  result=$(claude -p \
+  # Run claude (clear Claude env vars to allow spawning from within Claude Code)
+  local logfile="/tmp/ralph-iter-${iter}.log"
+  log "Running agent... (log: $logfile)"
+
+  env -u CLAUDECODE -u CLAUDE_CODE_ENTRYPOINT \
+    claude -p \
     --model "$MODEL" \
     --max-budget-usd "$BUDGET" \
     --allowedTools "$TOOLS" \
     --dangerously-skip-permissions \
-    "$prompt" 2>&1) || true
+    "$prompt" > "$logfile" 2>&1 || true
 
-  echo "$result"
+  # Display output
+  cat "$logfile"
 
   # Check for completion signal
-  if [[ "$result" == *"<promise>COMPLETE</promise>"* ]]; then
+  if grep -q '<promise>COMPLETE</promise>' "$logfile" 2>/dev/null; then
     log_ok "Agent signaled COMPLETE."
     return 1  # Signal completion
   fi
@@ -185,7 +189,7 @@ parallel_run() {
 
   for ((w=1; w<=actual; w++)); do
     log "Spawning worker $w..."
-    claude -p \
+    env -u CLAUDECODE -u CLAUDE_CODE_ENTRYPOINT claude -p \
       --worktree "ralph-w$w" \
       --model "$MODEL" \
       --max-budget-usd "$BUDGET" \
