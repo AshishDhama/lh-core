@@ -32,7 +32,7 @@ export function FullscreenLayout({
     <div
       className={cn(
         'min-h-screen w-full flex items-center justify-center',
-        'bg-[#fafbfc]',
+        'bg-surface-secondary',
         className,
       )}
       style={background ? { background } : undefined}

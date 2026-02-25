@@ -46,9 +46,9 @@ export function AuthLayout({
         className={cn(
           'flex flex-col justify-between p-8 md:p-12',
           'md:w-1/2 lg:w-2/5',
-          'bg-[#002C77]',
+          'bg-navy',
           // Subtle diagonal gradient overlay
-          'bg-gradient-to-br from-[#002C77] to-[#001A4A]',
+          'bg-gradient-to-br from-navy to-navy-800',
           // Compact on mobile (don't take up full screen height)
           'min-h-[200px] md:min-h-screen',
         )}
@@ -77,7 +77,7 @@ export function AuthLayout({
         className={cn(
           'flex-1 flex items-center justify-center',
           'p-6 md:p-12 lg:p-16',
-          'bg-[#fafbfc]',
+          'bg-surface-secondary',
         )}
       >
         <div className="w-full max-w-md">{children}</div>

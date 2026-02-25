@@ -70,14 +70,14 @@ export function FormField({
         <span
           id={`${name}-error`}
           role="alert"
-          className="flex items-center gap-1 text-xs text-[#b91c1c]"
+          className="flex items-center gap-1 text-xs text-error-dark"
         >
           {error}
         </span>
       )}
 
       {!hasError && helperText && (
-        <span id={`${name}-hint`} className="text-xs text-[#64748b]">
+        <span id={`${name}-hint`} className="text-xs text-content-tertiary">
           {helperText}
         </span>
       )}

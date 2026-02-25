@@ -70,7 +70,7 @@ export function Header({
 
       {/* Language switcher */}
       <div
-        className="hidden sm:flex items-center gap-0.5 rounded-lg border border-[#e2e8f0] p-0.5"
+        className="hidden sm:flex items-center gap-0.5 rounded-lg border border-border p-0.5"
         role="group"
         aria-label="Language selector"
       >
@@ -82,9 +82,9 @@ export function Header({
             className={cn(
               'px-2.5 py-1 rounded-md text-xs font-semibold transition-colors',
               locale === lng
-                ? 'bg-[#002C77] text-white'
-                : 'text-[#475569] hover:text-[#0f172a] hover:bg-[#f1f5f9]',
-              'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#002C77] focus-visible:ring-offset-1',
+                ? 'bg-navy text-white'
+                : 'text-content-secondary hover:text-content-primary hover:bg-surface-tertiary',
+              'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-1',
             )}
             aria-pressed={locale === lng}
           >
