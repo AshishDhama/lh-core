@@ -164,6 +164,123 @@ setup_worktree_beads() {
   done
 }
 
+# ── Merge conflict auto-resolution ──────────────────────────────────
+# Handles predictable conflicts so cherry-picks don't get skipped.
+
+# Resolve barrel export conflicts: strip markers, keep all exports, sort + dedup.
+merge_barrel_exports() {
+  local file="$1"
+  local tmp="${file}.resolved"
+
+  # Extract header comment lines (before first export)
+  local header=""
+  header=$(sed -n '/^export /q;p' "$file")
+
+  # Extract all export lines from both sides, stripping conflict markers
+  local exports
+  exports=$(grep -E '^export ' "$file" | sort -u)
+
+  # Reconstruct the file
+  {
+    [[ -n "$header" ]] && echo "$header"
+    echo "$exports"
+  } > "$tmp"
+
+  mv "$tmp" "$file"
+}
+
+# Check if all conflicting files are auto-resolvable and resolve them.
+# Returns 0 if all conflicts resolved, 1 if any unknown conflict remains.
+auto_resolve_conflicts() {
+  local conflicting
+  conflicting=$(git diff --name-only --diff-filter=U)
+
+  if [[ -z "$conflicting" ]]; then
+    return 0  # No conflicts
+  fi
+
+  while IFS= read -r file; do
+    case "$file" in
+      *routeTree.gen.ts)
+        git checkout --ours "$file"
+        log "  Auto-resolved (ours → regenerate): $file"
+        ;;
+      */index.ts)
+        if grep -q '<<<<<<<' "$file" 2>/dev/null; then
+          merge_barrel_exports "$file"
+          log "  Auto-resolved (barrel merge): $file"
+        else
+          git checkout --ours "$file"
+          log "  Auto-resolved (ours): $file"
+        fi
+        ;;
+      package.json)
+        git checkout --theirs "$file"
+        log "  Auto-resolved (theirs → reinstall): $file"
+        ;;
+      bun.lock|bun.lockb)
+        git checkout --ours "$file"
+        log "  Auto-resolved (ours → regenerate): $file"
+        ;;
+      *)
+        log_warn "  Unknown conflict — cannot auto-resolve: $file"
+        return 1
+        ;;
+    esac
+  done <<< "$conflicting"
+
+  return 0
+}
+
+# Post-merge fixup: regenerate generated files, reinstall deps, validate.
+post_merge_fixup() {
+  local needs_commit=false
+
+  # Check if routeTree was touched in recent merges
+  if git diff HEAD~5 --name-only 2>/dev/null | grep -q 'routeTree.gen.ts'; then
+    log "Regenerating routeTree..."
+    if bun run build 2>/dev/null; then
+      log_ok "routeTree regenerated"
+      needs_commit=true
+    else
+      log_warn "routeTree regeneration failed — may need manual fix"
+    fi
+  fi
+
+  # Check if package.json was touched
+  if git diff HEAD~5 --name-only 2>/dev/null | grep -q 'package.json'; then
+    log "Running bun install to fix lockfile..."
+    if bun install 2>/dev/null; then
+      log_ok "Dependencies installed"
+      needs_commit=true
+    else
+      log_warn "bun install failed — may need manual fix"
+    fi
+  fi
+
+  # Commit regenerated files if anything changed
+  if [[ "$needs_commit" == true ]]; then
+    if ! git diff --quiet 2>/dev/null || ! git diff --cached --quiet 2>/dev/null; then
+      git add -A
+      git commit -m "fix: post-merge regeneration (routeTree, deps)" --no-verify 2>/dev/null || true
+      log_ok "Committed post-merge regeneration"
+    fi
+  fi
+
+  # Final validation
+  log "Running post-merge validation..."
+  if bun typecheck 2>/dev/null; then
+    log_ok "Typecheck passed"
+  else
+    log_warn "Typecheck failed after merge — manual review needed"
+  fi
+  if bun lint 2>/dev/null; then
+    log_ok "Lint passed"
+  else
+    log_warn "Lint failed after merge — manual review needed"
+  fi
+}
+
 # ── Merge worktree branches to main ─────────────────────────────────
 # Cherry-picks unique commits from each worktree branch onto main.
 # Called after parallel workers finish, before worktree cleanup.
@@ -214,9 +331,22 @@ merge_worktrees() {
         log_ok "  Merged: $msg"
         merged=$((merged + 1))
       else
-        git cherry-pick --abort 2>/dev/null || true
-        log_warn "  Conflict — skipped: $msg"
-        failed=$((failed + 1))
+        # Try auto-resolving known conflict types before giving up
+        if auto_resolve_conflicts; then
+          git add -A
+          if GIT_EDITOR=true git cherry-pick --continue 2>/dev/null; then
+            log_ok "  Merged (auto-resolved): $msg"
+            merged=$((merged + 1))
+          else
+            git cherry-pick --abort 2>/dev/null || true
+            log_warn "  Conflict — auto-resolve failed continue: $msg"
+            failed=$((failed + 1))
+          fi
+        else
+          git cherry-pick --abort 2>/dev/null || true
+          log_warn "  Conflict — skipped (unknown files): $msg"
+          failed=$((failed + 1))
+        fi
       fi
     done
   done
@@ -224,13 +354,9 @@ merge_worktrees() {
   echo ""
   log_ok "Merge complete: $merged merged | $skipped skipped | $failed conflicts"
 
-  # Validate
+  # Post-merge fixup: regenerate routeTree, bun install, typecheck, lint
   if [[ $merged -gt 0 ]]; then
-    if bun typecheck 2>/dev/null; then
-      log_ok "Typecheck passed after merge"
-    else
-      log_warn "Typecheck failed after merge — manual review needed"
-    fi
+    post_merge_fixup
   fi
 }
 
