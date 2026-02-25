@@ -7,6 +7,11 @@ export {
   type CenterStatus,
 } from './CenterGrid';
 export {
+  ChatAssistant,
+  type ChatAssistantProps,
+  type ChatAssistantMessage,
+} from './ChatAssistant';
+export {
   ExerciseList,
   type ExerciseListProps,
   type Exercise,
