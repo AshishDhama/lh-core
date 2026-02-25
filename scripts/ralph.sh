@@ -71,6 +71,10 @@ cleanup() {
       fi
     done
     log_warn "Killed ${#WORKER_PIDS[@]} worker processes"
+
+    # Merge whatever the workers committed before dying
+    log_warn "Salvaging worktree commits before exit..."
+    merge_worktrees "${#WORKER_PIDS[@]}" || true
   fi
 
   log_warn "Exited after iteration $CURRENT_ITER. Logs: /tmp/ralph-iter-*.log"
