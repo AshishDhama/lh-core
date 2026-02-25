@@ -12,6 +12,7 @@ export interface Exercise {
   color: string;
   proctored: boolean;
   hasReport: boolean;
+  illustration?: string;
 }
 
 export interface Activity {

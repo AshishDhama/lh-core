@@ -15,6 +15,7 @@ import { Route as DiscoveryRouteImport } from './routes/discovery'
 import { Route as DevelopmentRouteImport } from './routes/development'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ProgramsIndexRouteImport } from './routes/programs/index'
+import { Route as ProgramsV2IndexRouteImport } from './routes/programs-v2/index'
 import { Route as ModesScrollyRouteImport } from './routes/modes/scrolly'
 import { Route as ModesNotionRouteImport } from './routes/modes/notion'
 import { Route as ModesM3RouteImport } from './routes/modes/m3'
@@ -52,6 +53,11 @@ const IndexRoute = IndexRouteImport.update({
 const ProgramsIndexRoute = ProgramsIndexRouteImport.update({
   id: '/programs/',
   path: '/programs/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProgramsV2IndexRoute = ProgramsV2IndexRouteImport.update({
+  id: '/programs-v2/',
+  path: '/programs-v2/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ModesScrollyRoute = ModesScrollyRouteImport.update({
@@ -113,6 +119,7 @@ export interface FileRoutesByFullPath {
   '/modes/m3': typeof ModesM3Route
   '/modes/notion': typeof ModesNotionRoute
   '/modes/scrolly': typeof ModesScrollyRoute
+  '/programs-v2/': typeof ProgramsV2IndexRoute
   '/programs/': typeof ProgramsIndexRoute
   '/programs/$programId/precheck': typeof ProgramsProgramIdPrecheckRoute
   '/programs/$programId/tasks': typeof ProgramsProgramIdTasksRoute
@@ -129,6 +136,7 @@ export interface FileRoutesByTo {
   '/modes/m3': typeof ModesM3Route
   '/modes/notion': typeof ModesNotionRoute
   '/modes/scrolly': typeof ModesScrollyRoute
+  '/programs-v2': typeof ProgramsV2IndexRoute
   '/programs': typeof ProgramsIndexRoute
   '/programs/$programId/precheck': typeof ProgramsProgramIdPrecheckRoute
   '/programs/$programId/tasks': typeof ProgramsProgramIdTasksRoute
@@ -146,6 +154,7 @@ export interface FileRoutesById {
   '/modes/m3': typeof ModesM3Route
   '/modes/notion': typeof ModesNotionRoute
   '/modes/scrolly': typeof ModesScrollyRoute
+  '/programs-v2/': typeof ProgramsV2IndexRoute
   '/programs/': typeof ProgramsIndexRoute
   '/programs/$programId/precheck': typeof ProgramsProgramIdPrecheckRoute
   '/programs/$programId/tasks': typeof ProgramsProgramIdTasksRoute
@@ -164,6 +173,7 @@ export interface FileRouteTypes {
     | '/modes/m3'
     | '/modes/notion'
     | '/modes/scrolly'
+    | '/programs-v2/'
     | '/programs/'
     | '/programs/$programId/precheck'
     | '/programs/$programId/tasks'
@@ -180,6 +190,7 @@ export interface FileRouteTypes {
     | '/modes/m3'
     | '/modes/notion'
     | '/modes/scrolly'
+    | '/programs-v2'
     | '/programs'
     | '/programs/$programId/precheck'
     | '/programs/$programId/tasks'
@@ -196,6 +207,7 @@ export interface FileRouteTypes {
     | '/modes/m3'
     | '/modes/notion'
     | '/modes/scrolly'
+    | '/programs-v2/'
     | '/programs/'
     | '/programs/$programId/precheck'
     | '/programs/$programId/tasks'
@@ -213,6 +225,7 @@ export interface RootRouteChildren {
   ModesM3Route: typeof ModesM3Route
   ModesNotionRoute: typeof ModesNotionRoute
   ModesScrollyRoute: typeof ModesScrollyRoute
+  ProgramsV2IndexRoute: typeof ProgramsV2IndexRoute
   ProgramsIndexRoute: typeof ProgramsIndexRoute
   ProgramsProgramIdPrecheckRoute: typeof ProgramsProgramIdPrecheckRoute
   ProgramsProgramIdTasksRoute: typeof ProgramsProgramIdTasksRoute
@@ -261,6 +274,13 @@ declare module '@tanstack/react-router' {
       path: '/programs'
       fullPath: '/programs/'
       preLoaderRoute: typeof ProgramsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/programs-v2/': {
+      id: '/programs-v2/'
+      path: '/programs-v2'
+      fullPath: '/programs-v2/'
+      preLoaderRoute: typeof ProgramsV2IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/modes/scrolly': {
@@ -333,6 +353,7 @@ const rootRouteChildren: RootRouteChildren = {
   ModesM3Route: ModesM3Route,
   ModesNotionRoute: ModesNotionRoute,
   ModesScrollyRoute: ModesScrollyRoute,
+  ProgramsV2IndexRoute: ProgramsV2IndexRoute,
   ProgramsIndexRoute: ProgramsIndexRoute,
   ProgramsProgramIdPrecheckRoute: ProgramsProgramIdPrecheckRoute,
   ProgramsProgramIdTasksRoute: ProgramsProgramIdTasksRoute,

@@ -127,6 +127,7 @@ export const programs: Record<string, Program> = {
         color: purple,
         proctored: false,
         hasReport: true,
+        illustration: 'assessment',
       },
       {
         id: 'cognitive',
@@ -138,6 +139,7 @@ export const programs: Record<string, Program> = {
         color: navy,
         proctored: true,
         hasReport: false,
+        illustration: 'cognitive',
       },
       {
         id: 'interview',
@@ -149,6 +151,7 @@ export const programs: Record<string, Program> = {
         color: purple,
         proctored: true,
         hasReport: false,
+        illustration: 'interview',
       },
     ],
     openExercises: [
@@ -162,6 +165,7 @@ export const programs: Record<string, Program> = {
         color: teal,
         proctored: false,
         hasReport: true,
+        illustration: 'wellbeing',
       },
       {
         id: 'self',
@@ -173,6 +177,7 @@ export const programs: Record<string, Program> = {
         color: navy,
         proctored: false,
         hasReport: false,
+        illustration: 'survey',
       },
       {
         id: 'sjt',
@@ -184,6 +189,7 @@ export const programs: Record<string, Program> = {
         color: teal,
         proctored: false,
         hasReport: false,
+        illustration: 'scenario',
       },
     ],
   },
@@ -217,6 +223,7 @@ export const programs: Record<string, Program> = {
         color: teal,
         proctored: false,
         hasReport: false,
+        illustration: 'leadership',
       },
       {
         id: 'nominate',
@@ -228,6 +235,7 @@ export const programs: Record<string, Program> = {
         color: navy,
         proctored: false,
         hasReport: false,
+        illustration: 'feedback',
       },
       {
         id: 'track',
@@ -239,6 +247,7 @@ export const programs: Record<string, Program> = {
         color: purple,
         proctored: false,
         hasReport: false,
+        illustration: 'analytics',
       },
     ],
     openExercises: [],

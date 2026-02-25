@@ -14,6 +14,11 @@ export {
 export { Button, type ButtonProps } from './Button';
 export { Icon, type IconProps, type IconName } from './Icon';
 export {
+  Illustration,
+  type IllustrationName,
+  type IllustrationProps,
+} from './Illustration';
+export {
   Input,
   Password,
   TextArea,
