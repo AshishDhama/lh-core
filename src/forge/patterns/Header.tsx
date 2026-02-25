@@ -8,7 +8,7 @@ import { Text } from '@/forge/primitives/Typography';
 import { useThemeStore } from '@/stores/useThemeStore';
 import { cn } from '@/forge/utils';
 import { useTranslation } from '@/i18n';
-import { useClickOutside } from '@/hooks';
+import { useClickOutside, useCountdown } from '@/hooks';
 
 export interface HeaderUser {
   name: string;
@@ -31,6 +31,7 @@ export interface HeaderProps {
   actions?: ReactNode;
   notifications?: number;
   notificationItems?: NotificationItem[];
+  deadline?: Date | string | null;
   onProfileClick?: () => void;
   onSettingsClick?: () => void;
   onSignOut?: () => void;
@@ -44,6 +45,7 @@ export function Header({
   actions,
   notifications = 0,
   notificationItems = [],
+  deadline = null,
   onProfileClick,
   onSettingsClick,
   onSignOut,
@@ -54,6 +56,7 @@ export function Header({
   const locale = useThemeStore((s) => s.locale);
   const setLocale = useThemeStore((s) => s.setLocale);
   const { t } = useTranslation(locale);
+  const countdown = useCountdown(deadline);
 
   const [profileOpen, setProfileOpen] = useState(false);
   const [notifOpen, setNotifOpen] = useState(false);
@@ -95,6 +98,18 @@ export function Header({
 
       {/* Actions slot */}
       {actions && <div className="flex items-center gap-2">{actions}</div>}
+
+      {/* Countdown timer */}
+      {deadline && !countdown.isExpired && (
+        <div className="hidden md:flex items-center gap-1.5 rounded-lg border border-border bg-surface-secondary px-3 py-1.5">
+          <Icon name="Clock" size="sm" className="text-content-tertiary" />
+          <Text size="xs" weight="semibold" color="primary" className="tabular-nums">
+            {countdown.days > 0 && `${countdown.days}d `}
+            {String(countdown.hours).padStart(2, '0')}h{' '}
+            {String(countdown.minutes).padStart(2, '0')}m
+          </Text>
+        </div>
+      )}
 
       {/* Language switcher */}
       <div

@@ -7,6 +7,7 @@ import { Text } from '@/forge/primitives/Typography';
 import { cn } from '@/forge/utils';
 import type { DesignMode } from '@/types/common';
 import { useThemeStore } from '@/stores/useThemeStore';
+import { useTranslation } from '@/i18n';
 
 export interface SidebarItem {
   key: string;
@@ -182,6 +183,41 @@ function DesignModeSwitcher() {
   );
 }
 
+function SidebarFooterControls() {
+  const mode = useThemeStore((s) => s.mode);
+  const toggleMode = useThemeStore((s) => s.toggleMode);
+  const locale = useThemeStore((s) => s.locale);
+  const setLocale = useThemeStore((s) => s.setLocale);
+  const { t } = useTranslation(locale);
+
+  return (
+    <div className="flex items-center justify-between px-3 pb-3">
+      {/* Language selector */}
+      <button
+        type="button"
+        onClick={() => setLocale(locale === 'en' ? 'hi' : 'en')}
+        className="flex items-center gap-1.5 rounded-lg px-2 py-1.5 text-content-tertiary hover:bg-surface-tertiary hover:text-content-primary transition-colors"
+        aria-label={t('header.switchLanguage') ?? 'Switch language'}
+      >
+        <Icon name="Globe" size="sm" />
+        <Text size="xs" weight="semibold" className="uppercase">
+          {locale}
+        </Text>
+      </button>
+
+      {/* Dark mode toggle */}
+      <button
+        type="button"
+        onClick={toggleMode}
+        className="flex items-center justify-center w-8 h-8 rounded-lg text-content-tertiary hover:bg-surface-tertiary hover:text-content-primary transition-colors"
+        aria-label={t(mode === 'dark' ? 'header.switchToLight' : 'header.switchToDark')}
+      >
+        <Icon name={mode === 'dark' ? 'Sun' : 'Moon'} size="sm" />
+      </button>
+    </div>
+  );
+}
+
 export function Sidebar({
   items,
   activeKey,
@@ -227,8 +263,13 @@ export function Sidebar({
         </ul>
       </nav>
 
-      {/* Design mode switcher (expanded only) */}
-      {!collapsed && <DesignModeSwitcher />}
+      {/* Footer controls (expanded only) */}
+      {!collapsed && (
+        <>
+          <DesignModeSwitcher />
+          <SidebarFooterControls />
+        </>
+      )}
     </aside>
   );
 }

@@ -29,12 +29,12 @@ const SchedulingRoute = SchedulingRouteImport.update({
   id: '/scheduling',
   path: '/scheduling',
   getParentRoute: () => rootRouteImport,
-} as any).lazy(() => import('./routes/scheduling.lazy').then((d) => d.Route))
+} as any)
 const InsightsRoute = InsightsRouteImport.update({
   id: '/insights',
   path: '/insights',
   getParentRoute: () => rootRouteImport,
-} as any).lazy(() => import('./routes/insights.lazy').then((d) => d.Route))
+} as any)
 const DiscoveryRoute = DiscoveryRouteImport.update({
   id: '/discovery',
   path: '/discovery',
@@ -49,7 +49,7 @@ const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
-} as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
+} as any)
 const ProgramsIndexRoute = ProgramsIndexRouteImport.update({
   id: '/programs/',
   path: '/programs/',
