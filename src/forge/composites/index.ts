@@ -19,6 +19,7 @@ export {
 } from './CommentThread';
 export { CountdownTimer, type CountdownTimerProps } from './CountdownTimer';
 export { FormField, type FormFieldProps } from './FormField';
+export { ProgramCard, type ProgramCardProps } from './ProgramCard';
 export {
   ReportCard,
   type ReportCardProps,
