@@ -5,6 +5,7 @@ import { Badge } from '@/forge/primitives/Badge';
 import { Button } from '@/forge/primitives/Button';
 import { Icon } from '@/forge/primitives/Icon';
 import { Text } from '@/forge/primitives/Typography';
+import { useThemeStore } from '@/stores/useThemeStore';
 import { cn } from '@/forge/utils';
 
 export interface HeaderUser {
@@ -30,6 +31,9 @@ export function Header({
   notifications = 0,
   className,
 }: HeaderProps) {
+  const mode = useThemeStore((s) => s.mode);
+  const toggleMode = useThemeStore((s) => s.toggleMode);
+
   return (
     <header
       className={cn(
@@ -61,6 +65,22 @@ export function Header({
 
       {/* Actions slot */}
       {actions && <div className="flex items-center gap-2">{actions}</div>}
+
+      {/* Dark mode toggle */}
+      <Button
+        variant="ghost"
+        size="sm"
+        icon={
+          <Icon
+            name={mode === 'dark' ? 'Sun' : 'Moon'}
+            size="md"
+            className="transition-transform duration-200"
+          />
+        }
+        onClick={toggleMode}
+        className="text-[#475569]"
+        aria-label={mode === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+      />
 
       {/* Notifications */}
       <Badge count={notifications} overflowCount={99} size="sm">
