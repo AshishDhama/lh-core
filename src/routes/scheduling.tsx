@@ -2,13 +2,13 @@ import { createFileRoute } from '@tanstack/react-router';
 import { Calendar, CheckCircle, Clock, MapPin, Users } from 'lucide-react';
 
 import { Button, Text, Title } from '@/forge';
-import type { SidebarItem } from '@/forge';
 import { DashboardLayout } from '@/forge/layouts';
 import { colors } from '@/forge/tokens';
 import { useScheduleStore } from '@/stores/useScheduleStore';
 import type { ScheduleSlot } from '@/types/schedule';
 import { useTranslation } from '@/i18n';
 import { useThemeStore } from '@/stores/useThemeStore';
+import { useSidebarItems } from '@/hooks';
 
 // ─── Shared constants ─────────────────────────────────────────────────────────
 
@@ -40,7 +40,7 @@ function SlotRow({ slot, isBooked, accentColor, onBook, onCancel }: SlotRowProps
   const isUrgent = slot.remaining > 0 && slot.remaining <= 2;
 
   return (
-    <div className="flex flex-wrap items-center gap-4 rounded-xl border border-[#e2e8f0] bg-surface-primary px-4 py-3">
+    <div className="flex flex-wrap items-center gap-4 rounded-xl border border-border bg-surface-primary px-4 py-3">
       {/* Date / time */}
       <div className="flex items-start gap-2 min-w-[160px]">
         <div
@@ -81,7 +81,7 @@ function SlotRow({ slot, isBooked, accentColor, onBook, onCancel }: SlotRowProps
       {/* Booked badge / CTA */}
       {isBooked ? (
         <div className="flex items-center gap-3">
-          <div className="flex items-center gap-1.5 rounded-full bg-[#dcfce7] px-3 py-1">
+          <div className="flex items-center gap-1.5 rounded-full bg-success-light/40 px-3 py-1">
             <CheckCircle size={13} style={{ color: colors.success.DEFAULT }} />
             <Text size="xs" weight="semibold" color="success">{t('status.booked')}</Text>
           </div>
@@ -110,14 +110,7 @@ function SlotRow({ slot, isBooked, accentColor, onBook, onCancel }: SlotRowProps
 function SchedulingPage() {
   const locale = useThemeStore((s) => s.locale);
   const { t } = useTranslation(locale);
-
-  const sidebarItems: SidebarItem[] = [
-    { key: 'dashboard', label: t('nav.dashboard'), icon: 'LayoutDashboard', path: '/' },
-    { key: 'programs', label: t('nav.programs'), icon: 'BookOpen', path: '/programs' },
-    { key: 'development', label: t('nav.development'), icon: 'Target', path: '/development' },
-    { key: 'scheduling', label: t('nav.scheduling'), icon: 'CalendarDays', path: '/scheduling' },
-    { key: 'insights', label: t('nav.insights'), icon: 'ChartBar', path: '/insights' },
-  ];
+  const sidebarItems = useSidebarItems();
 
   const events = useScheduleStore((s) => s.events);
   const bookedSlots = useScheduleStore((s) => s.bookedSlots);
@@ -154,7 +147,7 @@ function SchedulingPage() {
               {myBookings.map((booking) => (
                 <div
                   key={booking.id}
-                  className="flex flex-wrap items-center gap-4 rounded-xl border border-[#e2e8f0] bg-[#f0fdf4] px-4 py-3"
+                  className="flex flex-wrap items-center gap-4 rounded-xl border border-border bg-success-light/20 px-4 py-3"
                 >
                   <CheckCircle size={16} style={{ color: colors.success.DEFAULT }} />
                   <div>

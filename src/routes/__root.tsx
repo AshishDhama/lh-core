@@ -4,6 +4,7 @@ import { App as AntApp, ConfigProvider } from 'antd';
 import { useMemo } from 'react';
 
 import { queryClient } from '@/api/queryClient';
+import { ChatFAB } from '@/forge/patterns/ChatFAB';
 import { getAntTheme } from '@/forge/tokens';
 import { useThemeStore } from '@/stores/useThemeStore';
 
@@ -20,6 +21,7 @@ function RootLayout() {
       <ConfigProvider theme={themeConfig}>
         <AntApp>
           <Outlet />
+          <ChatFAB />
         </AntApp>
       </ConfigProvider>
     </QueryClientProvider>

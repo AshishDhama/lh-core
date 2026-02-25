@@ -30,36 +30,36 @@ export interface AssessmentCardProps {
 
 const typeConfig: Record<
   AssessmentType,
-  { label: string; icon: React.ReactNode; color: string; bg: string }
+  { label: string; icon: React.ReactNode; iconClassName: string; textClassName: string }
 > = {
   quiz: {
     label: 'Quiz',
     icon: <FileQuestion size={16} />,
-    color: '#3575BC',
-    bg: '#EEF6FA',
+    iconClassName: 'bg-navy-50 dark:bg-navy-900/20 text-navy-400',
+    textClassName: 'text-navy-400',
   },
   practical: {
     label: 'Practical',
     icon: <Wrench size={16} />,
-    color: '#008575',
-    bg: '#E6F7F5',
+    iconClassName: 'bg-teal-50 dark:bg-teal-900/20 text-teal',
+    textClassName: 'text-teal',
   },
   observation: {
     label: 'Observation',
     icon: <Eye size={16} />,
-    color: '#7B61FF',
-    bg: '#F3F0FF',
+    iconClassName: 'bg-purple/10 text-purple',
+    textClassName: 'text-purple',
   },
 };
 
 const statusConfig: Record<
   AssessmentStatus,
-  { label: string; color: string; bg: string }
+  { label: string; className: string }
 > = {
-  pending: { label: 'Pending', color: '#475569', bg: '#f1f5f9' },
-  inProgress: { label: 'In Progress', color: '#a16207', bg: '#fef9c3' },
-  completed: { label: 'Completed', color: '#15803d', bg: '#dcfce7' },
-  locked: { label: 'Locked', color: '#94a3b8', bg: '#f8fafc' },
+  pending: { label: 'Pending', className: 'text-content-secondary bg-surface-tertiary' },
+  inProgress: { label: 'In Progress', className: 'text-warning-dark dark:text-warning-light bg-warning/10' },
+  completed: { label: 'Completed', className: 'text-success-dark dark:text-success-light bg-success/10' },
+  locked: { label: 'Locked', className: 'text-content-tertiary bg-surface-secondary' },
 };
 
 function formatDueDate(date: Date | string): string {
@@ -86,8 +86,8 @@ export function AssessmentCard({
   onView,
   className,
 }: AssessmentCardProps) {
-  const { label: typeLabel, icon, color, bg } = typeConfig[type];
-  const { label: statusLabel, color: statusColor, bg: statusBg } = statusConfig[status];
+  const { label: typeLabel, icon, iconClassName, textClassName } = typeConfig[type];
+  const { label: statusLabel, className: statusClassName } = statusConfig[status];
 
   const hasScore = score !== undefined && maxScore !== undefined;
   const scorePercent = hasScore ? Math.round((score! / maxScore!) * 100) : 0;
@@ -97,7 +97,7 @@ export function AssessmentCard({
   return (
     <div
       className={cn(
-        'flex flex-col gap-4 rounded-xl border border-[#f1f5f9] bg-surface-primary p-4 shadow-sm transition-shadow hover:shadow-md',
+        'flex flex-col gap-4 rounded-xl border border-border bg-surface-primary p-4 shadow-sm transition-shadow hover:shadow-md',
         isLocked && 'opacity-60',
         className,
       )}
@@ -106,8 +106,10 @@ export function AssessmentCard({
       <div className="flex items-start justify-between gap-2">
         <div className="flex items-start gap-3 min-w-0">
           <span
-            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg"
-            style={{ backgroundColor: bg, color }}
+            className={cn(
+              'flex h-9 w-9 shrink-0 items-center justify-center rounded-lg',
+              iconClassName,
+            )}
           >
             {icon}
           </span>
@@ -116,8 +118,7 @@ export function AssessmentCard({
               {title}
             </Text>
             <span
-              className="mt-0.5 inline-block text-xs font-medium"
-              style={{ color }}
+              className={cn('mt-0.5 inline-block text-xs font-medium', textClassName)}
             >
               {typeLabel}
             </span>
@@ -125,8 +126,10 @@ export function AssessmentCard({
         </div>
 
         <span
-          className="shrink-0 rounded-full px-2.5 py-0.5 text-xs font-medium"
-          style={{ color: statusColor, backgroundColor: statusBg }}
+          className={cn(
+            'shrink-0 rounded-full px-2.5 py-0.5 text-xs font-medium',
+            statusClassName,
+          )}
         >
           {isLocked ? (
             <span className="flex items-center gap-1">
@@ -156,8 +159,8 @@ export function AssessmentCard({
           <Progress
             percent={scorePercent}
             showInfo={false}
-            strokeColor={scorePercent >= 70 ? '#22c55e' : '#eab308'}
-            trailColor="#f1f5f9"
+            strokeColor={scorePercent >= 70 ? 'var(--color-success)' : 'var(--color-warning)'}
+            trailColor="var(--lh-surface-tertiary)"
             size="small"
           />
         </div>
@@ -166,13 +169,13 @@ export function AssessmentCard({
       {/* Meta */}
       <div className="flex items-center gap-4">
         {dueDate && (
-          <span className="flex items-center gap-1.5 text-xs text-[#94a3b8]">
+          <span className="flex items-center gap-1.5 text-xs text-content-tertiary">
             <CheckCircle2 size={13} />
             Due {formatDueDate(dueDate)}
           </span>
         )}
         {timeLimit && (
-          <span className="flex items-center gap-1.5 text-xs text-[#94a3b8]">
+          <span className="flex items-center gap-1.5 text-xs text-content-tertiary">
             <Clock size={13} />
             {formatTimeLimit(timeLimit)}
           </span>

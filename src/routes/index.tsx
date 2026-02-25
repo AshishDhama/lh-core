@@ -8,7 +8,6 @@ import {
   Text,
   Title,
 } from '@/forge';
-import type { SidebarItem } from '@/forge';
 import { DashboardLayout } from '@/forge/layouts';
 import { colors } from '@/forge/tokens';
 import { programList } from '@/data/programs';
@@ -16,6 +15,7 @@ import { reports } from '@/data/reports';
 import type { Program } from '@/types/program';
 import { useTranslation } from '@/i18n';
 import { useThemeStore } from '@/stores/useThemeStore';
+import { useSidebarItems } from '@/hooks';
 
 const MOCK_USER = {
   name: 'Priya Sharma',
@@ -39,14 +39,7 @@ export const Route = createFileRoute('/')({
 function DashboardPage() {
   const locale = useThemeStore((s) => s.locale);
   const { t } = useTranslation(locale);
-
-  const sidebarItems: SidebarItem[] = [
-    { key: 'dashboard', label: t('nav.dashboard'), icon: 'LayoutDashboard', path: '/' },
-    { key: 'programs', label: t('nav.programs'), icon: 'BookOpen', path: '/programs' },
-    { key: 'development', label: t('nav.development'), icon: 'Target', path: '/development' },
-    { key: 'scheduling', label: t('nav.scheduling'), icon: 'CalendarDays', path: '/scheduling' },
-    { key: 'insights', label: t('nav.insights'), icon: 'ChartBar', path: '/insights' },
-  ];
+  const sidebarItems = useSidebarItems();
 
   const activePrograms = programList.filter((p) => p.status === 'progress');
   const avgCompletion = Math.round(

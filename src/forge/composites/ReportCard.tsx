@@ -1,7 +1,6 @@
 import { Download, FileText, TrendingDown, TrendingUp } from 'lucide-react';
 
 import { Button, Text } from '@/forge/primitives';
-import { colors } from '@/forge/tokens';
 import { cn } from '@/forge/utils';
 
 export interface ReportMetric {
@@ -25,9 +24,9 @@ export interface ReportCardProps {
   className?: string;
 }
 
-const statusConfig: Record<ReportStatus, { label: string; color: string; bg: string }> = {
-  draft: { label: 'Draft', color: '#475569', bg: '#f1f5f9' },
-  published: { label: 'Published', color: '#15803d', bg: '#dcfce7' },
+const statusConfig: Record<ReportStatus, { label: string; className: string }> = {
+  draft: { label: 'Draft', className: 'text-content-secondary bg-surface-tertiary' },
+  published: { label: 'Published', className: 'text-success-dark dark:text-success-light bg-success/10' },
 };
 
 function formatDate(date: Date | string): string {
@@ -82,7 +81,7 @@ export function ReportCard({
   onView,
   className,
 }: ReportCardProps) {
-  const { label: statusLabel, color: statusColor, bg: statusBg } = statusConfig[status];
+  const { label: statusLabel, className: statusClassName } = statusConfig[status];
 
   return (
     <div
@@ -95,7 +94,7 @@ export function ReportCard({
       <div className="flex items-start justify-between gap-2">
         <div className="flex items-start gap-3 min-w-0">
           <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-navy-50 dark:bg-navy-900/20">
-            <FileText size={18} style={{ color: colors.navy.DEFAULT }} />
+            <FileText size={18} className="text-navy" />
           </div>
           <div className="min-w-0 flex flex-col">
             <Text size="sm" weight="semibold" color="primary" className="leading-snug block">
@@ -108,8 +107,10 @@ export function ReportCard({
         </div>
 
         <span
-          className="shrink-0 rounded-full px-2.5 py-0.5 text-xs font-medium"
-          style={{ color: statusColor, backgroundColor: statusBg }}
+          className={cn(
+            'shrink-0 rounded-full px-2.5 py-0.5 text-xs font-medium',
+            statusClassName,
+          )}
         >
           {statusLabel}
         </span>

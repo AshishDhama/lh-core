@@ -3,12 +3,12 @@ import { Alert } from 'antd';
 import { BookOpen, CalendarDays, CheckCircle, ChartBar, Clock, Target } from 'lucide-react';
 
 import { Button, Text, Title } from '@/forge';
-import type { SidebarItem } from '@/forge';
 import { DashboardLayout } from '@/forge/layouts';
 import { colors } from '@/forge/tokens';
 import { useProgramStore } from '@/stores/useProgramStore';
 import { useTranslation } from '@/i18n';
 import { useThemeStore } from '@/stores/useThemeStore';
+import { useSidebarItems } from '@/hooks';
 
 // ─── Shared constants ─────────────────────────────────────────────────────────
 
@@ -29,14 +29,7 @@ function ProgramInstructionsPage() {
   const { programId } = Route.useParams();
   const navigate = useNavigate();
   const program = useProgramStore((s) => s.programs[programId]);
-
-  const sidebarItems: SidebarItem[] = [
-    { key: 'dashboard', label: t('nav.dashboard'), icon: 'LayoutDashboard', path: '/' },
-    { key: 'programs', label: t('nav.programs'), icon: 'BookOpen', path: '/programs' },
-    { key: 'development', label: t('nav.development'), icon: 'Target', path: '/development' },
-    { key: 'scheduling', label: t('nav.scheduling'), icon: 'CalendarDays', path: '/scheduling' },
-    { key: 'insights', label: t('nav.insights'), icon: 'ChartBar', path: '/insights' },
-  ];
+  const sidebarItems = useSidebarItems();
 
   const totalExercises =
     (program?.seqExercises.length ?? 0) + (program?.openExercises.length ?? 0);
@@ -124,7 +117,7 @@ function ProgramInstructionsPage() {
           <Title level={4} weight="semibold" color="primary" className="mb-4">
             {t('programs.beforeYouBegin')}
           </Title>
-          <div className="rounded-xl border border-[#e2e8f0] bg-surface-primary p-5 space-y-3">
+          <div className="rounded-xl border border-border bg-surface-primary p-5 space-y-3">
             {program.instructions.map((instruction, idx) => (
               <div key={idx} className="flex gap-3">
                 <div
@@ -150,7 +143,7 @@ function ProgramInstructionsPage() {
             {program.seqExercises.map((exercise) => (
               <div
                 key={exercise.id}
-                className="flex items-center gap-3 rounded-xl border border-[#e2e8f0] bg-surface-primary px-4 py-3"
+                className="flex items-center gap-3 rounded-xl border border-border bg-surface-primary px-4 py-3"
               >
                 <div
                   className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg"

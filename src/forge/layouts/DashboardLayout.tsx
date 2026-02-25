@@ -2,11 +2,17 @@ import { useEffect, useState, type ReactNode } from 'react';
 import { Drawer, Layout } from 'antd';
 
 import { Header } from '@/forge/patterns/Header';
-import type { HeaderUser } from '@/forge/patterns/Header';
+import type { HeaderUser, NotificationItem } from '@/forge/patterns/Header';
 import { Sidebar } from '@/forge/patterns/Sidebar';
 import type { SidebarItem } from '@/forge/patterns/Sidebar';
 import { useIsMobile } from '@/hooks';
 import { cn } from '@/forge/utils';
+
+const DEFAULT_NOTIFICATIONS: NotificationItem[] = [
+  { id: '1', message: 'Assessment Center closes in 12 days', time: '2 hours ago', color: '#ef4444' },
+  { id: '2', message: 'Hogan Personality Report is now available', time: '1 day ago', color: '#002C77' },
+  { id: '3', message: 'New session slot available for Leadership Simulation', time: '2 days ago', color: '#008575' },
+];
 
 export interface DashboardLayoutProps {
   /** Page content */
@@ -80,6 +86,7 @@ export function DashboardLayout({
         title={title}
         user={user}
         notifications={notifications}
+        notificationItems={DEFAULT_NOTIFICATIONS}
         actions={headerActions}
         onMenuClick={handleMenuClick}
       />

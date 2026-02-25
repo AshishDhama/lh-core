@@ -1,12 +1,11 @@
-import { Link } from '@tanstack/react-router';
+import { Link, useNavigate } from '@tanstack/react-router';
 import type { ReactNode } from 'react';
 
 import { Icon } from '@/forge/primitives/Icon';
 import type { IconName } from '@/forge/primitives/Icon';
 import { Text } from '@/forge/primitives/Typography';
-import { colors } from '@/forge/tokens';
 import { cn } from '@/forge/utils';
-import { useTranslation } from '@/i18n';
+import type { DesignMode } from '@/types/common';
 import { useThemeStore } from '@/stores/useThemeStore';
 
 export interface SidebarItem {
@@ -46,7 +45,7 @@ function NavItem({ item, activeKey, collapsed, depth = 0, onSelect }: NavItemPro
         'transition-colors duration-150',
         depth > 0 && 'ml-6',
         isActive
-          ? 'bg-navy-50 dark:bg-navy-900/20 text-navy dark:text-navy-200'
+          ? 'bg-navy-50 dark:bg-navy-400/15 text-navy dark:text-navy-200'
           : 'text-content-secondary hover:bg-surface-tertiary hover:text-content-primary',
       )}
       onClick={() => onSelect?.(item.key)}
@@ -139,6 +138,52 @@ function NavItem({ item, activeKey, collapsed, depth = 0, onSelect }: NavItemPro
   );
 }
 
+const designModes: { mode: DesignMode; icon: IconName; label: string }[] = [
+  { mode: 'scrolly', icon: 'Layers', label: 'Scrolly' },
+  { mode: 'bento', icon: 'LayoutGrid', label: 'Bento' },
+  { mode: 'editorial', icon: 'FileText', label: 'Editorial' },
+  { mode: 'notion', icon: 'StickyNote', label: 'Notion' },
+  { mode: 'm3', icon: 'Palette', label: 'M3' },
+];
+
+function DesignModeSwitcher() {
+  const designMode = useThemeStore((s) => s.designMode);
+  const setDesignMode = useThemeStore((s) => s.setDesignMode);
+  const navigate = useNavigate();
+
+  return (
+    <div className="flex-shrink-0 px-3 py-3 border-t border-border">
+      <Text size="xs" color="tertiary" className="mb-2 px-0.5">
+        Design Mode
+      </Text>
+      <div className="flex items-center gap-1">
+        {designModes.map(({ mode, icon, label }) => {
+          const isActive = designMode === mode;
+          return (
+            <button
+              key={mode}
+              type="button"
+              title={label}
+              onClick={() => {
+                setDesignMode(mode);
+                navigate({ to: `/modes/${mode}` as never });
+              }}
+              className={cn(
+                'flex items-center justify-center w-8 h-8 rounded-lg transition-colors duration-150',
+                isActive
+                  ? 'bg-navy-50 dark:bg-navy-400/15 text-navy dark:text-navy-200'
+                  : 'text-content-tertiary hover:bg-surface-tertiary hover:text-content-primary',
+              )}
+            >
+              <Icon name={icon} size="sm" />
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
 export function Sidebar({
   items,
   activeKey,
@@ -148,9 +193,6 @@ export function Sidebar({
   logo,
   className,
 }: SidebarProps) {
-  const locale = useThemeStore((s) => s.locale);
-  const { t } = useTranslation(locale);
-
   return (
     <aside
       className={cn(
@@ -166,23 +208,11 @@ export function Sidebar({
       <div
         className={cn(
           'flex items-center h-16 px-3 border-b border-border flex-shrink-0',
-          collapsed ? 'justify-center' : 'justify-between gap-2',
+          collapsed ? 'justify-center' : 'gap-2',
         )}
       >
         {logo && !collapsed && <div className="flex-1 overflow-hidden">{logo}</div>}
         {logo && collapsed && <div>{logo}</div>}
-        <button
-          type="button"
-          onClick={() => onCollapse?.(!collapsed)}
-          className={cn(
-            'flex items-center justify-center w-8 h-8 rounded-lg',
-            'text-content-tertiary hover:bg-surface-tertiary hover:text-content-primary',
-            'transition-colors duration-150 flex-shrink-0',
-          )}
-          aria-label={collapsed ? t('a11y.expandSidebar') : t('a11y.collapseSidebar')}
-        >
-          <Icon name={collapsed ? 'PanelLeftOpen' : 'PanelLeftClose'} size="md" />
-        </button>
       </div>
 
       {/* Navigation */}
@@ -200,26 +230,8 @@ export function Sidebar({
         </ul>
       </nav>
 
-      {/* Bottom collapse toggle (always visible shortcut) */}
-      {!collapsed && (
-        <div className="flex-shrink-0 px-3 py-3 border-t border-border">
-          <div
-            className="flex items-center gap-2 text-content-tertiary cursor-pointer hover:text-content-secondary transition-colors"
-            onClick={() => onCollapse?.(true)}
-            role="button"
-            tabIndex={0}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                onCollapse?.(true);
-              }
-            }}
-          >
-            <Icon name="ChevronsLeft" size="sm" style={{ color: colors.content.tertiary }} />
-            <Text size="xs" color="tertiary">{t('nav.collapse')}</Text>
-          </div>
-        </div>
-      )}
+      {/* Design mode switcher (expanded only) */}
+      {!collapsed && <DesignModeSwitcher />}
     </aside>
   );
 }

@@ -204,6 +204,31 @@ export const hi: Translations = {
     switchToDark: 'डार्क मोड पर जाएं',
     switchToLight: 'लाइट मोड पर जाएं',
     online: 'ऑनलाइन',
+    profile: 'प्रोफ़ाइल',
+    settings: 'सेटिंग्स',
+    signOut: 'साइन आउट',
+    noNotifications: 'कोई नई सूचना नहीं',
+    markAllRead: 'सभी पढ़ी हुई चिह्नित करें',
+  },
+
+  // Development page
+  development: {
+    title: 'विकास',
+    subtitle: 'अपने पेशेवर विकास की योजना बनाएं और ट्रैक करें',
+    myPlan: 'मेरी योजना',
+    myPlanDescription: 'व्यक्तिगत लक्ष्यों, कौशलों और मील के पत्थरों के साथ अपनी व्यक्तिगत विकास योजना (IDP) बनाएं और प्रबंधित करें।',
+    viewPlan: 'योजना देखें',
+    createPlan: 'योजना बनाएं',
+    skillsInFocus: 'फोकस में कौशल',
+    learningResources: 'शिक्षण संसाधन',
+    comingSoon: 'जल्द आ रहा है',
+  },
+
+  // Chat assistant
+  chat: {
+    title: 'लाइटहाउस सहायक',
+    placeholder: 'अपने कार्यक्रमों के बारे में कुछ भी पूछें...',
+    greeting: 'नमस्ते! मैं लाइटहाउस सहायक हूं। मैं आज आपकी कैसे मदद कर सकता हूं?',
   },
 
   // Accessibility

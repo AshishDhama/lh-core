@@ -1,5 +1,5 @@
 // Forge patterns — barrel export
-export { Header, type HeaderProps, type HeaderUser } from './Header';
+export { Header, type HeaderProps, type HeaderUser, type NotificationItem } from './Header';
 export {
   CenterGrid,
   type CenterGridProps,
@@ -38,6 +38,7 @@ export {
   type Goal,
   type Milestone,
 } from './PlanEditor';
+export { ChatFAB } from './ChatFAB';
 export { Sidebar, type SidebarProps, type SidebarItem } from './Sidebar';
 export {
   SystemCheckPanel,

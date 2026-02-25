@@ -12,7 +12,9 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as SchedulingRouteImport } from './routes/scheduling'
 import { Route as InsightsRouteImport } from './routes/insights'
 import { Route as DiscoveryRouteImport } from './routes/discovery'
+import { Route as DevelopmentRouteImport } from './routes/development'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ProgramsIndexRouteImport } from './routes/programs/index'
 import { Route as ModesScrollyRouteImport } from './routes/modes/scrolly'
 import { Route as ModesNotionRouteImport } from './routes/modes/notion'
 import { Route as ModesM3RouteImport } from './routes/modes/m3'
@@ -37,11 +39,21 @@ const DiscoveryRoute = DiscoveryRouteImport.update({
   path: '/discovery',
   getParentRoute: () => rootRouteImport,
 } as any).lazy(() => import('./routes/discovery.lazy').then((d) => d.Route))
+const DevelopmentRoute = DevelopmentRouteImport.update({
+  id: '/development',
+  path: '/development',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
+const ProgramsIndexRoute = ProgramsIndexRouteImport.update({
+  id: '/programs/',
+  path: '/programs/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ModesScrollyRoute = ModesScrollyRouteImport.update({
   id: '/modes/scrolly',
   path: '/modes/scrolly',
@@ -92,6 +104,7 @@ const ProgramsProgramIdPrecheckRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/development': typeof DevelopmentRoute
   '/discovery': typeof DiscoveryRoute
   '/insights': typeof InsightsRoute
   '/scheduling': typeof SchedulingRoute
@@ -100,12 +113,14 @@ export interface FileRoutesByFullPath {
   '/modes/m3': typeof ModesM3Route
   '/modes/notion': typeof ModesNotionRoute
   '/modes/scrolly': typeof ModesScrollyRoute
+  '/programs/': typeof ProgramsIndexRoute
   '/programs/$programId/precheck': typeof ProgramsProgramIdPrecheckRoute
   '/programs/$programId/tasks': typeof ProgramsProgramIdTasksRoute
   '/programs/$programId/': typeof ProgramsProgramIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/development': typeof DevelopmentRoute
   '/discovery': typeof DiscoveryRoute
   '/insights': typeof InsightsRoute
   '/scheduling': typeof SchedulingRoute
@@ -114,6 +129,7 @@ export interface FileRoutesByTo {
   '/modes/m3': typeof ModesM3Route
   '/modes/notion': typeof ModesNotionRoute
   '/modes/scrolly': typeof ModesScrollyRoute
+  '/programs': typeof ProgramsIndexRoute
   '/programs/$programId/precheck': typeof ProgramsProgramIdPrecheckRoute
   '/programs/$programId/tasks': typeof ProgramsProgramIdTasksRoute
   '/programs/$programId': typeof ProgramsProgramIdIndexRoute
@@ -121,6 +137,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/development': typeof DevelopmentRoute
   '/discovery': typeof DiscoveryRoute
   '/insights': typeof InsightsRoute
   '/scheduling': typeof SchedulingRoute
@@ -129,6 +146,7 @@ export interface FileRoutesById {
   '/modes/m3': typeof ModesM3Route
   '/modes/notion': typeof ModesNotionRoute
   '/modes/scrolly': typeof ModesScrollyRoute
+  '/programs/': typeof ProgramsIndexRoute
   '/programs/$programId/precheck': typeof ProgramsProgramIdPrecheckRoute
   '/programs/$programId/tasks': typeof ProgramsProgramIdTasksRoute
   '/programs/$programId/': typeof ProgramsProgramIdIndexRoute
@@ -137,6 +155,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/development'
     | '/discovery'
     | '/insights'
     | '/scheduling'
@@ -145,12 +164,14 @@ export interface FileRouteTypes {
     | '/modes/m3'
     | '/modes/notion'
     | '/modes/scrolly'
+    | '/programs/'
     | '/programs/$programId/precheck'
     | '/programs/$programId/tasks'
     | '/programs/$programId/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/development'
     | '/discovery'
     | '/insights'
     | '/scheduling'
@@ -159,12 +180,14 @@ export interface FileRouteTypes {
     | '/modes/m3'
     | '/modes/notion'
     | '/modes/scrolly'
+    | '/programs'
     | '/programs/$programId/precheck'
     | '/programs/$programId/tasks'
     | '/programs/$programId'
   id:
     | '__root__'
     | '/'
+    | '/development'
     | '/discovery'
     | '/insights'
     | '/scheduling'
@@ -173,6 +196,7 @@ export interface FileRouteTypes {
     | '/modes/m3'
     | '/modes/notion'
     | '/modes/scrolly'
+    | '/programs/'
     | '/programs/$programId/precheck'
     | '/programs/$programId/tasks'
     | '/programs/$programId/'
@@ -180,6 +204,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  DevelopmentRoute: typeof DevelopmentRoute
   DiscoveryRoute: typeof DiscoveryRoute
   InsightsRoute: typeof InsightsRoute
   SchedulingRoute: typeof SchedulingRoute
@@ -188,6 +213,7 @@ export interface RootRouteChildren {
   ModesM3Route: typeof ModesM3Route
   ModesNotionRoute: typeof ModesNotionRoute
   ModesScrollyRoute: typeof ModesScrollyRoute
+  ProgramsIndexRoute: typeof ProgramsIndexRoute
   ProgramsProgramIdPrecheckRoute: typeof ProgramsProgramIdPrecheckRoute
   ProgramsProgramIdTasksRoute: typeof ProgramsProgramIdTasksRoute
   ProgramsProgramIdIndexRoute: typeof ProgramsProgramIdIndexRoute
@@ -216,11 +242,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DiscoveryRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/development': {
+      id: '/development'
+      path: '/development'
+      fullPath: '/development'
+      preLoaderRoute: typeof DevelopmentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/programs/': {
+      id: '/programs/'
+      path: '/programs'
+      fullPath: '/programs/'
+      preLoaderRoute: typeof ProgramsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/modes/scrolly': {
@@ -284,6 +324,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  DevelopmentRoute: DevelopmentRoute,
   DiscoveryRoute: DiscoveryRoute,
   InsightsRoute: InsightsRoute,
   SchedulingRoute: SchedulingRoute,
@@ -292,6 +333,7 @@ const rootRouteChildren: RootRouteChildren = {
   ModesM3Route: ModesM3Route,
   ModesNotionRoute: ModesNotionRoute,
   ModesScrollyRoute: ModesScrollyRoute,
+  ProgramsIndexRoute: ProgramsIndexRoute,
   ProgramsProgramIdPrecheckRoute: ProgramsProgramIdPrecheckRoute,
   ProgramsProgramIdTasksRoute: ProgramsProgramIdTasksRoute,
   ProgramsProgramIdIndexRoute: ProgramsProgramIdIndexRoute,

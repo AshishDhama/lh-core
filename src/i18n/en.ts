@@ -202,6 +202,31 @@ export const en = {
     switchToDark: 'Switch to dark mode',
     switchToLight: 'Switch to light mode',
     online: 'Online',
+    profile: 'Profile',
+    settings: 'Settings',
+    signOut: 'Sign out',
+    noNotifications: 'No new notifications',
+    markAllRead: 'Mark all as read',
+  },
+
+  // Development page
+  development: {
+    title: 'Development',
+    subtitle: 'Plan and track your professional growth',
+    myPlan: 'My Plan',
+    myPlanDescription: 'Create and manage your Individual Development Plan (IDP) with personalized goals, skills, and milestones.',
+    viewPlan: 'View Plan',
+    createPlan: 'Create Plan',
+    skillsInFocus: 'Skills in Focus',
+    learningResources: 'Learning Resources',
+    comingSoon: 'Coming soon',
+  },
+
+  // Chat assistant
+  chat: {
+    title: 'Lighthouse Assistant',
+    placeholder: 'Ask me anything about your programs...',
+    greeting: 'Hi! I\'m the Lighthouse Assistant. How can I help you today?',
   },
 
   // Accessibility

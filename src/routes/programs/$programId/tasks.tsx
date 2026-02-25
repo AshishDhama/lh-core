@@ -12,13 +12,13 @@ import {
 } from 'lucide-react';
 
 import { Button, Text, Title } from '@/forge';
-import type { SidebarItem } from '@/forge';
 import { DashboardLayout } from '@/forge/layouts';
 import { colors } from '@/forge/tokens';
 import type { Exercise } from '@/types/program';
 import { useProgramStore } from '@/stores/useProgramStore';
 import { useTranslation } from '@/i18n';
 import { useThemeStore } from '@/stores/useThemeStore';
+import { useSidebarItems } from '@/hooks';
 
 // ─── Shared constants ────────────────────────────────────────────────────────
 
@@ -61,10 +61,10 @@ function ExerciseRow({ exercise, isActive, onClick }: ExerciseRowProps) {
       className={[
         'w-full flex items-start gap-3 px-3 py-2.5 rounded-lg text-left transition-colors',
         isActive
-          ? 'bg-[#EEF6FA] text-[#002C77]'
+          ? 'bg-navy-50 dark:bg-navy-900/20 text-navy dark:text-navy-200'
           : isLocked
-            ? 'opacity-50 cursor-default text-[#475569]'
-            : 'hover:bg-[#f1f5f9] text-[#475569] hover:text-[#0f172a]',
+            ? 'opacity-50 cursor-default text-content-secondary'
+            : 'hover:bg-surface-tertiary text-content-secondary hover:text-content-primary',
       ].join(' ')}
     >
       <div className="mt-0.5 shrink-0">{statusIcon(exercise.status, exercise.color)}</div>
@@ -72,7 +72,7 @@ function ExerciseRow({ exercise, isActive, onClick }: ExerciseRowProps) {
         <Text
           size="sm"
           weight={isActive ? 'semibold' : 'medium'}
-          className={isActive ? 'text-[#002C77]' : undefined}
+          className={isActive ? 'text-navy dark:text-navy-200' : undefined}
         >
           {exercise.name}
         </Text>
@@ -97,7 +97,7 @@ function ExerciseDetail({ exercise }: ExerciseDetailProps) {
 
   if (!exercise) {
     return (
-      <div className="flex h-full min-h-[320px] flex-col items-center justify-center gap-3 rounded-xl border border-dashed border-[#e2e8f0] p-8 text-center">
+      <div className="flex h-full min-h-[320px] flex-col items-center justify-center gap-3 rounded-xl border border-dashed border-border p-8 text-center">
         <BookOpen size={32} style={{ color: colors.content.tertiary }} />
         <Text color="tertiary">{t('programs.selectExercise')}</Text>
       </div>
@@ -107,7 +107,7 @@ function ExerciseDetail({ exercise }: ExerciseDetailProps) {
   const isLocked = exercise.status === 'locked';
 
   return (
-    <div className="rounded-xl border border-[#e2e8f0] bg-surface-primary p-6 space-y-5">
+    <div className="rounded-xl border border-border bg-surface-primary p-6 space-y-5">
       {/* Header */}
       <div className="flex items-start gap-4">
         <div
@@ -136,7 +136,7 @@ function ExerciseDetail({ exercise }: ExerciseDetailProps) {
               {statusLabel(exercise.status, t)}
             </span>
             {exercise.proctored && (
-              <span className="rounded-full bg-[#EEF6FA] px-2.5 py-0.5 text-xs font-semibold text-[#002C77]">
+              <span className="rounded-full bg-navy-50 dark:bg-navy-900/20 px-2.5 py-0.5 text-xs font-semibold text-navy dark:text-navy-200">
                 {t('programs.proctored')}
               </span>
             )}
@@ -153,7 +153,7 @@ function ExerciseDetail({ exercise }: ExerciseDetailProps) {
             <Text size="xs" color="tertiary">{t('programs.progress')}</Text>
             <Text size="xs" weight="semibold" color="primary">{exercise.pct}%</Text>
           </div>
-          <div className="h-2 rounded-full bg-[#f1f5f9] overflow-hidden">
+          <div className="h-2 rounded-full bg-surface-tertiary overflow-hidden">
             <div
               className="h-full rounded-full transition-all duration-500"
               style={{ width: `${exercise.pct}%`, backgroundColor: exercise.color }}
@@ -195,14 +195,7 @@ function ProgramTasksPage() {
   const { programId } = Route.useParams();
   const navigate = useNavigate();
   const program = useProgramStore((s) => s.programs[programId]);
-
-  const sidebarItems: SidebarItem[] = [
-    { key: 'dashboard', label: t('nav.dashboard'), icon: 'LayoutDashboard', path: '/' },
-    { key: 'programs', label: t('nav.programs'), icon: 'BookOpen', path: '/programs' },
-    { key: 'development', label: t('nav.development'), icon: 'Target', path: '/development' },
-    { key: 'scheduling', label: t('nav.scheduling'), icon: 'CalendarDays', path: '/scheduling' },
-    { key: 'insights', label: t('nav.insights'), icon: 'ChartBar', path: '/insights' },
-  ];
+  const sidebarItems = useSidebarItems();
   const [activeExerciseId, setActiveExerciseId] = useState<string | null>(null);
 
   if (!program) {
@@ -232,7 +225,7 @@ function ProgramTasksPage() {
           <button
             type="button"
             onClick={() => navigate({ to: '/programs/$programId', params: { programId } })}
-            className="flex items-center gap-1 text-[#475569] hover:text-[#002C77] transition-colors"
+            className="flex items-center gap-1 text-content-secondary hover:text-navy dark:hover:text-navy-200 transition-colors"
           >
             <ChevronLeft size={16} />
             <Text size="sm">Back to {program.name}</Text>
@@ -310,7 +303,7 @@ function ProgramTasksPage() {
                   <div
                     key={center.id}
                     className={[
-                      'rounded-xl border border-[#e2e8f0] bg-surface-primary p-5 space-y-3',
+                      'rounded-xl border border-border bg-surface-primary p-5 space-y-3',
                       isLocked ? 'opacity-60' : '',
                     ].join(' ')}
                   >
