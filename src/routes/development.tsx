@@ -1,8 +1,10 @@
+import { useState } from 'react';
 import { createFileRoute } from '@tanstack/react-router';
 import { BookOpen, Lightbulb, Target, TrendingUp } from 'lucide-react';
 
 import { Button, StatCard, Text, Title } from '@/forge';
 import { DashboardLayout } from '@/forge/layouts';
+import { IdpWizard } from '@/forge/patterns/IdpWizard';
 import { colors } from '@/forge/tokens';
 import { useTranslation } from '@/i18n';
 import { useThemeStore } from '@/stores/useThemeStore';
@@ -21,8 +23,10 @@ function DevelopmentPage() {
   const locale = useThemeStore((s) => s.locale);
   const { t } = useTranslation(locale);
   const sidebarItems = useSidebarItems();
+  const [wizardOpen, setWizardOpen] = useState(false);
 
   return (
+    <>
     <DashboardLayout
       sidebarItems={sidebarItems}
       user={MOCK_USER}
@@ -115,7 +119,7 @@ function DevelopmentPage() {
               </div>
             </div>
 
-            <Button variant="primary">
+            <Button variant="primary" onClick={() => setWizardOpen(true)}>
               {t('development.viewPlan')}
             </Button>
           </div>
@@ -172,5 +176,8 @@ function DevelopmentPage() {
         <div className="h-8" aria-hidden="true" />
       </div>
     </DashboardLayout>
+
+    {wizardOpen && <IdpWizard onClose={() => setWizardOpen(false)} />}
+    </>
   );
 }
