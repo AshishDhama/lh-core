@@ -1,5 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { Button, Card, Space, Tag, Typography } from 'antd';
+import { CheckCircle, Layout, Palette, Type } from 'lucide-react';
 
 import { colors } from '@/forge/tokens';
 
@@ -37,6 +38,18 @@ function DashboardPage() {
           </div>
           <Text className="mt-2 block text-sm text-slate-500">
             Colored squares rendered via Tailwind utilities.
+          </Text>
+        </Card>
+
+        <Card title="Lucide Icons" variant="borderless">
+          <div className="flex items-center gap-4">
+            <CheckCircle size={24} color={colors.success.DEFAULT} />
+            <Layout size={24} color={colors.navy.DEFAULT} />
+            <Palette size={24} color={colors.teal.DEFAULT} />
+            <Type size={24} color={colors.purple.DEFAULT} />
+          </div>
+          <Text className="mt-2 block text-sm text-slate-500">
+            Icons from lucide-react with design token colors.
           </Text>
         </Card>
 
