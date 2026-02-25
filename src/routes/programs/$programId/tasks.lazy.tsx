@@ -4,7 +4,9 @@ import { Alert, Divider } from 'antd';
 import {
   BookOpen,
   CheckCircle,
+  ChevronDown,
   ChevronLeft,
+  ChevronUp,
   Clock,
   Lock,
   PlayCircle,
@@ -15,7 +17,8 @@ import { Button, Text, Title } from '@/forge';
 import type { SidebarItem } from '@/forge';
 import { DashboardLayout } from '@/forge/layouts';
 import { colors } from '@/forge/tokens';
-import type { Exercise } from '@/types/program';
+import { cn } from '@/forge/utils';
+import type { Exercise, Program } from '@/types/program';
 import { useProgramStore } from '@/stores/useProgramStore';
 
 // ─── Shared constants ────────────────────────────────────────────────────────
@@ -186,6 +189,160 @@ function ExerciseDetail({ exercise }: ExerciseDetailProps) {
   );
 }
 
+// ─── Collapsible Hero Banner ──────────────────────────────────────────────────
+
+interface CollapsibleHeroBannerProps {
+  program: Program;
+  totalExercises: number;
+  completedExercises: number;
+}
+
+function CollapsibleHeroBanner({
+  program,
+  totalExercises,
+  completedExercises,
+}: CollapsibleHeroBannerProps) {
+  const [collapsed, setCollapsed] = useState(false);
+
+  const completionPct = totalExercises > 0
+    ? Math.round((completedExercises / totalExercises) * 100)
+    : 0;
+
+  // Estimate time remaining: each exercise ~20 min average
+  const remainingExercises = totalExercises - completedExercises;
+  const estimatedMinutes = remainingExercises * 20;
+  const timeRemaining = estimatedMinutes >= 60
+    ? `${Math.floor(estimatedMinutes / 60)}h ${estimatedMinutes % 60}m`
+    : `${estimatedMinutes}m`;
+
+  return (
+    <div
+      className="rounded-xl overflow-hidden border shadow-sm"
+      style={{ borderColor: `${program.accent}30` }}
+    >
+      {/* Accent stripe */}
+      <div className="h-1 w-full" style={{ backgroundColor: program.accent }} />
+
+      {/* Always-visible collapsed row */}
+      <div
+        className={cn(
+          'flex items-center gap-3 px-5 py-3 cursor-pointer select-none',
+          'transition-colors duration-150 hover:bg-surface-secondary',
+        )}
+        style={{ backgroundColor: `${program.accent}08` }}
+        onClick={() => setCollapsed((c) => !c)}
+        role="button"
+        tabIndex={0}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') setCollapsed((c) => !c);
+        }}
+        aria-expanded={!collapsed}
+      >
+        <Title level={4} weight="semibold" color="primary" className="flex-1 !mb-0 truncate">
+          {program.name}
+        </Title>
+
+        {/* Mini progress bar (always visible) */}
+        <div className="hidden sm:flex items-center gap-2 shrink-0">
+          <div className="w-28 h-1.5 rounded-full bg-surface-tertiary overflow-hidden">
+            <div
+              className="h-full rounded-full transition-all duration-500"
+              style={{ width: `${completionPct}%`, backgroundColor: program.accent }}
+            />
+          </div>
+          <Text size="xs" weight="semibold" color="secondary">{completionPct}%</Text>
+        </div>
+
+        <button
+          type="button"
+          className="shrink-0 rounded-lg p-1 transition-colors hover:bg-surface-tertiary"
+          style={{ color: colors.content.tertiary }}
+          aria-label={collapsed ? 'Expand banner' : 'Collapse banner'}
+          onClick={(e) => { e.stopPropagation(); setCollapsed((c) => !c); }}
+        >
+          {collapsed ? <ChevronDown size={16} /> : <ChevronUp size={16} />}
+        </button>
+      </div>
+
+      {/* Expandable content */}
+      <div
+        className={cn(
+          'overflow-hidden transition-all duration-300 ease-in-out',
+          collapsed ? 'max-h-0' : 'max-h-96',
+        )}
+      >
+        <div
+          className="px-5 pb-5 pt-1 space-y-4"
+          style={{ backgroundColor: `${program.accent}05` }}
+        >
+          {/* Description */}
+          <Text size="sm" color="secondary" className="leading-relaxed">
+            {program.desc}
+          </Text>
+
+          {/* Metrics row */}
+          <div className="flex flex-wrap gap-5">
+            <div className="flex items-center gap-2">
+              <div
+                className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg"
+                style={{ backgroundColor: `${program.accent}15`, color: program.accent }}
+              >
+                <CheckCircle size={14} />
+              </div>
+              <div>
+                <Text size="xs" color="tertiary" className="leading-none">Exercises</Text>
+                <Text size="sm" weight="semibold" color="primary">
+                  {completedExercises}/{totalExercises} done
+                </Text>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <div
+                className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg"
+                style={{ backgroundColor: `${colors.warning.DEFAULT}15`, color: colors.warning.DEFAULT }}
+              >
+                <Clock size={14} />
+              </div>
+              <div>
+                <Text size="xs" color="tertiary" className="leading-none">Time Remaining</Text>
+                <Text size="sm" weight="semibold" color="primary">~{timeRemaining}</Text>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <div
+                className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg"
+                style={{ backgroundColor: `${colors.teal.DEFAULT}15`, color: colors.teal.DEFAULT }}
+              >
+                <Target size={14} />
+              </div>
+              <div>
+                <Text size="xs" color="tertiary" className="leading-none">Completion</Text>
+                <Text size="sm" weight="semibold" color="primary">{completionPct}%</Text>
+              </div>
+            </div>
+          </div>
+
+          {/* Full progress bar */}
+          <div className="space-y-1.5">
+            <div className="flex items-center justify-between">
+              <Text size="xs" color="tertiary">Overall progress</Text>
+              <Text size="xs" weight="semibold" color="primary">{completedExercises} of {totalExercises} exercises</Text>
+            </div>
+            <div className="h-2 w-full rounded-full bg-surface-tertiary overflow-hidden">
+              <div
+                className="h-full rounded-full transition-all duration-700"
+                style={{ width: `${completionPct}%`, backgroundColor: program.accent }}
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // ─── Route ────────────────────────────────────────────────────────────────────
 
 export const Route = createLazyFileRoute('/programs/$programId/tasks')({
@@ -210,6 +367,7 @@ function ProgramTasksPage() {
 
   const allExercises = [...program.seqExercises, ...program.openExercises];
   const activeExercise = allExercises.find((e) => e.id === activeExerciseId) ?? null;
+  const completedCount = allExercises.filter((e) => e.status === 'complete').length;
 
   return (
     <DashboardLayout
@@ -232,13 +390,12 @@ function ProgramTasksPage() {
           </button>
         </div>
 
-        {/* Page title */}
-        <div>
-          <Title level={3} weight="bold" color="primary">{program.name}</Title>
-          <Text color="secondary" size="sm">
-            {allExercises.filter((e) => e.status === 'complete').length}/{allExercises.length} exercises completed
-          </Text>
-        </div>
+        {/* Collapsible hero banner */}
+        <CollapsibleHeroBanner
+          program={program}
+          totalExercises={allExercises.length}
+          completedExercises={completedCount}
+        />
 
         {/* Two-column layout: exercise list + detail */}
         <div className="flex gap-5">

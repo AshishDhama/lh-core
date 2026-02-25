@@ -1,11 +1,13 @@
+import { useState } from 'react';
 import { createLazyFileRoute, useNavigate } from '@tanstack/react-router';
 import { Alert } from 'antd';
-import { BookOpen, CalendarDays, CheckCircle, ChartBar, Clock, Target } from 'lucide-react';
+import { BookOpen, CalendarDays, CheckCircle, ChartBar, Clock, Play, Target } from 'lucide-react';
 
 import { Button, Text, Title } from '@/forge';
 import type { SidebarItem } from '@/forge';
 import { DashboardLayout } from '@/forge/layouts';
 import { colors } from '@/forge/tokens';
+import { cn } from '@/forge/utils';
 import { useProgramStore } from '@/stores/useProgramStore';
 
 // ─── Sidebar (shared with other pages) ───────────────────────────────────────
@@ -22,6 +24,119 @@ const MOCK_USER = {
   name: 'Priya Sharma',
   role: 'Senior Manager',
 };
+
+// ─── Video Thumbnail ──────────────────────────────────────────────────────────
+
+const MOCK_VIDEO_DURATION = '12:30';
+
+interface VideoThumbnailProps {
+  accentColor: string;
+}
+
+function VideoThumbnail({ accentColor }: VideoThumbnailProps) {
+  const [watched, setWatched] = useState(false);
+  const [animating, setAnimating] = useState(false);
+
+  function handlePlay() {
+    if (watched) return;
+    setAnimating(true);
+    setTimeout(() => {
+      setWatched(true);
+      setAnimating(false);
+    }, 600);
+  }
+
+  return (
+    <div className="max-w-4xl mx-auto px-8 pt-6">
+      <div
+        className={cn(
+          'relative w-full overflow-hidden rounded-2xl shadow-lg cursor-pointer group',
+          'transition-transform duration-200 hover:scale-[1.01]',
+        )}
+        style={{ aspectRatio: '16 / 9' }}
+        onClick={handlePlay}
+        role="button"
+        tabIndex={0}
+        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') handlePlay(); }}
+        aria-label={watched ? 'Program intro video (watched)' : 'Play program intro video'}
+      >
+        {/* Gradient placeholder background */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background: `linear-gradient(135deg, ${colors.navy.DEFAULT} 0%, ${colors.teal.DEFAULT} 100%)`,
+          }}
+        />
+
+        {/* Subtle pattern overlay */}
+        <div
+          className="absolute inset-0 opacity-10"
+          style={{
+            backgroundImage: 'radial-gradient(circle at 30% 50%, white 1px, transparent 1px), radial-gradient(circle at 70% 80%, white 1px, transparent 1px)',
+            backgroundSize: '60px 60px',
+          }}
+        />
+
+        {/* Gradient overlay for bottom text area */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+
+        {/* Play button */}
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div
+            className={cn(
+              'flex h-16 w-16 items-center justify-center rounded-full bg-white/20 backdrop-blur-sm border-2 border-white/40',
+              'transition-all duration-300 group-hover:bg-white/30 group-hover:scale-110',
+              animating && 'scale-125 opacity-0',
+              watched && 'bg-success/20 border-success/60',
+            )}
+          >
+            {watched ? (
+              <CheckCircle size={28} color="white" />
+            ) : (
+              <Play size={28} color="white" fill="white" />
+            )}
+          </div>
+        </div>
+
+        {/* Bottom bar: duration + watched badge */}
+        <div className="absolute bottom-0 left-0 right-0 flex items-center justify-between px-4 py-3">
+          <div className="flex items-center gap-1.5">
+            <Clock size={13} color="white" className="opacity-80" />
+            <span className="text-white text-xs font-medium opacity-90">{MOCK_VIDEO_DURATION}</span>
+          </div>
+
+          {watched && (
+            <span
+              className={cn(
+                'flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-semibold',
+                'transition-all duration-500',
+              )}
+              style={{ backgroundColor: `${colors.teal.DEFAULT}cc`, color: 'white' }}
+            >
+              <CheckCircle size={11} />
+              Watched
+            </span>
+          )}
+
+          {!watched && (
+            <span
+              className="rounded-full px-2.5 py-0.5 text-xs font-medium text-white/80"
+              style={{ backgroundColor: `${accentColor}55` }}
+            >
+              Program Intro
+            </span>
+          )}
+        </div>
+      </div>
+
+      {!watched && (
+        <p className="mt-2 text-xs text-center" style={{ color: colors.content.tertiary }}>
+          Watch the intro video to get oriented before starting your exercises.
+        </p>
+      )}
+    </div>
+  );
+}
 
 // ─── Route ────────────────────────────────────────────────────────────────────
 
@@ -111,6 +226,9 @@ function ProgramInstructionsPage() {
           </div>
         </div>
       </div>
+
+      {/* Video thumbnail */}
+      <VideoThumbnail accentColor={program.accent} />
 
       {/* Page body */}
       <div className="p-6 max-w-4xl mx-auto space-y-8">
