@@ -1,4 +1,4 @@
-import { Link, useNavigate } from '@tanstack/react-router';
+import { Link } from '@tanstack/react-router';
 import type { ReactNode } from 'react';
 
 import { Icon } from '@/forge/primitives/Icon';
@@ -149,7 +149,6 @@ const designModes: { mode: DesignMode; icon: IconName; label: string }[] = [
 function DesignModeSwitcher() {
   const designMode = useThemeStore((s) => s.designMode);
   const setDesignMode = useThemeStore((s) => s.setDesignMode);
-  const navigate = useNavigate();
 
   return (
     <div className="flex-shrink-0 px-3 py-3 border-t border-border">
@@ -166,7 +165,6 @@ function DesignModeSwitcher() {
               title={label}
               onClick={() => {
                 setDesignMode(mode);
-                navigate({ to: `/modes/${mode}` as never });
               }}
               className={cn(
                 'flex items-center justify-center w-8 h-8 rounded-lg transition-colors duration-150',

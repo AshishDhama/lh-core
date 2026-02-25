@@ -14,7 +14,8 @@ export const Route = createRootRoute({
 
 function RootLayout() {
   const mode = useThemeStore((s) => s.mode);
-  const themeConfig = useMemo(() => getAntTheme(mode), [mode]);
+  const designMode = useThemeStore((s) => s.designMode);
+  const themeConfig = useMemo(() => getAntTheme(mode, designMode), [mode, designMode]);
 
   return (
     <QueryClientProvider client={queryClient}>
