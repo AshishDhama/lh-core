@@ -7,15 +7,16 @@ import { DashboardLayout } from '@/forge/layouts';
 import { colors } from '@/forge/tokens';
 import { useScheduleStore } from '@/stores/useScheduleStore';
 import type { ScheduleSlot } from '@/types/schedule';
+import { i18n } from '@/i18n';
 
 // ─── Shared constants ─────────────────────────────────────────────────────────
 
 const SIDEBAR_ITEMS: SidebarItem[] = [
-  { key: 'dashboard', label: 'Dashboard', icon: 'LayoutDashboard', path: '/' },
-  { key: 'programs', label: 'Programs', icon: 'BookOpen', path: '/programs' },
-  { key: 'development', label: 'Development', icon: 'Target', path: '/development' },
-  { key: 'scheduling', label: 'Scheduling', icon: 'CalendarDays', path: '/scheduling' },
-  { key: 'insights', label: 'Insights', icon: 'ChartBar', path: '/insights' },
+  { key: 'dashboard', label: i18n.t('nav.dashboard'), icon: 'LayoutDashboard', path: '/' },
+  { key: 'programs', label: i18n.t('nav.programs'), icon: 'BookOpen', path: '/programs' },
+  { key: 'development', label: i18n.t('nav.development'), icon: 'Target', path: '/development' },
+  { key: 'scheduling', label: i18n.t('nav.scheduling'), icon: 'CalendarDays', path: '/scheduling' },
+  { key: 'insights', label: i18n.t('nav.insights'), icon: 'ChartBar', path: '/insights' },
 ];
 
 const MOCK_USER = {
@@ -75,7 +76,7 @@ function SlotRow({ slot, isBooked, accentColor, onBook, onCancel }: SlotRowProps
           color={isUrgent ? 'warning' : 'tertiary'}
           weight={isUrgent ? 'semibold' : 'normal'}
         >
-          {isFull ? 'Full' : `${slot.remaining}/${slot.total} spots`}
+          {isFull ? i18n.t('status.full') : `${slot.remaining}/${slot.total} spots`}
         </Text>
       </div>
 
@@ -87,11 +88,11 @@ function SlotRow({ slot, isBooked, accentColor, onBook, onCancel }: SlotRowProps
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-1.5 rounded-full bg-[#dcfce7] px-3 py-1">
             <CheckCircle size={13} style={{ color: colors.success.DEFAULT }} />
-            <Text size="xs" weight="semibold" color="success">Booked</Text>
+            <Text size="xs" weight="semibold" color="success">{i18n.t('status.booked')}</Text>
           </div>
           {slot.cancellation && (
             <Button size="sm" variant="secondary" onClick={onCancel}>
-              Cancel
+              {i18n.t('actions.cancel')}
             </Button>
           )}
         </div>
@@ -102,7 +103,7 @@ function SlotRow({ slot, isBooked, accentColor, onBook, onCancel }: SlotRowProps
           disabled={isFull}
           onClick={onBook}
         >
-          {isFull ? 'Full' : 'Book'}
+          {isFull ? i18n.t('status.full') : i18n.t('actions.book')}
         </Button>
       )}
     </div>
@@ -131,9 +132,9 @@ function SchedulingPage() {
 
         {/* Header */}
         <div>
-          <Title level={3} weight="bold" color="primary">Scheduling</Title>
+          <Title level={3} weight="bold" color="primary">{i18n.t('pages.scheduling')}</Title>
           <Text color="secondary" size="sm" className="mt-1">
-            Book assessment sessions for your programs
+            {i18n.t('schedule.subtitle')}
           </Text>
         </div>
 
@@ -141,7 +142,7 @@ function SchedulingPage() {
         {myBookings.length > 0 && (
           <section>
             <Title level={4} weight="semibold" color="primary" className="mb-3">
-              My Bookings
+              {i18n.t('schedule.myBookings')}
             </Title>
             <div className="space-y-2">
               {myBookings.map((booking) => (

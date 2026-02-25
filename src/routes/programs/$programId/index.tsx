@@ -7,15 +7,16 @@ import type { SidebarItem } from '@/forge';
 import { DashboardLayout } from '@/forge/layouts';
 import { colors } from '@/forge/tokens';
 import { useProgramStore } from '@/stores/useProgramStore';
+import { i18n } from '@/i18n';
 
 // ─── Sidebar (shared with other pages) ───────────────────────────────────────
 
 const SIDEBAR_ITEMS: SidebarItem[] = [
-  { key: 'dashboard', label: 'Dashboard', icon: 'LayoutDashboard', path: '/' },
-  { key: 'programs', label: 'Programs', icon: 'BookOpen', path: '/programs' },
-  { key: 'development', label: 'Development', icon: 'Target', path: '/development' },
-  { key: 'scheduling', label: 'Scheduling', icon: 'CalendarDays', path: '/scheduling' },
-  { key: 'insights', label: 'Insights', icon: 'ChartBar', path: '/insights' },
+  { key: 'dashboard', label: i18n.t('nav.dashboard'), icon: 'LayoutDashboard', path: '/' },
+  { key: 'programs', label: i18n.t('nav.programs'), icon: 'BookOpen', path: '/programs' },
+  { key: 'development', label: i18n.t('nav.development'), icon: 'Target', path: '/development' },
+  { key: 'scheduling', label: i18n.t('nav.scheduling'), icon: 'CalendarDays', path: '/scheduling' },
+  { key: 'insights', label: i18n.t('nav.insights'), icon: 'ChartBar', path: '/insights' },
 ];
 
 const MOCK_USER = {
@@ -77,7 +78,7 @@ function ProgramInstructionsPage() {
             style={{ backgroundColor: `${program.accent}18`, color: program.accent }}
           >
             <BookOpen size={12} />
-            Program Overview
+            {i18n.t('programs.overview')}
           </div>
 
           <Title level={2} weight="bold" color="primary">
@@ -118,7 +119,7 @@ function ProgramInstructionsPage() {
         {/* Instructions */}
         <section>
           <Title level={4} weight="semibold" color="primary" className="mb-4">
-            Before You Begin
+            {i18n.t('programs.beforeYouBegin')}
           </Title>
           <div className="rounded-xl border border-[#e2e8f0] bg-surface-primary p-5 space-y-3">
             {program.instructions.map((instruction, idx) => (
@@ -140,7 +141,7 @@ function ProgramInstructionsPage() {
         {/* Module overview */}
         <section>
           <Title level={4} weight="semibold" color="primary" className="mb-4">
-            Modules ({completedExercises}/{totalExercises} completed)
+            {i18n.t('programs.modules')} ({completedExercises}/{totalExercises} {i18n.t('status.completed').toLowerCase()})
           </Title>
           <div className="space-y-2">
             {program.seqExercises.map((exercise) => (
@@ -173,7 +174,7 @@ function ProgramInstructionsPage() {
                         : { color: colors.content.tertiary, backgroundColor: `${colors.content.tertiary}15` }
                   }
                 >
-                  {exercise.status === 'complete' ? 'Done' : exercise.status === 'progress' ? 'In Progress' : 'Locked'}
+                  {exercise.status === 'complete' ? i18n.t('status.done') : exercise.status === 'progress' ? i18n.t('status.inProgress') : i18n.t('status.locked')}
                 </span>
               </div>
             ))}
@@ -187,14 +188,14 @@ function ProgramInstructionsPage() {
             size="lg"
             onClick={() => navigate({ to: '/programs/$programId/tasks', params: { programId } })}
           >
-            {program.pct > 0 ? 'Continue Program' : 'Start Program'}
+            {program.pct > 0 ? i18n.t('programs.continueProgram') : i18n.t('programs.startProgram')}
           </Button>
           <Button
             variant="secondary"
             size="lg"
             onClick={() => navigate({ to: '/' })}
           >
-            Back to Dashboard
+            {i18n.t('programs.backToDashboard')}
           </Button>
         </div>
       </div>

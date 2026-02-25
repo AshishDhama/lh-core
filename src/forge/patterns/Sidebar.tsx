@@ -6,6 +6,7 @@ import type { IconName } from '@/forge/primitives/Icon';
 import { Text } from '@/forge/primitives/Typography';
 import { colors } from '@/forge/tokens';
 import { cn } from '@/forge/utils';
+import { i18n } from '@/i18n';
 
 export interface SidebarItem {
   key: string;
@@ -174,7 +175,7 @@ export function Sidebar({
             'text-[#64748b] hover:bg-[#f1f5f9] hover:text-[#0f172a]',
             'transition-colors duration-150 flex-shrink-0',
           )}
-          aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+          aria-label={collapsed ? i18n.t('a11y.expandSidebar') : i18n.t('a11y.collapseSidebar')}
         >
           <Icon name={collapsed ? 'PanelLeftOpen' : 'PanelLeftClose'} size="md" />
         </button>
@@ -211,7 +212,7 @@ export function Sidebar({
             }}
           >
             <Icon name="ChevronsLeft" size="sm" style={{ color: colors.content.tertiary }} />
-            <Text size="xs" color="tertiary">Collapse</Text>
+            <Text size="xs" color="tertiary">{i18n.t('nav.collapse')}</Text>
           </div>
         </div>
       )}

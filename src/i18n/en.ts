@@ -27,7 +27,10 @@ export const en = {
     send: 'Send',
     submit: 'Submit',
     confirm: 'Confirm',
+    book: 'Book',
     bookSlot: 'Book Slot',
+    review: 'Review',
+    start: 'Start',
     addGoal: 'Add Goal',
     addFirstGoal: 'Add First Goal',
     retryFailedChecks: 'Retry Failed Checks',
@@ -48,6 +51,9 @@ export const en = {
     draft: 'Draft',
     published: 'Published',
     notStarted: 'Not Started',
+    booked: 'Booked',
+    done: 'Done',
+    onTrack: 'On Track',
   },
 
   // Page titles
@@ -64,10 +70,16 @@ export const en = {
   // Dashboard
   dashboard: {
     welcome: 'Welcome back',
+    goodMorning: 'Good morning',
     activePrograms: 'Active Programs',
+    avgCompletion: 'Avg. Completion',
+    upcomingExercises: 'Upcoming Exercises',
+    hoursLogged: 'Hours Logged',
     completedReports: 'Completed Reports',
     upcomingDeadlines: 'Upcoming Deadlines',
     assessmentsCenters: 'Assessment Centers',
+    myPrograms: 'My Programs',
+    recentReports: 'Recent Reports',
   },
 
   // Programs
@@ -75,10 +87,21 @@ export const en = {
     title: 'Programs',
     instructions: 'Instructions',
     tasks: 'Tasks',
+    overview: 'Program Overview',
+    beforeYouBegin: 'Before You Begin',
+    modules: 'Modules',
     startProgram: 'Start Program',
+    continueProgram: 'Continue Program',
+    backToDashboard: 'Back to Dashboard',
     viewDetails: 'View Details',
+    viewCenter: 'View Center',
     sequential: 'Sequential',
     open: 'Open',
+    assessmentCenters: 'Assessment Centers',
+    selectExercise: 'Select an exercise to view details',
+    proctored: 'Proctored',
+    progress: 'Progress',
+    lockedExerciseMessage: 'This exercise is locked until previous exercises are completed.',
   },
 
   // Assessment / Exercise types
@@ -131,6 +154,8 @@ export const en = {
   // Calendar / Scheduling
   schedule: {
     title: 'Schedule',
+    subtitle: 'Book assessment sessions for your programs',
+    myBookings: 'My Bookings',
     views: {
       day: 'Day',
       week: 'Week',
@@ -149,6 +174,7 @@ export const en = {
   // Insights
   insights: {
     title: 'Insights',
+    subtitle: 'Assessment results and development analytics',
     reports: 'Reports',
     charts: 'Charts',
     period: 'Period',
@@ -159,12 +185,20 @@ export const en = {
       year: 'This Year',
     },
     chartComingSoon: 'Chart coming soon',
+    reportsAvailable: 'Reports Available',
+    avgCompetencyScore: 'Avg. Competency Score',
+    completedAssessments: 'Completed Assessments',
+    developmentProgress: 'Development Progress',
+    competencyScores: 'Competency Scores',
+    assessmentReports: 'Assessment Reports',
+    scoresBasedOn: 'Scores based on completed assessments',
   },
 
   // Header
   header: {
     toggleMenu: 'Toggle menu',
     notifications: 'Notifications',
+    unread: 'unread',
     switchToDark: 'Switch to dark mode',
     switchToLight: 'Switch to light mode',
     online: 'Online',

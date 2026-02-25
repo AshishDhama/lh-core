@@ -17,15 +17,16 @@ import { DashboardLayout } from '@/forge/layouts';
 import { colors } from '@/forge/tokens';
 import type { Exercise } from '@/types/program';
 import { useProgramStore } from '@/stores/useProgramStore';
+import { i18n } from '@/i18n';
 
 // ─── Shared constants ────────────────────────────────────────────────────────
 
 const SIDEBAR_ITEMS: SidebarItem[] = [
-  { key: 'dashboard', label: 'Dashboard', icon: 'LayoutDashboard', path: '/' },
-  { key: 'programs', label: 'Programs', icon: 'BookOpen', path: '/programs' },
-  { key: 'development', label: 'Development', icon: 'Target', path: '/development' },
-  { key: 'scheduling', label: 'Scheduling', icon: 'CalendarDays', path: '/scheduling' },
-  { key: 'insights', label: 'Insights', icon: 'ChartBar', path: '/insights' },
+  { key: 'dashboard', label: i18n.t('nav.dashboard'), icon: 'LayoutDashboard', path: '/' },
+  { key: 'programs', label: i18n.t('nav.programs'), icon: 'BookOpen', path: '/programs' },
+  { key: 'development', label: i18n.t('nav.development'), icon: 'Target', path: '/development' },
+  { key: 'scheduling', label: i18n.t('nav.scheduling'), icon: 'CalendarDays', path: '/scheduling' },
+  { key: 'insights', label: i18n.t('nav.insights'), icon: 'ChartBar', path: '/insights' },
 ];
 
 const MOCK_USER = {
@@ -43,10 +44,10 @@ function statusIcon(status: Exercise['status'], color: string) {
 }
 
 function statusLabel(status: Exercise['status']): string {
-  if (status === 'complete') return 'Completed';
-  if (status === 'progress') return 'In Progress';
-  if (status === 'locked') return 'Locked';
-  return 'Not Started';
+  if (status === 'complete') return i18n.t('status.completed');
+  if (status === 'progress') return i18n.t('status.inProgress');
+  if (status === 'locked') return i18n.t('status.locked');
+  return i18n.t('status.notStarted');
 }
 
 // ─── Exercise list item ───────────────────────────────────────────────────────
@@ -102,7 +103,7 @@ function ExerciseDetail({ exercise }: ExerciseDetailProps) {
     return (
       <div className="flex h-full min-h-[320px] flex-col items-center justify-center gap-3 rounded-xl border border-dashed border-[#e2e8f0] p-8 text-center">
         <BookOpen size={32} style={{ color: colors.content.tertiary }} />
-        <Text color="tertiary">Select an exercise to view details</Text>
+        <Text color="tertiary">{i18n.t('programs.selectExercise')}</Text>
       </div>
     );
   }
@@ -140,7 +141,7 @@ function ExerciseDetail({ exercise }: ExerciseDetailProps) {
             </span>
             {exercise.proctored && (
               <span className="rounded-full bg-[#EEF6FA] px-2.5 py-0.5 text-xs font-semibold text-[#002C77]">
-                Proctored
+                {i18n.t('programs.proctored')}
               </span>
             )}
           </div>
@@ -153,7 +154,7 @@ function ExerciseDetail({ exercise }: ExerciseDetailProps) {
       {exercise.pct > 0 && (
         <div className="space-y-1.5">
           <div className="flex justify-between">
-            <Text size="xs" color="tertiary">Progress</Text>
+            <Text size="xs" color="tertiary">{i18n.t('programs.progress')}</Text>
             <Text size="xs" weight="semibold" color="primary">{exercise.pct}%</Text>
           </div>
           <div className="h-2 rounded-full bg-[#f1f5f9] overflow-hidden">
@@ -169,7 +170,7 @@ function ExerciseDetail({ exercise }: ExerciseDetailProps) {
       {!isLocked && (
         <div className="pt-2">
           <Button variant="primary">
-            {exercise.status === 'complete' ? 'Review' : exercise.status === 'progress' ? 'Continue' : 'Start'}
+            {exercise.status === 'complete' ? i18n.t('actions.review') : exercise.status === 'progress' ? i18n.t('actions.continue') : i18n.t('actions.start')}
           </Button>
         </div>
       )}
@@ -179,7 +180,7 @@ function ExerciseDetail({ exercise }: ExerciseDetailProps) {
           type="info"
           showIcon
           icon={<Lock size={14} />}
-          message="This exercise is locked until previous exercises are completed."
+          message={i18n.t('programs.lockedExerciseMessage')}
         />
       )}
     </div>
@@ -249,7 +250,7 @@ function ProgramTasksPage() {
             {program.seqExercises.length > 0 && (
               <div>
                 <Text size="xs" weight="semibold" color="tertiary" className="px-3 mb-2 block uppercase tracking-wide">
-                  Sequential
+                  {i18n.t('programs.sequential')}
                 </Text>
                 <div className="space-y-0.5">
                   {program.seqExercises.map((exercise) => (
@@ -268,7 +269,7 @@ function ProgramTasksPage() {
               <div>
                 {program.seqExercises.length > 0 && <Divider className="my-3" />}
                 <Text size="xs" weight="semibold" color="tertiary" className="px-3 mb-2 block uppercase tracking-wide">
-                  Open
+                  {i18n.t('programs.open')}
                 </Text>
                 <div className="space-y-0.5">
                   {program.openExercises.map((exercise) => (
@@ -294,7 +295,7 @@ function ProgramTasksPage() {
         {program.centers.length > 0 && (
           <section>
             <Title level={4} weight="semibold" color="primary" className="mb-4">
-              Assessment Centers
+              {i18n.t('programs.assessmentCenters')}
             </Title>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {program.centers.map((center) => {
@@ -326,7 +327,7 @@ function ProgramTasksPage() {
                     <Text size="xs" color="secondary" className="leading-relaxed">{center.desc}</Text>
                     {!isLocked && (
                       <Button size="sm" variant="secondary">
-                        View Center
+                        {i18n.t('programs.viewCenter')}
                       </Button>
                     )}
                   </div>

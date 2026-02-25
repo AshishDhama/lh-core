@@ -7,15 +7,16 @@ import type { SidebarItem } from '@/forge';
 import { DashboardLayout } from '@/forge/layouts';
 import { colors } from '@/forge/tokens';
 import { reports, competencies } from '@/data/reports';
+import { i18n } from '@/i18n';
 
 // ─── Shared constants ─────────────────────────────────────────────────────────
 
 const SIDEBAR_ITEMS: SidebarItem[] = [
-  { key: 'dashboard', label: 'Dashboard', icon: 'LayoutDashboard', path: '/' },
-  { key: 'programs', label: 'Programs', icon: 'BookOpen', path: '/programs' },
-  { key: 'development', label: 'Development', icon: 'Target', path: '/development' },
-  { key: 'scheduling', label: 'Scheduling', icon: 'CalendarDays', path: '/scheduling' },
-  { key: 'insights', label: 'Insights', icon: 'ChartBar', path: '/insights' },
+  { key: 'dashboard', label: i18n.t('nav.dashboard'), icon: 'LayoutDashboard', path: '/' },
+  { key: 'programs', label: i18n.t('nav.programs'), icon: 'BookOpen', path: '/programs' },
+  { key: 'development', label: i18n.t('nav.development'), icon: 'Target', path: '/development' },
+  { key: 'scheduling', label: i18n.t('nav.scheduling'), icon: 'CalendarDays', path: '/scheduling' },
+  { key: 'insights', label: i18n.t('nav.insights'), icon: 'ChartBar', path: '/insights' },
 ];
 
 const MOCK_USER = {
@@ -26,10 +27,10 @@ const MOCK_USER = {
 type Period = 'week' | 'month' | 'quarter' | 'year';
 
 const PERIOD_LABELS: Record<Period, string> = {
-  week: 'This Week',
-  month: 'This Month',
-  quarter: 'This Quarter',
-  year: 'This Year',
+  week: i18n.t('insights.periods.week'),
+  month: i18n.t('insights.periods.month'),
+  quarter: i18n.t('insights.periods.quarter'),
+  year: i18n.t('insights.periods.year'),
 };
 
 // ─── Route ────────────────────────────────────────────────────────────────────
@@ -60,9 +61,9 @@ function InsightsPage() {
         {/* Header + period selector */}
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
-            <Title level={3} weight="bold" color="primary">Insights</Title>
+            <Title level={3} weight="bold" color="primary">{i18n.t('pages.insights')}</Title>
             <Text color="secondary" size="sm" className="mt-1">
-              Assessment results and development analytics
+              {i18n.t('insights.subtitle')}
             </Text>
           </div>
 
@@ -89,29 +90,29 @@ function InsightsPage() {
         {/* Stats row */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           <StatCard
-            title="Reports Available"
+            title={i18n.t('insights.reportsAvailable')}
             value={`${completedReports}/${totalReports}`}
             icon={<BookOpen size={18} />}
             iconColor={colors.navy.DEFAULT}
             trend="up"
           />
           <StatCard
-            title="Avg. Competency Score"
+            title={i18n.t('insights.avgCompetencyScore')}
             value={`${avgScore}%`}
             icon={<Target size={18} />}
             iconColor={colors.teal.DEFAULT}
             change={5}
           />
           <StatCard
-            title="Completed Assessments"
+            title={i18n.t('insights.completedAssessments')}
             value={completedReports}
             icon={<CheckCircle2 size={18} />}
             iconColor={colors.success.DEFAULT}
             change={15}
           />
           <StatCard
-            title="Development Progress"
-            value="On Track"
+            title={i18n.t('insights.developmentProgress')}
+            value={i18n.t('status.onTrack')}
             icon={<TrendingUp size={18} />}
             iconColor={colors.purple.DEFAULT}
             trend="up"
@@ -121,7 +122,7 @@ function InsightsPage() {
         {/* Competency scores — chart placeholder */}
         <section>
           <Title level={4} weight="semibold" color="primary" className="mb-4">
-            Competency Scores
+            {i18n.t('insights.competencyScores')}
           </Title>
           <div className="rounded-xl border border-[#e2e8f0] bg-surface-primary p-5 space-y-4">
             {competencies.map((comp) => (
@@ -144,7 +145,7 @@ function InsightsPage() {
             <div className="flex items-center gap-2 pt-1">
               <BarChart3 size={14} style={{ color: colors.content.tertiary }} />
               <Text size="xs" color="tertiary">
-                Scores based on completed assessments · {PERIOD_LABELS[period]}
+                {i18n.t('insights.scoresBasedOn')} · {PERIOD_LABELS[period]}
               </Text>
             </div>
           </div>
@@ -153,7 +154,7 @@ function InsightsPage() {
         {/* Reports */}
         <section>
           <Title level={4} weight="semibold" color="primary" className="mb-4">
-            Assessment Reports
+            {i18n.t('insights.assessmentReports')}
           </Title>
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
             {reports.map((report) => (

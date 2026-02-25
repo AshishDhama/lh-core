@@ -7,6 +7,7 @@ import { Icon } from '@/forge/primitives/Icon';
 import { Text } from '@/forge/primitives/Typography';
 import { useThemeStore } from '@/stores/useThemeStore';
 import { cn } from '@/forge/utils';
+import { i18n } from '@/i18n';
 
 export interface HeaderUser {
   name: string;
@@ -50,7 +51,7 @@ export function Header({
         icon={<Icon name="Menu" size="md" />}
         onClick={onMenuClick}
         className="flex-shrink-0 text-[#475569]"
-        aria-label="Toggle menu"
+        aria-label={i18n.t('header.toggleMenu')}
       />
 
       {/* Title */}
@@ -79,7 +80,7 @@ export function Header({
         }
         onClick={toggleMode}
         className="text-[#475569]"
-        aria-label={mode === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+        aria-label={i18n.t(mode === 'dark' ? 'header.switchToLight' : 'header.switchToDark')}
       />
 
       {/* Notifications */}
@@ -89,7 +90,7 @@ export function Header({
           size="sm"
           icon={<Icon name="Bell" size="md" />}
           className="text-[#475569]"
-          aria-label={`Notifications${notifications > 0 ? `, ${notifications} unread` : ''}`}
+          aria-label={`${i18n.t('header.notifications')}${notifications > 0 ? `, ${notifications} ${i18n.t('header.unread')}` : ''}`}
         />
       </Badge>
 
