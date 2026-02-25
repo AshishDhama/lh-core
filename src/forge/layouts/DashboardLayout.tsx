@@ -1,10 +1,11 @@
-import { useState, type ReactNode } from 'react';
-import { Layout } from 'antd';
+import { useEffect, useState, type ReactNode } from 'react';
+import { Drawer, Layout } from 'antd';
 
 import { Header } from '@/forge/patterns/Header';
 import type { HeaderUser } from '@/forge/patterns/Header';
 import { Sidebar } from '@/forge/patterns/Sidebar';
 import type { SidebarItem } from '@/forge/patterns/Sidebar';
+import { useIsMobile } from '@/hooks';
 import { cn } from '@/forge/utils';
 
 export interface DashboardLayoutProps {
@@ -29,7 +30,7 @@ export interface DashboardLayoutProps {
 /**
  * DashboardLayout — main app shell.
  *
- * Structure:
+ * Desktop structure:
  *   ┌─────────────────────────────────────────┐
  *   │              Header (fixed, z-50)        │
  *   ├──────────┬──────────────────────────────┤
@@ -37,7 +38,13 @@ export interface DashboardLayoutProps {
  *   │ (fixed)  │                              │
  *   └──────────┴──────────────────────────────┘
  *
- * Sidebar collapse state is managed internally.
+ * Mobile structure:
+ *   ┌─────────────────────────────────────────┐
+ *   │              Header (fixed, z-50)        │
+ *   ├─────────────────────────────────────────┤
+ *   │        Full-width content area          │
+ *   └─────────────────────────────────────────┘
+ *   Sidebar rendered as an overlay Drawer (opened via hamburger).
  */
 export function DashboardLayout({
   children,
@@ -49,7 +56,22 @@ export function DashboardLayout({
   notifications,
   className,
 }: DashboardLayoutProps) {
+  const isMobile = useIsMobile();
   const [collapsed, setCollapsed] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  // Auto-close mobile drawer when viewport grows to desktop size.
+  useEffect(() => {
+    if (!isMobile) setMobileOpen(false);
+  }, [isMobile]);
+
+  const handleMenuClick = () => {
+    if (isMobile) {
+      setMobileOpen(true);
+    } else {
+      setCollapsed((prev) => !prev);
+    }
+  };
 
   return (
     <Layout className="min-h-screen bg-[#fafbfc]">
@@ -59,32 +81,59 @@ export function DashboardLayout({
         user={user}
         notifications={notifications}
         actions={headerActions}
-        onMenuClick={() => setCollapsed((prev) => !prev)}
+        onMenuClick={handleMenuClick}
       />
 
-      {/* Fixed left sidebar — positioned below the 64px header */}
-      <div
-        className={cn(
-          'fixed left-0 top-16 bottom-0 z-40',
-          'transition-[width] duration-200 ease-in-out',
-          collapsed ? 'w-16' : 'w-60',
-        )}
-      >
-        <Sidebar
-          items={sidebarItems}
-          activeKey={activeKey}
-          collapsed={collapsed}
-          onCollapse={setCollapsed}
-          className="h-full"
-        />
-      </div>
+      {/* ── Mobile: Drawer overlay ───────────────────────────────── */}
+      {isMobile && (
+        <Drawer
+          open={mobileOpen}
+          onClose={() => setMobileOpen(false)}
+          placement="left"
+          width={240}
+          styles={{
+            body: { padding: 0 },
+            header: { display: 'none' },
+          }}
+          rootClassName="lh-sidebar-drawer"
+          aria-label="Navigation drawer"
+        >
+          <Sidebar
+            items={sidebarItems}
+            activeKey={activeKey}
+            collapsed={false}
+            onCollapse={() => setMobileOpen(false)}
+            onSelect={() => setMobileOpen(false)}
+            className="h-full"
+          />
+        </Drawer>
+      )}
+
+      {/* ── Desktop: Fixed left sidebar ──────────────────────────── */}
+      {!isMobile && (
+        <div
+          className={cn(
+            'fixed left-0 top-16 bottom-0 z-40',
+            'transition-[width] duration-200 ease-in-out',
+            collapsed ? 'w-16' : 'w-60',
+          )}
+        >
+          <Sidebar
+            items={sidebarItems}
+            activeKey={activeKey}
+            collapsed={collapsed}
+            onCollapse={setCollapsed}
+            className="h-full"
+          />
+        </div>
+      )}
 
       {/* Main content area — offset for fixed header (pt-16) and sidebar (ml-*) */}
       <Layout.Content
         className={cn(
           'pt-16 min-h-screen overflow-y-auto',
           'transition-[margin] duration-200 ease-in-out',
-          collapsed ? 'ml-16' : 'ml-60',
+          !isMobile && (collapsed ? 'ml-16' : 'ml-60'),
           className,
         )}
       >
