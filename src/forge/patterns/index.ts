@@ -15,3 +15,9 @@ export {
 } from './ExerciseList';
 export { HeroBanner, type HeroBannerProps } from './HeroBanner';
 export { Sidebar, type SidebarProps, type SidebarItem } from './Sidebar';
+export {
+  SystemCheckPanel,
+  type SystemCheckPanelProps,
+  type SystemCheck,
+  type CheckStatus,
+} from './SystemCheckPanel';
