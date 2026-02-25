@@ -1,5 +1,6 @@
 import { Card, Progress, Tag as AntTag } from 'antd';
 import { Clock, ChevronRight, Lock } from 'lucide-react';
+import { memo } from 'react';
 import type { ReactNode } from 'react';
 
 import { Text, Title } from '@/forge/primitives';
@@ -39,7 +40,7 @@ const statusConfig: Record<ProgramStatus, { label: string; color: string; bgColo
   },
 };
 
-export function ProgramCard({
+export const ProgramCard = memo(function ProgramCard({
   title,
   description,
   progress = 0,
@@ -149,4 +150,4 @@ export function ProgramCard({
       </div>
     </Card>
   );
-}
+});

@@ -8,6 +8,7 @@ import {
   PlayCircle,
   Wrench,
 } from 'lucide-react';
+import { memo } from 'react';
 
 import { Button, Text } from '@/forge/primitives';
 import { cn } from '@/forge/utils';
@@ -74,7 +75,7 @@ function formatTimeLimit(minutes: number): string {
   return m > 0 ? `${h}h ${m}m` : `${h}h`;
 }
 
-export function AssessmentCard({
+export const AssessmentCard = memo(function AssessmentCard({
   title,
   type,
   score,
@@ -202,4 +203,4 @@ export function AssessmentCard({
       )}
     </div>
   );
-}
+});

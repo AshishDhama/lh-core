@@ -1,4 +1,5 @@
 import { Avatar } from 'antd';
+import { memo } from 'react';
 
 import { Text } from '@/forge/primitives';
 import { cn } from '@/forge/utils';
@@ -39,7 +40,7 @@ function getSenderInitials(name: string): string {
     .toUpperCase();
 }
 
-export function ChatMessage({
+export const ChatMessage = memo(function ChatMessage({
   content,
   sender,
   timestamp,
@@ -119,4 +120,4 @@ export function ChatMessage({
       </div>
     </div>
   );
-}
+});

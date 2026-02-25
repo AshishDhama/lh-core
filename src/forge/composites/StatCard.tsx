@@ -1,5 +1,6 @@
 import { Spin } from 'antd';
 import { TrendingDown, TrendingUp, Minus } from 'lucide-react';
+import { memo } from 'react';
 import type { ReactNode } from 'react';
 
 import { Text, Title } from '@/forge/primitives';
@@ -45,7 +46,7 @@ function deriveTrend(change?: number): StatTrend | undefined {
   return 'flat';
 }
 
-export function StatCard({
+export const StatCard = memo(function StatCard({
   title,
   value,
   change,
@@ -112,4 +113,4 @@ export function StatCard({
       </div>
     </div>
   );
-}
+});

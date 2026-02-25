@@ -1,3 +1,5 @@
+import { memo } from 'react';
+
 import { Icon } from '@/forge/primitives/Icon';
 import { StatusBadge } from '@/forge/primitives/Badge';
 import { Text, Title } from '@/forge/primitives/Typography';
@@ -60,7 +62,7 @@ interface ExerciseItemProps {
   onSelect?: (id: string) => void;
 }
 
-function ExerciseItem({ exercise, isActive, onSelect }: ExerciseItemProps) {
+const ExerciseItem = memo(function ExerciseItem({ exercise, isActive, onSelect }: ExerciseItemProps) {
   const isLocked = exercise.status === 'locked';
   const iconName = typeIconMap[exercise.type] as Parameters<typeof Icon>[0]['name'];
 
@@ -133,7 +135,7 @@ function ExerciseItem({ exercise, isActive, onSelect }: ExerciseItemProps) {
       </div>
     </li>
   );
-}
+});
 
 function groupBySection(exercises: Exercise[]): Map<string | undefined, Exercise[]> {
   const map = new Map<string | undefined, Exercise[]>();

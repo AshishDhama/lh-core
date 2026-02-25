@@ -1,4 +1,5 @@
 import { Download, FileText, TrendingDown, TrendingUp } from 'lucide-react';
+import { memo } from 'react';
 
 import { Button, Text } from '@/forge/primitives';
 import { cn } from '@/forge/utils';
@@ -71,7 +72,7 @@ function MetricRow({ metric }: MetricRowProps) {
   );
 }
 
-export function ReportCard({
+export const ReportCard = memo(function ReportCard({
   title,
   period,
   metrics = [],
@@ -151,4 +152,4 @@ export function ReportCard({
       </div>
     </div>
   );
-}
+});

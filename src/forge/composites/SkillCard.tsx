@@ -1,4 +1,5 @@
 import { Progress } from 'antd';
+import { memo } from 'react';
 
 import { Text } from '@/forge/primitives';
 import { cn } from '@/forge/utils';
@@ -48,7 +49,7 @@ function levelToPercent(level: SkillLevel): number {
   return (level / 5) * 100;
 }
 
-export function SkillCard({
+export const SkillCard = memo(function SkillCard({
   name,
   level,
   category,
@@ -144,4 +145,4 @@ export function SkillCard({
       </div>
     </div>
   );
-}
+});
