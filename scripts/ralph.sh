@@ -4,13 +4,15 @@
 #   ./scripts/ralph.sh hitl              # One iteration, watch output
 #   ./scripts/ralph.sh afk [N]           # N iterations unattended (default: 10)
 #   ./scripts/ralph.sh parallel [N]      # N concurrent workers in worktrees (default: 3)
+#   ./scripts/ralph.sh judge             # Opus review of recent commits, creates bug beads
+#   ./scripts/ralph.sh orchestrate [N]   # N rounds of: parallel → merge → judge (default: 3)
 #   ./scripts/ralph.sh status            # Dashboard: br stats + ready + progress
 
 set -euo pipefail
 
 # ── Config (override via env vars) ──────────────────────────────────
 MODEL=${RALPH_MODEL:-sonnet}
-BUDGET=${RALPH_MAX_BUDGET:-1.00}
+BUDGET=${RALPH_MAX_BUDGET:-10.00}
 COOLDOWN=${RALPH_COOLDOWN:-5}
 TOOLS=${RALPH_ALLOWED_TOOLS:-"Bash Edit Read Write Glob Grep"}
 
@@ -24,12 +26,19 @@ BOLD='\033[1m'
 DIM='\033[2m'
 RESET='\033[0m'
 
+# ── Process tracking ─────────────────────────────────────────────────
+CHILD_PID=""
+CURRENT_ITER=0
+WORKER_PIDS=()
+
 # ── Resolve project root (where this script lives) ─────────────────
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 cd "$PROJECT_ROOT"
 
 PROMPT_FILE="$SCRIPT_DIR/ralph-prompt.md"
+BEADS_DIR="$PROJECT_ROOT/.beads"
+WORKTREE_DIR="$PROJECT_ROOT/.claude/worktrees"
 
 # ── Helpers ─────────────────────────────────────────────────────────
 timestamp() { date '+%Y-%m-%d %H:%M:%S'; }
@@ -40,10 +49,31 @@ log_warn() { echo -e "${DIM}[$(timestamp)]${RESET} ${YELLOW}$1${RESET}"; }
 log_err() { echo -e "${DIM}[$(timestamp)]${RESET} ${RED}$1${RESET}"; }
 log_head() { echo -e "\n${BOLD}${CYAN}=== $1 ===${RESET} ${DIM}$(timestamp)${RESET}"; }
 
-# Trap Ctrl+C
+# Trap Ctrl+C — kill child processes and show feedback
+# Verify child is dead after interrupt: ps aux | grep "claude -p"
 cleanup() {
   echo ""
-  log_warn "Interrupted. Exiting gracefully..."
+  log_warn "Interrupted. Shutting down..."
+
+  # Kill single-agent child (hitl/afk modes)
+  if [[ -n "$CHILD_PID" ]] && kill -0 "$CHILD_PID" 2>/dev/null; then
+    kill "$CHILD_PID" 2>/dev/null
+    wait "$CHILD_PID" 2>/dev/null || true
+    log_warn "Killed agent process (PID $CHILD_PID)"
+  fi
+
+  # Kill parallel worker children (safe even if empty)
+  if [[ ${#WORKER_PIDS[@]} -gt 0 ]]; then
+    for pid in "${WORKER_PIDS[@]}"; do
+      if kill -0 "$pid" 2>/dev/null; then
+        kill "$pid" 2>/dev/null
+        wait "$pid" 2>/dev/null || true
+      fi
+    done
+    log_warn "Killed ${#WORKER_PIDS[@]} worker processes"
+  fi
+
+  log_warn "Exited after iteration $CURRENT_ITER. Logs: /tmp/ralph-iter-*.log"
   exit 130
 }
 trap cleanup SIGINT SIGTERM
@@ -71,6 +101,134 @@ read_prompt() {
   cat "$PROMPT_FILE"
 }
 
+# ── Worktree management ───────────────────────────────────────────
+# Clean up stale worktrees and prepare fresh ones for parallel mode.
+# Each worktree gets a symlinked .beads so all workers share one DB.
+cleanup_worktrees() {
+  local count=${1:-3}
+  log "Cleaning up stale worktrees..."
+
+  for ((w=1; w<=count; w++)); do
+    local wt_name="ralph-w$w"
+    local wt_path="$WORKTREE_DIR/$wt_name"
+    local wt_branch="worktree-$wt_name"
+
+    # Remove existing worktree if present
+    if [[ -d "$wt_path" ]]; then
+      git worktree remove --force "$wt_path" 2>/dev/null || true
+    fi
+
+    # Delete stale branch
+    if git show-ref --verify --quiet "refs/heads/$wt_branch" 2>/dev/null; then
+      git branch -D "$wt_branch" 2>/dev/null || true
+    fi
+  done
+
+  log_ok "Worktrees cleaned"
+}
+
+setup_worktree_beads() {
+  # After claude creates the worktree, symlink .beads to share the main DB.
+  # Called after workers are spawned with a small delay.
+  local count=${1:-3}
+
+  for ((w=1; w<=count; w++)); do
+    local wt_path="$WORKTREE_DIR/ralph-w$w"
+    local max_wait=30
+    local waited=0
+
+    # Wait for worktree to be created by claude
+    while [[ ! -d "$wt_path" && $waited -lt $max_wait ]]; do
+      sleep 1
+      waited=$((waited + 1))
+    done
+
+    if [[ -d "$wt_path" ]]; then
+      # Remove the worktree's own .beads (stale copy) and symlink to main
+      if [[ -d "$wt_path/.beads" && ! -L "$wt_path/.beads" ]]; then
+        rm -rf "$wt_path/.beads"
+        ln -s "$BEADS_DIR" "$wt_path/.beads"
+        log "Linked .beads for worker $w"
+      elif [[ ! -e "$wt_path/.beads" ]]; then
+        ln -s "$BEADS_DIR" "$wt_path/.beads"
+        log "Linked .beads for worker $w"
+      fi
+    else
+      log_warn "Worktree ralph-w$w not created after ${max_wait}s"
+    fi
+  done
+}
+
+# ── Merge worktree branches to main ─────────────────────────────────
+# Cherry-picks unique commits from each worktree branch onto main.
+# Called after parallel workers finish, before worktree cleanup.
+merge_worktrees() {
+  local count=${1:-3}
+  log_head "Merging Worktree Branches"
+
+  # Must be on main to cherry-pick
+  local current_branch
+  current_branch=$(git branch --show-current)
+  if [[ "$current_branch" != "main" ]]; then
+    log_warn "Not on main (on $current_branch) — skipping merge"
+    return 1
+  fi
+
+  local merged=0 failed=0 skipped=0
+  for ((w=1; w<=count; w++)); do
+    local wt_branch="worktree-ralph-w$w"
+    if ! git show-ref --verify --quiet "refs/heads/$wt_branch" 2>/dev/null; then
+      continue
+    fi
+
+    # Check if branch has commits ahead of main
+    local ahead
+    ahead=$(git rev-list --count main.."$wt_branch" 2>/dev/null || echo "0")
+    if [[ "$ahead" == "0" ]]; then
+      skipped=$((skipped + 1))
+      continue
+    fi
+
+    log "Merging $wt_branch ($ahead commits ahead)..."
+
+    # Cherry-pick each commit individually onto main
+    local commits
+    commits=$(git rev-list --reverse main.."$wt_branch")
+    for sha in $commits; do
+      local msg
+      msg=$(git log --format='%h %s' -1 "$sha")
+
+      # Skip if an identical patch is already on main (dedup)
+      if git log --format='%s' main | grep -qF "$(git log --format='%s' -1 "$sha")"; then
+        log "  Skip (duplicate): $msg"
+        skipped=$((skipped + 1))
+        continue
+      fi
+
+      if git cherry-pick "$sha" --no-edit 2>/dev/null; then
+        log_ok "  Merged: $msg"
+        merged=$((merged + 1))
+      else
+        git cherry-pick --abort 2>/dev/null || true
+        log_warn "  Conflict — skipped: $msg"
+        failed=$((failed + 1))
+      fi
+    done
+  done
+
+  echo ""
+  log_ok "Merge complete: $merged merged | $skipped skipped | $failed conflicts"
+
+  # Validate
+  if [[ $merged -gt 0 ]]; then
+    if bun typecheck 2>/dev/null; then
+      log_ok "Typecheck passed after merge"
+    else
+      log_warn "Typecheck failed after merge — manual review needed"
+    fi
+  fi
+}
+
 # ── Core: run one iteration ────────────────────────────────────────
 run_iteration() {
   local iter=$1
@@ -90,8 +248,9 @@ run_iteration() {
     return 1  # Signal completion
   fi
 
-  # Run claude (clear Claude env vars to allow spawning from within Claude Code)
+  # Run claude in background so trap fires immediately on Ctrl+C
   local logfile="/tmp/ralph-iter-${iter}.log"
+  CURRENT_ITER=$iter
   log "Running agent... (log: $logfile)"
 
   env -u CLAUDECODE -u CLAUDE_CODE_ENTRYPOINT \
@@ -100,7 +259,10 @@ run_iteration() {
     --max-budget-usd "$BUDGET" \
     --allowedTools "$TOOLS" \
     --dangerously-skip-permissions \
-    "$prompt" > "$logfile" 2>&1 || true
+    "$prompt" > "$logfile" 2>&1 &
+  CHILD_PID=$!
+  wait "$CHILD_PID" || true
+  CHILD_PID=""
 
   # Display output
   cat "$logfile"
@@ -179,13 +341,22 @@ parallel_run() {
 
   local actual=$(( ready_count < workers ? ready_count : workers ))
   log "Ready tasks: $ready_count | Spawning: $actual workers"
+
+  # Clean up stale worktrees from previous runs
+  cleanup_worktrees "$actual"
+
   echo ""
 
   local prompt
   prompt=$(read_prompt)
 
-  local pids=()
+  WORKER_PIDS=()
   local start_time=$SECONDS
+
+  # Clear old log files
+  for ((w=1; w<=actual; w++)); do
+    > "/tmp/ralph-worker-$w.log"
+  done
 
   for ((w=1; w<=actual; w++)); do
     log "Spawning worker $w..."
@@ -196,26 +367,87 @@ parallel_run() {
       --allowedTools "$TOOLS" \
       --dangerously-skip-permissions \
       "$prompt" > "/tmp/ralph-worker-$w.log" 2>&1 &
-    pids+=($!)
+    WORKER_PIDS+=($!)
   done
 
-  log "All $actual workers spawned. Waiting..."
+  log "All $actual workers spawned. Monitoring progress..."
+
+  # Symlink .beads in worktrees to shared DB (runs in background)
+  setup_worktree_beads "$actual" &
+  local beads_setup_pid=$!
+
   echo ""
 
-  # Wait for all workers and report
+  # Monitor progress while workers run
+  local poll_interval=${RALPH_POLL:-15}
+  local prev_closed=0
+  prev_closed=$(br list -s closed --json 2>/dev/null | jq length 2>/dev/null || echo "0")
+
+  while true; do
+    # Check if any workers are still alive
+    local alive=0
+    for pid in "${WORKER_PIDS[@]}"; do
+      if kill -0 "$pid" 2>/dev/null; then
+        alive=$((alive + 1))
+      fi
+    done
+    [[ $alive -eq 0 ]] && break
+
+    sleep "$poll_interval"
+
+    # Poll beads stats
+    local now_closed now_open now_ready
+    now_closed=$(br list -s closed --json 2>/dev/null | jq length 2>/dev/null || echo "?")
+    now_open=$(br list -s open --json 2>/dev/null | jq length 2>/dev/null || echo "?")
+    now_ready=$(br ready --json 2>/dev/null | jq length 2>/dev/null || echo "?")
+
+    local delta=""
+    if [[ "$now_closed" != "?" && "$prev_closed" != "?" ]]; then
+      local diff=$((now_closed - prev_closed))
+      [[ $diff -gt 0 ]] && delta=" ${GREEN}(+$diff since last check)${RESET}"
+      prev_closed=$now_closed
+    fi
+
+    # Worker log sizes as activity indicator
+    local log_sizes=""
+    for ((w=1; w<=actual; w++)); do
+      local sz
+      sz=$(wc -c < "/tmp/ralph-worker-$w.log" 2>/dev/null || echo "0")
+      local alive_mark="●"
+      kill -0 "${WORKER_PIDS[$((w-1))]}" 2>/dev/null || alive_mark="○"
+      log_sizes+=" W$w:${alive_mark}$(( sz / 1024 ))K"
+    done
+
+    log "⏱  ${BOLD}Closed: $now_closed${RESET} | Open: $now_open | Ready: $now_ready | Workers alive: $alive$delta"
+    log "   Logs:$log_sizes"
+  done
+
+  # Clean up beads setup background process
+  wait "$beads_setup_pid" 2>/dev/null || true
+
+  echo ""
+  log "All workers finished. Collecting results..."
+  echo ""
+
+  # Collect exit codes
   local failed=0
   for ((w=1; w<=actual; w++)); do
-    if wait "${pids[$((w-1))]}"; then
-      log_ok "Worker $w finished successfully"
+    local sz
+    sz=$(wc -c < "/tmp/ralph-worker-$w.log" 2>/dev/null || echo "0")
+    if wait "${WORKER_PIDS[$((w-1))]}" 2>/dev/null; then
+      log_ok "Worker $w finished (${sz} bytes output)"
     else
-      log_err "Worker $w failed (exit code: $?)"
+      log_err "Worker $w failed (exit code: $?, ${sz} bytes output)"
       failed=$((failed + 1))
     fi
     # Show tail of worker log
-    echo -e "${DIM}--- Worker $w output (last 5 lines) ---${RESET}"
-    tail -5 "/tmp/ralph-worker-$w.log" 2>/dev/null || true
+    echo -e "${DIM}--- Worker $w output (last 10 lines) ---${RESET}"
+    tail -10 "/tmp/ralph-worker-$w.log" 2>/dev/null || true
     echo ""
   done
+
+  # Merge worktree branches to main before cleanup
+  merge_worktrees "$actual"
 
   local elapsed=$(( SECONDS - start_time ))
   echo ""
@@ -223,6 +455,93 @@ parallel_run() {
   log "Workers: $actual | Failed: $failed | Elapsed: $(( elapsed / 60 ))m $(( elapsed % 60 ))s"
   log "Worker logs: /tmp/ralph-worker-*.log"
   echo ""
+  br stats 2>/dev/null || true
+
+  # Clean up worktrees now that work is merged
+  cleanup_worktrees "$actual"
+}
+
+# ── Judge: opus review of recent work ────────────────────────────────
+judge_run() {
+  check_deps
+  log_head "Ralph Judge Mode (Opus Review)"
+
+  local judge_prompt_file="$SCRIPT_DIR/ralph-judge-prompt.md"
+  if [[ ! -f "$judge_prompt_file" ]]; then
+    log_err "Missing judge prompt: $judge_prompt_file"
+    exit 1
+  fi
+
+  local judge_prompt
+  judge_prompt=$(cat "$judge_prompt_file")
+
+  local logfile="/tmp/ralph-judge.log"
+  log "Running opus judge... (log: $logfile)"
+
+  env -u CLAUDECODE -u CLAUDE_CODE_ENTRYPOINT \
+    claude -p \
+    --model opus \
+    --max-budget-usd "${RALPH_JUDGE_BUDGET:-5.00}" \
+    --allowedTools "$TOOLS" \
+    --dangerously-skip-permissions \
+    "$judge_prompt" > "$logfile" 2>&1 &
+  CHILD_PID=$!
+  wait "$CHILD_PID" || true
+  CHILD_PID=""
+
+  cat "$logfile"
+
+  # Count any new beads created
+  local new_bugs
+  new_bugs=$(grep -c 'br create' "$logfile" 2>/dev/null || echo "0")
+  log_ok "Judge complete. Bug beads created: $new_bugs"
+}
+
+# ── Orchestrate: full loop (parallel → merge → judge) ───────────────
+orchestrate_run() {
+  local rounds=${1:-3}
+  local workers=${2:-3}
+  check_deps
+
+  log_head "Ralph Orchestrate Mode"
+  log "Rounds: $rounds | Workers/round: $workers | Model: $MODEL"
+  echo ""
+
+  local start_time=$SECONDS
+  local completed=0
+
+  for ((r=1; r<=rounds; r++)); do
+    log_head "Orchestrate Round $r/$rounds"
+
+    # Check if there's work to do
+    local ready_count
+    ready_count=$(br ready --json 2>/dev/null | jq length 2>/dev/null || echo "0")
+    if [[ "$ready_count" == "0" ]]; then
+      log_ok "No ready tasks. All work complete!"
+      break
+    fi
+    log "Ready tasks: $ready_count"
+
+    # Phase 1: Parallel workers
+    log "Phase 1: Running $workers parallel workers..."
+    parallel_run "$workers"
+
+    # Phase 2: Judge review
+    log "Phase 2: Opus judge review..."
+    judge_run
+
+    completed=$r
+
+    if [[ $r -lt $rounds ]]; then
+      log "Cooling down ${COOLDOWN}s before next round..."
+      sleep "$COOLDOWN"
+    fi
+  done
+
+  local elapsed=$(( SECONDS - start_time ))
+  echo ""
+  log_head "Orchestrate Summary"
+  log "Rounds: $completed/$rounds | Elapsed: $(( elapsed / 60 ))m $(( elapsed % 60 ))s"
   br stats 2>/dev/null || true
 }
 
@@ -253,27 +572,35 @@ usage() {
   echo "  hitl              Run one iteration (human-in-the-loop)"
   echo "  afk [N]           Run N iterations unattended (default: 10)"
   echo "  parallel [N]      Spawn N concurrent workers (default: 3)"
+  echo "  judge             Opus review of recent commits, creates bug beads"
+  echo "  orchestrate [N]   N rounds of parallel→merge→judge (default: 3)"
   echo "  status            Show project dashboard"
   echo ""
   echo "Environment:"
-  echo "  RALPH_MODEL         Claude model (default: sonnet)"
-  echo "  RALPH_MAX_BUDGET    Max USD per iteration (default: 1.00)"
+  echo "  RALPH_MODEL         Claude model (default: opus)"
+  echo "  RALPH_MAX_BUDGET    Max USD per worker (default: 10.00)"
   echo "  RALPH_COOLDOWN      Seconds between iterations (default: 5)"
   echo "  RALPH_ALLOWED_TOOLS Tool whitelist (default: Bash Edit Read Write Glob Grep)"
+  echo "  RALPH_JUDGE_BUDGET  Max USD for judge review (default: 5.00)"
+  echo "  RALPH_POLL          Progress poll interval in secs (default: 15)"
   echo ""
   echo "Examples:"
   echo "  ./scripts/ralph.sh hitl"
   echo "  ./scripts/ralph.sh afk 20"
   echo "  RALPH_MODEL=opus ./scripts/ralph.sh afk 5"
-  echo "  ./scripts/ralph.sh parallel 3"
+  echo "  ./scripts/ralph.sh parallel 5"
+  echo "  ./scripts/ralph.sh judge"
+  echo "  ./scripts/ralph.sh orchestrate 3"
 }
 
 # ── Main ───────────────────────────────────────────────────────────
 case "${1:-}" in
-  hitl)     hitl_run ;;
-  afk)      afk_run "${2:-10}" ;;
-  parallel) parallel_run "${2:-3}" ;;
-  status)   status_run ;;
+  hitl)        hitl_run ;;
+  afk)         afk_run "${2:-10}" ;;
+  parallel)    parallel_run "${2:-3}" ;;
+  judge)       judge_run ;;
+  orchestrate) orchestrate_run "${2:-3}" "${3:-3}" ;;
+  status)      status_run ;;
   -h|--help|help) usage ;;
-  *)        usage; exit 1 ;;
+  *)           usage; exit 1 ;;
 esac

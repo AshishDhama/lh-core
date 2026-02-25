@@ -6,9 +6,9 @@ You are an autonomous coding agent working on the Lighthouse React web app.
 
 1. **Understand context** — Read PLAN.md for architecture and AGENTS.md for coding conventions. Read progress.txt for what's already been done.
 
-2. **Find work** — Run `br ready --json` to see unblocked tasks. Pick the highest priority task (lowest P number). If multiple tasks share the same priority, prefer architectural/integration work over implementation details.
+2. **Find work** — Run `br ready --unassigned --json` to see unblocked, unclaimed tasks. Pick the highest priority task (lowest P number). If multiple tasks share the same priority, prefer architectural/integration work over implementation details.
 
-3. **Claim task** — Run `br update <id> --status=in_progress` to claim it.
+3. **Claim task** — Run `br update <id> --claim` to atomically claim it (sets assignee + in_progress). If the claim fails (already claimed by another worker), go back to step 2 and pick a different task. NEVER work on a task you haven't successfully claimed.
 
 4. **Implement** — Follow AGENTS.md guidelines strictly:
    - Use design tokens from `@/forge/tokens`, never hardcode colors/spacing
