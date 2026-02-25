@@ -6,6 +6,7 @@
 #   ./scripts/ralph.sh parallel [N]      # N concurrent workers in worktrees (default: 3)
 #   ./scripts/ralph.sh judge             # Opus review of recent commits, creates bug beads
 #   ./scripts/ralph.sh orchestrate [N]   # N rounds of: parallel → merge → judge (default: 3)
+#   ./scripts/ralph.sh smart [N] [W]     # Opus orchestrator: spawns workers, merges, reviews
 #   ./scripts/ralph.sh status            # Dashboard: br stats + ready + progress
 
 set -euo pipefail
@@ -501,6 +502,66 @@ judge_run() {
   log_ok "Judge complete. Bug beads created: $new_bugs"
 }
 
+# ── Smart: opus orchestrator manages everything ─────────────────────
+# Single opus claude that spawns workers, merges intelligently, reviews.
+# More expensive but smarter — resolves conflicts, groups tasks, adapts.
+smart_run() {
+  local rounds=${1:-3}
+  local workers=${2:-3}
+  check_deps
+
+  local orch_prompt_file="$SCRIPT_DIR/ralph-orchestrator-prompt.md"
+  if [[ ! -f "$orch_prompt_file" ]]; then
+    log_err "Missing orchestrator prompt: $orch_prompt_file"
+    exit 1
+  fi
+
+  log_head "Ralph Smart Mode (Opus Orchestrator)"
+  log "Rounds: $rounds | Workers/round: $workers"
+  log "The orchestrator will manage workers, merge, and review autonomously."
+  echo ""
+
+  local orch_prompt
+  orch_prompt=$(cat "$orch_prompt_file")
+  # Inject round/worker config into the prompt
+  orch_prompt="$orch_prompt
+
+## Session Config
+- Rounds: $rounds
+- Workers per round: $workers
+- Worker model: $MODEL
+- Worker budget: \$$BUDGET each
+"
+
+  local logfile="/tmp/ralph-smart.log"
+  local start_time=$SECONDS
+
+  env -u CLAUDECODE -u CLAUDE_CODE_ENTRYPOINT \
+    claude -p \
+    --model opus \
+    --max-budget-usd "${RALPH_SMART_BUDGET:-20.00}" \
+    --allowedTools "$TOOLS" \
+    --dangerously-skip-permissions \
+    "$orch_prompt" > "$logfile" 2>&1 &
+  CHILD_PID=$!
+
+  log "Opus orchestrator running... (log: $logfile)"
+  log "Tail live: tail -f $logfile"
+  echo ""
+
+  wait "$CHILD_PID" || true
+  CHILD_PID=""
+
+  cat "$logfile"
+
+  local elapsed=$(( SECONDS - start_time ))
+  echo ""
+  log_head "Smart Mode Summary"
+  log "Elapsed: $(( elapsed / 60 ))m $(( elapsed % 60 ))s"
+  log "Log: $logfile"
+  br stats 2>/dev/null || true
+}
+
 # ── Orchestrate: full loop (parallel → merge → judge) ───────────────
 orchestrate_run() {
   local rounds=${1:-3}
@@ -578,6 +639,7 @@ usage() {
   echo "  parallel [N]      Spawn N concurrent workers (default: 3)"
   echo "  judge             Opus review of recent commits, creates bug beads"
   echo "  orchestrate [N]   N rounds of parallel→merge→judge (default: 3)"
+  echo "  smart [N] [W]     Opus orchestrator: N rounds, W workers (default: 3/3)"
   echo "  status            Show project dashboard"
   echo ""
   echo "Environment:"
@@ -586,6 +648,7 @@ usage() {
   echo "  RALPH_COOLDOWN      Seconds between iterations (default: 5)"
   echo "  RALPH_ALLOWED_TOOLS Tool whitelist (default: Bash Edit Read Write Glob Grep)"
   echo "  RALPH_JUDGE_BUDGET  Max USD for judge review (default: 5.00)"
+  echo "  RALPH_SMART_BUDGET  Max USD for smart orchestrator (default: 20.00)"
   echo "  RALPH_POLL          Progress poll interval in secs (default: 15)"
   echo ""
   echo "Examples:"
@@ -595,6 +658,7 @@ usage() {
   echo "  ./scripts/ralph.sh parallel 5"
   echo "  ./scripts/ralph.sh judge"
   echo "  ./scripts/ralph.sh orchestrate 3"
+  echo "  ./scripts/ralph.sh smart 3 5        # 3 rounds, 5 workers each"
 }
 
 # ── Main ───────────────────────────────────────────────────────────
@@ -604,6 +668,7 @@ case "${1:-}" in
   parallel)    parallel_run "${2:-3}" ;;
   judge)       judge_run ;;
   orchestrate) orchestrate_run "${2:-3}" "${3:-3}" ;;
+  smart)       smart_run "${2:-3}" "${3:-3}" ;;
   status)      status_run ;;
   -h|--help|help) usage ;;
   *)           usage; exit 1 ;;
