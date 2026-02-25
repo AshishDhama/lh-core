@@ -47,3 +47,4 @@ export {
   type SystemCheck,
   type CheckStatus,
 } from './SystemCheckPanel';
+export { IdpWizard, type IdpWizardProps } from './IdpWizard';

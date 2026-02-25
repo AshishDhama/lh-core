@@ -1,10 +1,11 @@
 import { useState } from 'react';
+
 import { createFileRoute } from '@tanstack/react-router';
 import { BookOpen, Lightbulb, Target, TrendingUp } from 'lucide-react';
 
 import { Button, StatCard, Text, Title } from '@/forge';
 import { DashboardLayout } from '@/forge/layouts';
-import { IdpWizard } from '@/forge/patterns/IdpWizard';
+import { IdpWizard } from '@/forge/patterns';
 import { colors } from '@/forge/tokens';
 import { useTranslation } from '@/i18n';
 import { useThemeStore } from '@/stores/useThemeStore';
@@ -175,6 +176,8 @@ function DevelopmentPage() {
 
         <div className="h-8" aria-hidden="true" />
       </div>
+
+      {wizardOpen && <IdpWizard onClose={() => setWizardOpen(false)} />}
     </DashboardLayout>
 
     {wizardOpen && <IdpWizard onClose={() => setWizardOpen(false)} />}
