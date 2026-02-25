@@ -94,7 +94,6 @@ export function SearchBar({
           <Search
             size={16}
             className="text-content-tertiary"
-            style={{ color: '#94a3b8' }}
           />
         }
         suffix={
@@ -107,7 +106,7 @@ export function SearchBar({
               className="flex items-center justify-center text-content-tertiary hover:text-content-secondary transition-colors"
               aria-label="Clear search"
             >
-              <X size={14} style={{ color: '#94a3b8' }} />
+              <X size={14} className="text-content-tertiary" />
             </button>
           ) : null
         }
@@ -133,9 +132,9 @@ export function SearchBar({
                 style={
                   isActive
                     ? {
-                        borderColor: '#3575BC',
-                        backgroundColor: '#EEF6FA',
-                        color: '#001A4A',
+                        borderColor: 'var(--color-navy-400)',
+                        backgroundColor: 'var(--color-navy-50)',
+                        color: 'var(--color-navy-700)',
                       }
                     : {}
                 }

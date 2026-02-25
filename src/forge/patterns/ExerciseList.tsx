@@ -71,8 +71,8 @@ const ExerciseItem = memo(function ExerciseItem({ exercise, isActive, onSelect }
       className={cn(
         'flex items-start gap-3 px-4 py-3 rounded-xl cursor-pointer',
         'transition-colors duration-150',
-        isActive && 'bg-[#EEF6FA]',
-        !isActive && !isLocked && 'hover:bg-[#f1f5f9]',
+        isActive && 'bg-navy-50',
+        !isActive && !isLocked && 'hover:bg-surface-tertiary',
         isLocked && 'opacity-50 cursor-not-allowed',
       )}
       onClick={() => !isLocked && onSelect?.(exercise.id)}
@@ -91,7 +91,7 @@ const ExerciseItem = memo(function ExerciseItem({ exercise, isActive, onSelect }
       <div
         className={cn(
           'flex-shrink-0 flex items-center justify-center w-9 h-9 rounded-lg mt-0.5',
-          isActive ? 'bg-[#002C77]' : 'bg-[#f1f5f9]',
+          isActive ? 'bg-navy' : 'bg-surface-tertiary',
         )}
         aria-hidden="true"
       >
@@ -157,7 +157,7 @@ export function ExerciseList({ exercises, onSelect, activeId, className }: Exerc
         <div key={section ?? '__default__'}>
           {hasGroups && section && (
             <div className="px-4 pt-4 pb-1">
-              <Title level={4} className="!text-[#94a3b8] !text-xs !font-semibold uppercase tracking-wide !mb-0">
+              <Title level={4} className="!text-content-tertiary !text-xs !font-semibold uppercase tracking-wide !mb-0">
                 {section}
               </Title>
             </div>

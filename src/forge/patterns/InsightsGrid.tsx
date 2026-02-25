@@ -25,7 +25,7 @@ export interface InsightsGridProps {
 function ChartPlaceholder({ config }: { config: ChartConfig }) {
   return (
     <div
-      className="flex flex-col gap-3 p-5 rounded-2xl border border-[#e2e8f0] bg-white"
+      className="flex flex-col gap-3 p-5 rounded-2xl border border-border bg-white"
       style={{ minHeight: config.height ?? 200 }}
     >
       <Text size="sm" weight="semibold" color="primary">
@@ -56,7 +56,7 @@ export function InsightsGrid({ stats, charts = [], reports, period, className }:
         </Title>
         {period && (
           <Text size="sm" color="secondary">
-            Period: <span className="font-medium text-[#0f172a]">{period}</span>
+            Period: <span className="font-medium text-content-primary">{period}</span>
           </Text>
         )}
       </div>

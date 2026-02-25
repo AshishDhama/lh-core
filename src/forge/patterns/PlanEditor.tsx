@@ -74,10 +74,10 @@ function GoalCard({ goal, onGoalUpdate, onDeleteGoal }: GoalCardProps) {
   }
 
   return (
-    <div className="flex flex-col gap-0 rounded-2xl border border-[#e2e8f0] bg-white overflow-hidden">
+    <div className="flex flex-col gap-0 rounded-2xl border border-border bg-white overflow-hidden">
       {/* Goal header */}
       <div
-        className="flex items-center gap-3 px-5 py-4 cursor-pointer hover:bg-[#fafbfc] transition-colors"
+        className="flex items-center gap-3 px-5 py-4 cursor-pointer hover:bg-surface-secondary transition-colors"
         onClick={() => setExpanded((e) => !e)}
         role="button"
         tabIndex={0}
@@ -117,7 +117,7 @@ function GoalCard({ goal, onGoalUpdate, onDeleteGoal }: GoalCardProps) {
         {onDeleteGoal && (
           <button
             type="button"
-            className="flex-shrink-0 flex items-center justify-center w-7 h-7 rounded-lg hover:bg-[#fee2e2] transition-colors"
+            className="flex-shrink-0 flex items-center justify-center w-7 h-7 rounded-lg hover:bg-[#fee2e2] /* error bg – no token */ transition-colors"
             onClick={(e) => {
               e.stopPropagation();
               onDeleteGoal(goal.id);
@@ -131,7 +131,7 @@ function GoalCard({ goal, onGoalUpdate, onDeleteGoal }: GoalCardProps) {
 
       {/* Expanded content */}
       {expanded && (
-        <div className="flex flex-col gap-5 px-5 pb-5 border-t border-[#f1f5f9]">
+        <div className="flex flex-col gap-5 px-5 pb-5 border-t border-surface-tertiary">
           {/* Skills */}
           {goal.skills.length > 0 && (
             <div className="flex flex-col gap-2 pt-4">
@@ -200,7 +200,7 @@ export function PlanEditor({ goals, onGoalUpdate, onAddGoal, onDeleteGoal, class
 
       {/* Goals */}
       {goals.length === 0 ? (
-        <div className="flex flex-col items-center justify-center py-12 gap-3 text-center rounded-2xl border border-dashed border-[#e2e8f0]">
+        <div className="flex flex-col items-center justify-center py-12 gap-3 text-center rounded-2xl border border-dashed border-border">
           <Icon name="Target" size="lg" style={{ color: colors.content.tertiary }} />
           <Text size="sm" color="tertiary">
             No goals yet. Add a development goal to get started.

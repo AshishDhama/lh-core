@@ -41,7 +41,7 @@ export function Header({
       className={cn(
         'fixed top-0 left-0 right-0 z-50',
         'h-16 px-4 flex items-center gap-4',
-        'bg-white border-b border-[#e2e8f0]',
+        'bg-white border-b border-border',
         className,
       )}
     >
@@ -51,7 +51,7 @@ export function Header({
         size="sm"
         icon={<Icon name="Menu" size="md" />}
         onClick={onMenuClick}
-        className="flex-shrink-0 text-[#475569]"
+        className="flex-shrink-0 text-content-secondary"
         aria-label="Toggle menu"
       />
 
@@ -105,7 +105,7 @@ export function Header({
           />
         }
         onClick={toggleMode}
-        className="text-[#475569]"
+        className="text-content-secondary"
         aria-label={mode === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
       />
 
@@ -115,14 +115,14 @@ export function Header({
           variant="ghost"
           size="sm"
           icon={<Icon name="Bell" size="md" />}
-          className="text-[#475569]"
+          className="text-content-secondary"
           aria-label={`Notifications${notifications > 0 ? `, ${notifications} unread` : ''}`}
         />
       </Badge>
 
       {/* User info */}
       {user && (
-        <div className="flex items-center gap-2 pl-2 border-l border-[#e2e8f0]">
+        <div className="flex items-center gap-2 pl-2 border-l border-border">
           <Avatar
             src={user.avatar}
             fallback={user.name}

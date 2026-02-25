@@ -72,14 +72,14 @@ function Segment({ value, label, size, showLabels, isLast }: SegmentProps) {
       <div className="flex flex-col items-center">
         <span
           className={cn(
-            'font-bold tabular-nums leading-none text-[#0f172a]',
+            'font-bold tabular-nums leading-none text-content-primary',
             digitSizeClasses[size],
           )}
         >
           {pad(value)}
         </span>
         {showLabels && (
-          <Label className="mt-1 text-xs uppercase tracking-wide text-[#64748b]">
+          <Label className="mt-1 text-xs uppercase tracking-wide text-content-tertiary">
             {label}
           </Label>
         )}
@@ -87,7 +87,7 @@ function Segment({ value, label, size, showLabels, isLast }: SegmentProps) {
       {!isLast && (
         <span
           className={cn(
-            'mx-0.5 font-bold text-[#64748b]',
+            'mx-0.5 font-bold text-content-tertiary',
             digitSizeClasses[size],
           )}
         >

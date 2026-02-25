@@ -42,8 +42,8 @@ function CheckRow({ check }: { check: SystemCheck }) {
     <div
       className={cn(
         'flex items-start gap-3 px-4 py-3 rounded-xl',
-        check.status === 'running' && 'bg-[#EEF6FA]',
-        check.status === 'fail' && 'bg-[#fef2f2]',
+        check.status === 'running' && 'bg-navy-50',
+        check.status === 'fail' && 'bg-[#fef2f2]', /* error bg – no token */
       )}
     >
       <div className="flex-shrink-0 mt-0.5">
@@ -64,10 +64,10 @@ function CheckRow({ check }: { check: SystemCheck }) {
             size="xs"
             className={cn(
               'flex-shrink-0',
-              check.status === 'pass' && 'text-[#15803d]',
-              check.status === 'fail' && 'text-[#b91c1c]',
-              check.status === 'running' && 'text-[#002C77]',
-              check.status === 'pending' && 'text-[#94a3b8]',
+              check.status === 'pass' && 'text-success-dark',
+              check.status === 'fail' && 'text-error-dark',
+              check.status === 'running' && 'text-navy',
+              check.status === 'pending' && 'text-content-tertiary',
             )}
           >
             {statusLabel[check.status]}

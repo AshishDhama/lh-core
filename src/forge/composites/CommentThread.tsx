@@ -77,14 +77,14 @@ function CommentItem({ comment, isReply = false, onReply }: CommentItemProps) {
       <Avatar
         src={comment.avatar}
         size={isReply ? 28 : 32}
-        style={{ backgroundColor: '#002C77', flexShrink: 0 }}
+        style={{ backgroundColor: 'var(--color-navy)', flexShrink: 0 }}
         aria-label={comment.author}
       >
         {!comment.avatar && getSenderInitials(comment.author)}
       </Avatar>
 
       <div className="flex flex-1 flex-col gap-1 min-w-0">
-        <div className="rounded-xl bg-[#f1f5f9] px-3 py-2">
+        <div className="rounded-xl bg-surface-tertiary px-3 py-2">
           <div className="flex items-baseline gap-2 flex-wrap">
             <Text size="sm" weight="semibold" color="primary">
               {comment.author}
@@ -101,7 +101,7 @@ function CommentItem({ comment, isReply = false, onReply }: CommentItemProps) {
         {!isReply && onReply && (
           <button
             type="button"
-            className="flex items-center gap-1 self-start px-1 text-xs text-[#94a3b8] hover:text-[#475569] transition-colors"
+            className="flex items-center gap-1 self-start px-1 text-xs text-content-tertiary hover:text-content-secondary transition-colors"
             onClick={() => setShowReplyInput((prev) => !prev)}
             aria-expanded={showReplyInput}
           >
@@ -172,7 +172,7 @@ export function CommentThread({
           />
 
           {comment.replies && comment.replies.length > 0 && (
-            <div className="flex flex-col gap-2 pl-2 border-l-2 border-[#f1f5f9] ml-4">
+            <div className="flex flex-col gap-2 pl-2 border-l-2 border-surface-tertiary ml-4">
               {comment.replies.map((reply) => (
                 <CommentItem key={reply.id} comment={reply} isReply />
               ))}

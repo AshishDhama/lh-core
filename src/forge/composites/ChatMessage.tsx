@@ -54,7 +54,7 @@ export const ChatMessage = memo(function ChatMessage({
         <Text
           size="xs"
           color="tertiary"
-          className="rounded-full bg-[#f1f5f9] px-3 py-1 text-center"
+          className="rounded-full bg-surface-tertiary px-3 py-1 text-center"
         >
           {content}
         </Text>
@@ -84,7 +84,7 @@ export const ChatMessage = memo(function ChatMessage({
         <Avatar
           src={sender.avatar}
           size={32}
-          style={{ backgroundColor: '#002C77', flexShrink: 0 }}
+          style={{ backgroundColor: 'var(--color-navy)', flexShrink: 0 }}
           aria-label={sender.name}
         >
           {!sender.avatar && getSenderInitials(sender.name)}
@@ -107,8 +107,8 @@ export const ChatMessage = memo(function ChatMessage({
           className={cn(
             'rounded-2xl px-3 py-2 text-sm leading-relaxed',
             isOwn
-              ? 'rounded-br-sm bg-[#002C77] text-white'
-              : 'rounded-bl-sm bg-[#f1f5f9] text-[#0f172a]',
+              ? 'rounded-br-sm bg-navy text-white'
+              : 'rounded-bl-sm bg-surface-tertiary text-content-primary',
           )}
         >
           {renderContent(content)}

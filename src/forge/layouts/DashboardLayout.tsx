@@ -74,7 +74,7 @@ export function DashboardLayout({
   };
 
   return (
-    <Layout className="min-h-screen bg-[#fafbfc]">
+    <Layout className="min-h-screen bg-surface-secondary">
       {/* Fixed top bar — renders above everything */}
       <Header
         title={title}

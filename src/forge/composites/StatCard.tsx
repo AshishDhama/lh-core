@@ -24,17 +24,17 @@ export interface StatCardProps {
 const trendConfig: Record<StatTrend, { icon: ReactNode; className: string; label: string }> = {
   up: {
     icon: <TrendingUp size={12} />,
-    className: 'text-[#22c55e] bg-[#86efac]/20',
+    className: 'text-success bg-success-light/20',
     label: 'up',
   },
   down: {
     icon: <TrendingDown size={12} />,
-    className: 'text-[#ef4444] bg-[#fca5a5]/20',
+    className: 'text-error bg-error-light/20',
     label: 'down',
   },
   flat: {
     icon: <Minus size={12} />,
-    className: 'text-[#94a3b8] bg-[#94a3b8]/10',
+    className: 'text-content-tertiary bg-content-tertiary/10',
     label: 'flat',
   },
 };
@@ -52,7 +52,7 @@ export const StatCard = memo(function StatCard({
   change,
   trend,
   icon,
-  iconColor = '#002C77',
+  iconColor = 'var(--color-navy)',
   loading = false,
   className,
 }: StatCardProps) {

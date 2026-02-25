@@ -33,11 +33,11 @@ const numberToLabel: Record<SkillLevel, string> = {
 };
 
 const levelColors: Record<SkillLevel, string> = {
-  1: '#94a3b8',
-  2: '#3575BC',
-  3: '#008575',
-  4: '#7B61FF',
-  5: '#002C77',
+  1: 'var(--color-content-tertiary)',
+  2: 'var(--color-navy-400)',
+  3: 'var(--color-teal)',
+  4: 'var(--color-purple)',
+  5: 'var(--color-navy)',
 };
 
 function resolveLevel(level: SkillLevel | SkillLevelLabel): SkillLevel {
@@ -69,7 +69,7 @@ export const SkillCard = memo(function SkillCard({
   return (
     <div
       className={cn(
-        'flex flex-col gap-3 rounded-xl border border-[#f1f5f9] bg-white p-4 shadow-sm',
+        'flex flex-col gap-3 rounded-xl border border-surface-tertiary bg-white p-4 shadow-sm',
         className,
       )}
     >
@@ -115,7 +115,7 @@ export const SkillCard = memo(function SkillCard({
           percent={displayProgress}
           showInfo={false}
           strokeColor={strokeColor}
-          trailColor="#f1f5f9"
+          trailColor="var(--color-surface-tertiary)"
           size="small"
         />
 
@@ -136,7 +136,7 @@ export const SkillCard = memo(function SkillCard({
               key={lvl}
               className="h-1.5 w-1.5 rounded-full"
               style={{
-                backgroundColor: lvl <= currentLevel ? strokeColor : '#e2e8f0',
+                backgroundColor: lvl <= currentLevel ? strokeColor : 'var(--color-border)',
               }}
               aria-hidden="true"
             />

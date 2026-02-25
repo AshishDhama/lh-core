@@ -45,7 +45,7 @@ export function FormField({
       {children ? (
         <div
           className={cn(
-            hasError && '[&_.ant-input]:!border-[#ef4444] [&_.ant-select-selector]:!border-[#ef4444]',
+            hasError && '[&_.ant-input]:!border-error [&_.ant-select-selector]:!border-error',
           )}
         >
           {children}
