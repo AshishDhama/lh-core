@@ -1,32 +1,22 @@
 import { Image } from 'lucide-react';
+import { useState } from 'react';
 
 import { cn } from '@/forge/utils';
 
-import analyticsUrl from '@/assets/illustrations/analytics.svg?url';
-import assessmentUrl from '@/assets/illustrations/assessment.svg?url';
-import cognitiveUrl from '@/assets/illustrations/cognitive.svg?url';
-import feedbackUrl from '@/assets/illustrations/feedback.svg?url';
-import interviewUrl from '@/assets/illustrations/interview.svg?url';
-import leadershipUrl from '@/assets/illustrations/leadership.svg?url';
-import scenarioUrl from '@/assets/illustrations/scenario.svg?url';
-import simulationUrl from '@/assets/illustrations/simulation.svg?url';
-import surveyUrl from '@/assets/illustrations/survey.svg?url';
-import wellbeingUrl from '@/assets/illustrations/wellbeing.svg?url';
+const VALID_NAMES = [
+  'analytics',
+  'assessment',
+  'cognitive',
+  'feedback',
+  'interview',
+  'leadership',
+  'scenario',
+  'simulation',
+  'survey',
+  'wellbeing',
+] as const;
 
-const illustrationMap = {
-  analytics: analyticsUrl,
-  assessment: assessmentUrl,
-  cognitive: cognitiveUrl,
-  feedback: feedbackUrl,
-  interview: interviewUrl,
-  leadership: leadershipUrl,
-  scenario: scenarioUrl,
-  simulation: simulationUrl,
-  survey: surveyUrl,
-  wellbeing: wellbeingUrl,
-} as const;
-
-export type IllustrationName = keyof typeof illustrationMap;
+export type IllustrationName = (typeof VALID_NAMES)[number];
 
 type IllustrationSize = 'sm' | 'md' | 'lg' | 'xl';
 
@@ -43,34 +33,41 @@ const sizeMap: Record<IllustrationSize, number> = {
   xl: 160,
 };
 
+const validSet = new Set<string>(VALID_NAMES);
+
+function Placeholder({ size, name, className }: { size: number; name: string; className?: string }) {
+  return (
+    <div
+      className={cn(
+        'flex items-center justify-center rounded-lg bg-surface-tertiary',
+        className,
+      )}
+      style={{ width: size, height: size }}
+      role="img"
+      aria-label={name}
+    >
+      <Image size={size * 0.35} className="text-content-tertiary" />
+    </div>
+  );
+}
+
 export function Illustration({ name, size = 'md', className }: IllustrationProps) {
   const resolved = sizeMap[size];
-  const url = illustrationMap[name as IllustrationName];
+  const [failed, setFailed] = useState(false);
 
-  if (!url) {
-    return (
-      <div
-        className={cn(
-          'flex items-center justify-center rounded-lg bg-surface-tertiary',
-          className,
-        )}
-        style={{ width: resolved, height: resolved }}
-        role="img"
-        aria-label={name}
-      >
-        <Image size={resolved * 0.4} className="text-content-tertiary" />
-      </div>
-    );
+  if (!validSet.has(name) || failed) {
+    return <Placeholder size={resolved} name={name} className={className} />;
   }
 
   return (
     <img
-      src={url}
+      src={`/illustrations/${name}.svg`}
       alt={name}
       width={resolved}
       height={resolved}
       className={cn('object-contain', className)}
       draggable={false}
+      onError={() => setFailed(true)}
     />
   );
 }
