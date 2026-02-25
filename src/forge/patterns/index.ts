@@ -19,6 +19,13 @@ export {
   type ExerciseType,
 } from './ExerciseList';
 export { HeroBanner, type HeroBannerProps } from './HeroBanner';
+export {
+  ScheduleCalendar,
+  type ScheduleCalendarProps,
+  type CalendarEvent,
+  type CalendarView,
+  type EventType,
+} from './ScheduleCalendar';
 export { Sidebar, type SidebarProps, type SidebarItem } from './Sidebar';
 export {
   SystemCheckPanel,
