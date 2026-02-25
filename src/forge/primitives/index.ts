@@ -21,6 +21,7 @@ export {
   type PasswordProps,
   type TextAreaProps,
 } from './Input';
+export { ProgressBar, type ProgressBarProps } from './ProgressBar';
 export {
   Title,
   Text,
