@@ -95,13 +95,13 @@ export function ReportCard({
       <div className="flex items-start justify-between gap-2">
         <div className="flex items-start gap-3 min-w-0">
           <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-navy-50 dark:bg-navy-900/20">
-            <FileText size={18} style={{ color: '#002C77' }} />
+            <FileText size={18} style={{ color: colors.navy.DEFAULT }} />
           </div>
-          <div className="min-w-0">
-            <Text size="sm" weight="semibold" color="primary" className="leading-snug">
+          <div className="min-w-0 flex flex-col">
+            <Text size="sm" weight="semibold" color="primary" className="leading-snug block">
               {title}
             </Text>
-            <Text size="xs" color="tertiary" className="mt-0.5">
+            <Text size="xs" color="tertiary" className="mt-0.5 block">
               {period}
             </Text>
           </div>
