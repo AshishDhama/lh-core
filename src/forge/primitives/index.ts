@@ -1,2 +1,2 @@
 // Forge primitives — barrel export
-// Components added here as they are created
+export { Button, type ButtonProps } from './Button';
