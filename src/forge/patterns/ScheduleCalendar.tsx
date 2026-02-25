@@ -120,7 +120,7 @@ function EventListView({
                 return (
                   <div
                     key={ev.id}
-                    className="flex items-center gap-3 px-4 py-3 rounded-xl border border-[#e2e8f0] bg-surface-primary hover:border-[#A3C5E5] cursor-pointer transition-colors"
+                    className="flex items-center gap-3 px-4 py-3 rounded-xl border border-border bg-surface-primary hover:border-navy-200 cursor-pointer transition-colors"
                     onClick={() => onEventClick?.(ev)}
                     role="button"
                     tabIndex={0}
@@ -135,7 +135,7 @@ function EventListView({
                       <Text size="xs" color="tertiary">
                         {startTime}
                       </Text>
-                      <div className="w-px h-3 bg-[#e2e8f0]" aria-hidden="true" />
+                      <div className="w-px h-3 bg-border" aria-hidden="true" />
                       <Text size="xs" color="tertiary">
                         {endTime}
                       </Text>
@@ -202,7 +202,7 @@ function MonthView({
     <Calendar
       cellRender={cellRender}
       onSelect={handleSelect}
-      className="rounded-xl border border-[#e2e8f0]"
+      className="rounded-xl border border-border"
     />
   );
 }
@@ -223,7 +223,7 @@ export function ScheduleCalendar({
         <Title level={3} className="!mb-0">
           Schedule
         </Title>
-        <div className="flex items-center gap-1 p-1 bg-[#f1f5f9] rounded-lg">
+        <div className="flex items-center gap-1 p-1 bg-surface-tertiary rounded-lg">
           {(['month', 'week', 'day'] as CalendarView[]).map((v) => (
             <button
               key={v}
@@ -231,8 +231,8 @@ export function ScheduleCalendar({
               className={cn(
                 'px-3 py-1.5 rounded-md text-sm font-medium transition-colors capitalize',
                 view === v
-                  ? 'bg-surface-primary text-[#002C77] shadow-sm'
-                  : 'text-[#64748b] hover:text-[#0f172a]',
+                  ? 'bg-surface-primary text-navy dark:text-navy-200 shadow-sm'
+                  : 'text-content-tertiary hover:text-content-primary',
               )}
               onClick={() => setView(v)}
             >

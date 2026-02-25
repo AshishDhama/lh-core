@@ -7,17 +7,10 @@ import type { SidebarItem } from '@/forge';
 import { DashboardLayout } from '@/forge/layouts';
 import { colors } from '@/forge/tokens';
 import { useProgramStore } from '@/stores/useProgramStore';
-import { i18n } from '@/i18n';
+import { useTranslation } from '@/i18n';
+import { useThemeStore } from '@/stores/useThemeStore';
 
-// ─── Sidebar (shared with other pages) ───────────────────────────────────────
-
-const SIDEBAR_ITEMS: SidebarItem[] = [
-  { key: 'dashboard', label: i18n.t('nav.dashboard'), icon: 'LayoutDashboard', path: '/' },
-  { key: 'programs', label: i18n.t('nav.programs'), icon: 'BookOpen', path: '/programs' },
-  { key: 'development', label: i18n.t('nav.development'), icon: 'Target', path: '/development' },
-  { key: 'scheduling', label: i18n.t('nav.scheduling'), icon: 'CalendarDays', path: '/scheduling' },
-  { key: 'insights', label: i18n.t('nav.insights'), icon: 'ChartBar', path: '/insights' },
-];
+// ─── Shared constants ─────────────────────────────────────────────────────────
 
 const MOCK_USER = {
   name: 'Priya Sharma',
@@ -31,9 +24,19 @@ export const Route = createFileRoute('/programs/$programId/')({
 });
 
 function ProgramInstructionsPage() {
+  const locale = useThemeStore((s) => s.locale);
+  const { t } = useTranslation(locale);
   const { programId } = Route.useParams();
   const navigate = useNavigate();
   const program = useProgramStore((s) => s.programs[programId]);
+
+  const sidebarItems: SidebarItem[] = [
+    { key: 'dashboard', label: t('nav.dashboard'), icon: 'LayoutDashboard', path: '/' },
+    { key: 'programs', label: t('nav.programs'), icon: 'BookOpen', path: '/programs' },
+    { key: 'development', label: t('nav.development'), icon: 'Target', path: '/development' },
+    { key: 'scheduling', label: t('nav.scheduling'), icon: 'CalendarDays', path: '/scheduling' },
+    { key: 'insights', label: t('nav.insights'), icon: 'ChartBar', path: '/insights' },
+  ];
 
   const totalExercises =
     (program?.seqExercises.length ?? 0) + (program?.openExercises.length ?? 0);
@@ -44,7 +47,7 @@ function ProgramInstructionsPage() {
 
   if (!program) {
     return (
-      <DashboardLayout sidebarItems={SIDEBAR_ITEMS} user={MOCK_USER} title="Lighthouse" activeKey="programs">
+      <DashboardLayout sidebarItems={sidebarItems} user={MOCK_USER} title="Lighthouse" activeKey="programs">
         <div className="p-6">
           <Alert
             type="error"
@@ -59,7 +62,7 @@ function ProgramInstructionsPage() {
 
   return (
     <DashboardLayout
-      sidebarItems={SIDEBAR_ITEMS}
+      sidebarItems={sidebarItems}
       user={MOCK_USER}
       title="Lighthouse"
       activeKey="programs"
@@ -78,7 +81,7 @@ function ProgramInstructionsPage() {
             style={{ backgroundColor: `${program.accent}18`, color: program.accent }}
           >
             <BookOpen size={12} />
-            {i18n.t('programs.overview')}
+            {t('programs.overview')}
           </div>
 
           <Title level={2} weight="bold" color="primary">
@@ -119,7 +122,7 @@ function ProgramInstructionsPage() {
         {/* Instructions */}
         <section>
           <Title level={4} weight="semibold" color="primary" className="mb-4">
-            {i18n.t('programs.beforeYouBegin')}
+            {t('programs.beforeYouBegin')}
           </Title>
           <div className="rounded-xl border border-[#e2e8f0] bg-surface-primary p-5 space-y-3">
             {program.instructions.map((instruction, idx) => (
@@ -141,7 +144,7 @@ function ProgramInstructionsPage() {
         {/* Module overview */}
         <section>
           <Title level={4} weight="semibold" color="primary" className="mb-4">
-            {i18n.t('programs.modules')} ({completedExercises}/{totalExercises} {i18n.t('status.completed').toLowerCase()})
+            {t('programs.modules')} ({completedExercises}/{totalExercises} {t('status.completed').toLowerCase()})
           </Title>
           <div className="space-y-2">
             {program.seqExercises.map((exercise) => (
@@ -174,7 +177,7 @@ function ProgramInstructionsPage() {
                         : { color: colors.content.tertiary, backgroundColor: `${colors.content.tertiary}15` }
                   }
                 >
-                  {exercise.status === 'complete' ? i18n.t('status.done') : exercise.status === 'progress' ? i18n.t('status.inProgress') : i18n.t('status.locked')}
+                  {exercise.status === 'complete' ? t('status.done') : exercise.status === 'progress' ? t('status.inProgress') : t('status.locked')}
                 </span>
               </div>
             ))}
@@ -188,14 +191,14 @@ function ProgramInstructionsPage() {
             size="lg"
             onClick={() => navigate({ to: '/programs/$programId/tasks', params: { programId } })}
           >
-            {program.pct > 0 ? i18n.t('programs.continueProgram') : i18n.t('programs.startProgram')}
+            {program.pct > 0 ? t('programs.continueProgram') : t('programs.startProgram')}
           </Button>
           <Button
             variant="secondary"
             size="lg"
             onClick={() => navigate({ to: '/' })}
           >
-            {i18n.t('programs.backToDashboard')}
+            {t('programs.backToDashboard')}
           </Button>
         </div>
       </div>

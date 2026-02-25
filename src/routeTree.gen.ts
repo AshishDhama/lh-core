@@ -13,6 +13,11 @@ import { Route as SchedulingRouteImport } from './routes/scheduling'
 import { Route as InsightsRouteImport } from './routes/insights'
 import { Route as DiscoveryRouteImport } from './routes/discovery'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ModesScrollyRouteImport } from './routes/modes/scrolly'
+import { Route as ModesNotionRouteImport } from './routes/modes/notion'
+import { Route as ModesM3RouteImport } from './routes/modes/m3'
+import { Route as ModesEditorialRouteImport } from './routes/modes/editorial'
+import { Route as ModesBentoRouteImport } from './routes/modes/bento'
 import { Route as ProgramsProgramIdIndexRouteImport } from './routes/programs/$programId/index'
 import { Route as ProgramsProgramIdTasksRouteImport } from './routes/programs/$programId/tasks'
 import { Route as ProgramsProgramIdPrecheckRouteImport } from './routes/programs/$programId/precheck'
@@ -37,6 +42,31 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
+const ModesScrollyRoute = ModesScrollyRouteImport.update({
+  id: '/modes/scrolly',
+  path: '/modes/scrolly',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ModesNotionRoute = ModesNotionRouteImport.update({
+  id: '/modes/notion',
+  path: '/modes/notion',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ModesM3Route = ModesM3RouteImport.update({
+  id: '/modes/m3',
+  path: '/modes/m3',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ModesEditorialRoute = ModesEditorialRouteImport.update({
+  id: '/modes/editorial',
+  path: '/modes/editorial',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ModesBentoRoute = ModesBentoRouteImport.update({
+  id: '/modes/bento',
+  path: '/modes/bento',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProgramsProgramIdIndexRoute = ProgramsProgramIdIndexRouteImport.update({
   id: '/programs/$programId/',
   path: '/programs/$programId/',
@@ -65,6 +95,11 @@ export interface FileRoutesByFullPath {
   '/discovery': typeof DiscoveryRoute
   '/insights': typeof InsightsRoute
   '/scheduling': typeof SchedulingRoute
+  '/modes/bento': typeof ModesBentoRoute
+  '/modes/editorial': typeof ModesEditorialRoute
+  '/modes/m3': typeof ModesM3Route
+  '/modes/notion': typeof ModesNotionRoute
+  '/modes/scrolly': typeof ModesScrollyRoute
   '/programs/$programId/precheck': typeof ProgramsProgramIdPrecheckRoute
   '/programs/$programId/tasks': typeof ProgramsProgramIdTasksRoute
   '/programs/$programId/': typeof ProgramsProgramIdIndexRoute
@@ -74,6 +109,11 @@ export interface FileRoutesByTo {
   '/discovery': typeof DiscoveryRoute
   '/insights': typeof InsightsRoute
   '/scheduling': typeof SchedulingRoute
+  '/modes/bento': typeof ModesBentoRoute
+  '/modes/editorial': typeof ModesEditorialRoute
+  '/modes/m3': typeof ModesM3Route
+  '/modes/notion': typeof ModesNotionRoute
+  '/modes/scrolly': typeof ModesScrollyRoute
   '/programs/$programId/precheck': typeof ProgramsProgramIdPrecheckRoute
   '/programs/$programId/tasks': typeof ProgramsProgramIdTasksRoute
   '/programs/$programId': typeof ProgramsProgramIdIndexRoute
@@ -84,6 +124,11 @@ export interface FileRoutesById {
   '/discovery': typeof DiscoveryRoute
   '/insights': typeof InsightsRoute
   '/scheduling': typeof SchedulingRoute
+  '/modes/bento': typeof ModesBentoRoute
+  '/modes/editorial': typeof ModesEditorialRoute
+  '/modes/m3': typeof ModesM3Route
+  '/modes/notion': typeof ModesNotionRoute
+  '/modes/scrolly': typeof ModesScrollyRoute
   '/programs/$programId/precheck': typeof ProgramsProgramIdPrecheckRoute
   '/programs/$programId/tasks': typeof ProgramsProgramIdTasksRoute
   '/programs/$programId/': typeof ProgramsProgramIdIndexRoute
@@ -95,6 +140,11 @@ export interface FileRouteTypes {
     | '/discovery'
     | '/insights'
     | '/scheduling'
+    | '/modes/bento'
+    | '/modes/editorial'
+    | '/modes/m3'
+    | '/modes/notion'
+    | '/modes/scrolly'
     | '/programs/$programId/precheck'
     | '/programs/$programId/tasks'
     | '/programs/$programId/'
@@ -104,6 +154,11 @@ export interface FileRouteTypes {
     | '/discovery'
     | '/insights'
     | '/scheduling'
+    | '/modes/bento'
+    | '/modes/editorial'
+    | '/modes/m3'
+    | '/modes/notion'
+    | '/modes/scrolly'
     | '/programs/$programId/precheck'
     | '/programs/$programId/tasks'
     | '/programs/$programId'
@@ -113,6 +168,11 @@ export interface FileRouteTypes {
     | '/discovery'
     | '/insights'
     | '/scheduling'
+    | '/modes/bento'
+    | '/modes/editorial'
+    | '/modes/m3'
+    | '/modes/notion'
+    | '/modes/scrolly'
     | '/programs/$programId/precheck'
     | '/programs/$programId/tasks'
     | '/programs/$programId/'
@@ -123,6 +183,11 @@ export interface RootRouteChildren {
   DiscoveryRoute: typeof DiscoveryRoute
   InsightsRoute: typeof InsightsRoute
   SchedulingRoute: typeof SchedulingRoute
+  ModesBentoRoute: typeof ModesBentoRoute
+  ModesEditorialRoute: typeof ModesEditorialRoute
+  ModesM3Route: typeof ModesM3Route
+  ModesNotionRoute: typeof ModesNotionRoute
+  ModesScrollyRoute: typeof ModesScrollyRoute
   ProgramsProgramIdPrecheckRoute: typeof ProgramsProgramIdPrecheckRoute
   ProgramsProgramIdTasksRoute: typeof ProgramsProgramIdTasksRoute
   ProgramsProgramIdIndexRoute: typeof ProgramsProgramIdIndexRoute
@@ -158,6 +223,41 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/modes/scrolly': {
+      id: '/modes/scrolly'
+      path: '/modes/scrolly'
+      fullPath: '/modes/scrolly'
+      preLoaderRoute: typeof ModesScrollyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/modes/notion': {
+      id: '/modes/notion'
+      path: '/modes/notion'
+      fullPath: '/modes/notion'
+      preLoaderRoute: typeof ModesNotionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/modes/m3': {
+      id: '/modes/m3'
+      path: '/modes/m3'
+      fullPath: '/modes/m3'
+      preLoaderRoute: typeof ModesM3RouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/modes/editorial': {
+      id: '/modes/editorial'
+      path: '/modes/editorial'
+      fullPath: '/modes/editorial'
+      preLoaderRoute: typeof ModesEditorialRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/modes/bento': {
+      id: '/modes/bento'
+      path: '/modes/bento'
+      fullPath: '/modes/bento'
+      preLoaderRoute: typeof ModesBentoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/programs/$programId/': {
       id: '/programs/$programId/'
       path: '/programs/$programId'
@@ -187,6 +287,11 @@ const rootRouteChildren: RootRouteChildren = {
   DiscoveryRoute: DiscoveryRoute,
   InsightsRoute: InsightsRoute,
   SchedulingRoute: SchedulingRoute,
+  ModesBentoRoute: ModesBentoRoute,
+  ModesEditorialRoute: ModesEditorialRoute,
+  ModesM3Route: ModesM3Route,
+  ModesNotionRoute: ModesNotionRoute,
+  ModesScrollyRoute: ModesScrollyRoute,
   ProgramsProgramIdPrecheckRoute: ProgramsProgramIdPrecheckRoute,
   ProgramsProgramIdTasksRoute: ProgramsProgramIdTasksRoute,
   ProgramsProgramIdIndexRoute: ProgramsProgramIdIndexRoute,

@@ -53,8 +53,11 @@
   --color-error-light: #fca5a5;
   --color-error-dark:  #b91c1c;
 
-  /* Border */
-  --color-border: #e2e8f0;
+}
+
+@theme inline {
+  /* Border — responds to .dark via --lh-border */
+  --color-border: var(--lh-border);
 }
 
 /* ─── Semantic surface + content tokens (dynamic — responds to .dark) ─────── */
@@ -104,6 +107,7 @@ body {
   --lh-content-secondary: #475569;
   --lh-content-tertiary:  #64748b;
   --lh-content-inverse:   #ffffff;
+  --lh-border:            #e2e8f0;
 }
 
 .dark {

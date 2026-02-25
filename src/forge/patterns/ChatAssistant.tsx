@@ -63,15 +63,15 @@ export function ChatAssistant({
     <div
       className={cn(
         'flex flex-col h-full min-h-0',
-        'bg-surface-primary rounded-2xl border border-[#e2e8f0]',
+        'bg-surface-primary rounded-2xl border border-border',
         'overflow-hidden',
         className,
       )}
     >
       {/* Header */}
-      <div className="flex items-center gap-2 px-4 py-3 border-b border-[#e2e8f0] flex-shrink-0">
+      <div className="flex items-center gap-2 px-4 py-3 border-b border-border flex-shrink-0">
         <div
-          className="flex items-center justify-center w-8 h-8 rounded-full bg-[#EEF6FA]"
+          className="flex items-center justify-center w-8 h-8 rounded-full bg-navy-50 dark:bg-navy-900/20"
           aria-hidden="true"
         >
           <Icon name="Bot" size="sm" style={{ color: colors.navy.DEFAULT }} />
@@ -80,7 +80,7 @@ export function ChatAssistant({
           {title}
         </Title>
         <div className="ml-auto flex items-center gap-1.5">
-          <span className="w-2 h-2 rounded-full bg-[#22c55e]" aria-hidden="true" />
+          <span className="w-2 h-2 rounded-full bg-success" aria-hidden="true" />
           <Text size="xs" color="tertiary">
             Online
           </Text>
@@ -97,7 +97,7 @@ export function ChatAssistant({
         {isTyping && (
           <div className="flex items-center gap-2 px-3 py-2">
             <div
-              className="flex items-center justify-center w-7 h-7 rounded-full bg-[#EEF6FA]"
+              className="flex items-center justify-center w-7 h-7 rounded-full bg-navy-50 dark:bg-navy-900/20"
               aria-hidden="true"
             >
               <Icon name="Bot" size={14} style={{ color: colors.navy.DEFAULT }} />
@@ -106,7 +106,7 @@ export function ChatAssistant({
               {[0, 1, 2].map((i) => (
                 <span
                   key={i}
-                  className="w-1.5 h-1.5 rounded-full bg-[#94a3b8] animate-bounce"
+                  className="w-1.5 h-1.5 rounded-full bg-content-tertiary animate-bounce"
                   style={{ animationDelay: `${i * 150}ms` }}
                   aria-hidden="true"
                 />
@@ -119,7 +119,7 @@ export function ChatAssistant({
 
       {/* Suggestions */}
       {suggestions.length > 0 && (
-        <div className="flex flex-wrap gap-2 px-4 py-2 border-t border-[#f1f5f9]">
+        <div className="flex flex-wrap gap-2 px-4 py-2 border-t border-surface-tertiary">
           {suggestions.map((s) => (
             <button
               key={s}
@@ -127,14 +127,14 @@ export function ChatAssistant({
               className="cursor-pointer"
               onClick={() => handleSuggestion(s)}
             >
-              <Tag className="hover:bg-[#EEF6FA] hover:border-[#A3C5E5]">{s}</Tag>
+              <Tag className="hover:bg-navy-50 dark:bg-navy-900/20 hover:border-navy-200">{s}</Tag>
             </button>
           ))}
         </div>
       )}
 
       {/* Input area */}
-      <div className="flex items-center gap-2 px-4 py-3 border-t border-[#e2e8f0] flex-shrink-0">
+      <div className="flex items-center gap-2 px-4 py-3 border-t border-border flex-shrink-0">
         <Input
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}

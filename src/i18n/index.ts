@@ -32,3 +32,16 @@ export function setLocale(locale: string): void {
 export function getLocale(): string {
   return i18n.locale;
 }
+
+/**
+ * React hook that returns a reactive `t` function.
+ * Pass the current locale from useThemeStore to trigger re-renders.
+ *
+ * Usage:
+ *   const locale = useThemeStore((s) => s.locale);
+ *   const { t } = useTranslation(locale);
+ */
+export function useTranslation(currentLocale: string) {
+  i18n.locale = currentLocale;
+  return { t: (scope: string, options?: Record<string, unknown>) => i18n.t(scope, options) };
+}

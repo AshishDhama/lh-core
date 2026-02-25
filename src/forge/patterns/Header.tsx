@@ -7,7 +7,7 @@ import { Icon } from '@/forge/primitives/Icon';
 import { Text } from '@/forge/primitives/Typography';
 import { useThemeStore } from '@/stores/useThemeStore';
 import { cn } from '@/forge/utils';
-import { i18n } from '@/i18n';
+import { useTranslation } from '@/i18n';
 
 export interface HeaderUser {
   name: string;
@@ -34,13 +34,16 @@ export function Header({
 }: HeaderProps) {
   const mode = useThemeStore((s) => s.mode);
   const toggleMode = useThemeStore((s) => s.toggleMode);
+  const locale = useThemeStore((s) => s.locale);
+  const setLocale = useThemeStore((s) => s.setLocale);
+  const { t } = useTranslation(locale);
 
   return (
     <header
       className={cn(
         'fixed top-0 left-0 right-0 z-50',
         'h-16 px-4 flex items-center gap-4',
-        'bg-surface-primary border-b border-[#e2e8f0]',
+        'bg-surface-primary border-b border-border',
         className,
       )}
     >
@@ -50,8 +53,8 @@ export function Header({
         size="sm"
         icon={<Icon name="Menu" size="md" />}
         onClick={onMenuClick}
-        className="flex-shrink-0 text-[#475569]"
-        aria-label={i18n.t('header.toggleMenu')}
+        className="flex-shrink-0 text-content-secondary"
+        aria-label={t('header.toggleMenu')}
       />
 
       {/* Title */}
@@ -67,6 +70,31 @@ export function Header({
       {/* Actions slot */}
       {actions && <div className="flex items-center gap-2">{actions}</div>}
 
+      {/* Language switcher */}
+      <div
+        className="hidden sm:flex items-center gap-0.5 rounded-lg border border-border p-0.5"
+        role="group"
+        aria-label="Language selector"
+      >
+        {(['en', 'hi'] as const).map((lng) => (
+          <button
+            key={lng}
+            type="button"
+            onClick={() => setLocale(lng)}
+            className={cn(
+              'px-2.5 py-1 rounded-md text-xs font-semibold transition-colors',
+              locale === lng
+                ? 'bg-navy text-white'
+                : 'text-content-secondary hover:text-content-primary hover:bg-surface-tertiary',
+              'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-1',
+            )}
+            aria-pressed={locale === lng}
+          >
+            {lng === 'en' ? 'EN' : 'हि'}
+          </button>
+        ))}
+      </div>
+
       {/* Dark mode toggle */}
       <Button
         variant="ghost"
@@ -79,8 +107,8 @@ export function Header({
           />
         }
         onClick={toggleMode}
-        className="text-[#475569]"
-        aria-label={i18n.t(mode === 'dark' ? 'header.switchToLight' : 'header.switchToDark')}
+        className="text-content-secondary"
+        aria-label={t(mode === 'dark' ? 'header.switchToLight' : 'header.switchToDark')}
       />
 
       {/* Notifications */}
@@ -89,14 +117,14 @@ export function Header({
           variant="ghost"
           size="sm"
           icon={<Icon name="Bell" size="md" />}
-          className="text-[#475569]"
-          aria-label={`${i18n.t('header.notifications')}${notifications > 0 ? `, ${notifications} ${i18n.t('header.unread')}` : ''}`}
+          className="text-content-secondary"
+          aria-label={`${t('header.notifications')}${notifications > 0 ? `, ${notifications} ${t('header.unread')}` : ''}`}
         />
       </Badge>
 
       {/* User info */}
       {user && (
-        <div className="flex items-center gap-2 pl-2 border-l border-[#e2e8f0]">
+        <div className="flex items-center gap-2 pl-2 border-l border-border">
           <Avatar
             src={user.avatar}
             fallback={user.name}

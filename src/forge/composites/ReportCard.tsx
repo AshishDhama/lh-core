@@ -1,6 +1,7 @@
 import { Download, FileText, TrendingDown, TrendingUp } from 'lucide-react';
 
 import { Button, Text } from '@/forge/primitives';
+import { colors } from '@/forge/tokens';
 import { cn } from '@/forge/utils';
 
 export interface ReportMetric {
@@ -47,7 +48,7 @@ function MetricRow({ metric }: MetricRowProps) {
   const isPositive = (metric.change ?? 0) >= 0;
 
   return (
-    <div className="flex items-center justify-between gap-2 py-2 border-b border-[#f1f5f9] last:border-0">
+    <div className="flex items-center justify-between gap-2 py-2 border-b border-border last:border-0">
       <Text size="sm" color="secondary">
         {metric.label}
       </Text>
@@ -59,7 +60,7 @@ function MetricRow({ metric }: MetricRowProps) {
           <span
             className={cn(
               'flex items-center gap-0.5 text-xs font-medium',
-              isPositive ? 'text-[#15803d]' : 'text-[#b91c1c]',
+              isPositive ? 'text-success-dark' : 'text-error-dark',
             )}
           >
             {isPositive ? <TrendingUp size={12} /> : <TrendingDown size={12} />}
@@ -86,14 +87,14 @@ export function ReportCard({
   return (
     <div
       className={cn(
-        'flex flex-col gap-4 rounded-xl border border-[#f1f5f9] bg-surface-primary p-4 shadow-sm',
+        'flex flex-col gap-4 rounded-xl border border-border bg-surface-primary p-4 shadow-sm',
         className,
       )}
     >
       {/* Header */}
       <div className="flex items-start justify-between gap-2">
         <div className="flex items-start gap-3 min-w-0">
-          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#EEF6FA]">
+          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-navy-50 dark:bg-navy-900/20">
             <FileText size={18} style={{ color: '#002C77' }} />
           </div>
           <div className="min-w-0">

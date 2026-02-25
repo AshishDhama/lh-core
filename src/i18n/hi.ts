@@ -29,7 +29,10 @@ export const hi: Translations = {
     send: 'भेजें',
     submit: 'सबमिट करें',
     confirm: 'पुष्टि करें',
+    book: 'बुक करें',
     bookSlot: 'स्लॉट बुक करें',
+    review: 'समीक्षा',
+    start: 'शुरू करें',
     addGoal: 'लक्ष्य जोड़ें',
     addFirstGoal: 'पहला लक्ष्य जोड़ें',
     retryFailedChecks: 'विफल जांच फिर से करें',
@@ -50,6 +53,9 @@ export const hi: Translations = {
     draft: 'मसौदा',
     published: 'प्रकाशित',
     notStarted: 'शुरू नहीं हुआ',
+    booked: 'बुक किया हुआ',
+    done: 'पूर्ण',
+    onTrack: 'सही रास्ते पर',
   },
 
   // Page titles
@@ -66,10 +72,16 @@ export const hi: Translations = {
   // Dashboard
   dashboard: {
     welcome: 'वापस स्वागत है',
+    goodMorning: 'सुप्रभात',
     activePrograms: 'सक्रिय कार्यक्रम',
+    avgCompletion: 'औसत पूर्णता',
+    upcomingExercises: 'आगामी अभ्यास',
+    hoursLogged: 'लॉग किए गए घंटे',
     completedReports: 'पूर्ण रिपोर्ट',
     upcomingDeadlines: 'आगामी समय सीमाएं',
     assessmentsCenters: 'मूल्यांकन केंद्र',
+    myPrograms: 'मेरे कार्यक्रम',
+    recentReports: 'हालिया रिपोर्ट',
   },
 
   // Programs
@@ -77,10 +89,21 @@ export const hi: Translations = {
     title: 'कार्यक्रम',
     instructions: 'निर्देश',
     tasks: 'कार्य',
+    overview: 'कार्यक्रम अवलोकन',
+    beforeYouBegin: 'शुरू करने से पहले',
+    modules: 'मॉड्यूल',
     startProgram: 'कार्यक्रम शुरू करें',
+    continueProgram: 'कार्यक्रम जारी रखें',
+    backToDashboard: 'डैशबोर्ड पर वापस',
     viewDetails: 'विवरण देखें',
+    viewCenter: 'केंद्र देखें',
     sequential: 'क्रमिक',
     open: 'खुला',
+    assessmentCenters: 'मूल्यांकन केंद्र',
+    selectExercise: 'विवरण देखने के लिए अभ्यास चुनें',
+    proctored: 'प्रॉक्टर्ड',
+    progress: 'प्रगति',
+    lockedExerciseMessage: 'यह अभ्यास तब तक बंद है जब तक पिछले अभ्यास पूरे नहीं हो जाते।',
   },
 
   // Assessment / Exercise types
@@ -133,6 +156,8 @@ export const hi: Translations = {
   // Calendar / Scheduling
   schedule: {
     title: 'अनुसूची',
+    subtitle: 'अपने कार्यक्रमों के लिए मूल्यांकन सत्र बुक करें',
+    myBookings: 'मेरी बुकिंग',
     views: {
       day: 'दिन',
       week: 'सप्ताह',
@@ -151,6 +176,7 @@ export const hi: Translations = {
   // Insights
   insights: {
     title: 'अंतर्दृष्टि',
+    subtitle: 'मूल्यांकन परिणाम और विकास विश्लेषण',
     reports: 'रिपोर्ट',
     charts: 'चार्ट',
     period: 'अवधि',
@@ -161,12 +187,20 @@ export const hi: Translations = {
       year: 'इस वर्ष',
     },
     chartComingSoon: 'चार्ट जल्द आएगा',
+    reportsAvailable: 'उपलब्ध रिपोर्ट',
+    avgCompetencyScore: 'औसत योग्यता स्कोर',
+    completedAssessments: 'पूर्ण मूल्यांकन',
+    developmentProgress: 'विकास प्रगति',
+    competencyScores: 'योग्यता स्कोर',
+    assessmentReports: 'मूल्यांकन रिपोर्ट',
+    scoresBasedOn: 'पूर्ण मूल्यांकनों पर आधारित स्कोर',
   },
 
   // Header
   header: {
     toggleMenu: 'मेनू टॉगल करें',
     notifications: 'सूचनाएं',
+    unread: 'अपठित',
     switchToDark: 'डार्क मोड पर जाएं',
     switchToLight: 'लाइट मोड पर जाएं',
     online: 'ऑनलाइन',

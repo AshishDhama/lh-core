@@ -6,9 +6,8 @@
  * Use `resolveModeTokens()` to merge overrides with base tokens.
  */
 
-export type { ModeTokenOverrides } from './types';
+export type { ModeTokenOverrides, ModeKey } from './utils';
 export { resolveModeTokens } from './utils';
-export type { ResolvedModeTokens } from './utils';
 
 export { scrollyTokens } from './scrolly';
 export { bentoTokens } from './bento';
@@ -17,7 +16,7 @@ export { notionTokens } from './notion';
 export { m3Tokens } from './m3';
 
 import type { DesignMode } from '@/types/common';
-import type { ModeTokenOverrides } from './types';
+import type { ModeTokenOverrides } from './utils';
 import { scrollyTokens } from './scrolly';
 import { bentoTokens } from './bento';
 import { editorialTokens } from './editorial';

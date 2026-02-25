@@ -14,17 +14,8 @@ import { colors } from '@/forge/tokens';
 import { programList } from '@/data/programs';
 import { reports } from '@/data/reports';
 import type { Program } from '@/types/program';
-import { i18n } from '@/i18n';
-
-// ─── Static data ─────────────────────────────────────────────────────────────
-
-const SIDEBAR_ITEMS: SidebarItem[] = [
-  { key: 'dashboard', label: i18n.t('nav.dashboard'), icon: 'LayoutDashboard', path: '/' },
-  { key: 'programs', label: i18n.t('nav.programs'), icon: 'BookOpen', path: '/programs' },
-  { key: 'development', label: i18n.t('nav.development'), icon: 'Target', path: '/development' },
-  { key: 'scheduling', label: i18n.t('nav.scheduling'), icon: 'CalendarDays', path: '/scheduling' },
-  { key: 'insights', label: i18n.t('nav.insights'), icon: 'ChartBar', path: '/insights' },
-];
+import { useTranslation } from '@/i18n';
+import { useThemeStore } from '@/stores/useThemeStore';
 
 const MOCK_USER = {
   name: 'Priya Sharma',
@@ -46,6 +37,17 @@ export const Route = createFileRoute('/')({
 });
 
 function DashboardPage() {
+  const locale = useThemeStore((s) => s.locale);
+  const { t } = useTranslation(locale);
+
+  const sidebarItems: SidebarItem[] = [
+    { key: 'dashboard', label: t('nav.dashboard'), icon: 'LayoutDashboard', path: '/' },
+    { key: 'programs', label: t('nav.programs'), icon: 'BookOpen', path: '/programs' },
+    { key: 'development', label: t('nav.development'), icon: 'Target', path: '/development' },
+    { key: 'scheduling', label: t('nav.scheduling'), icon: 'CalendarDays', path: '/scheduling' },
+    { key: 'insights', label: t('nav.insights'), icon: 'ChartBar', path: '/insights' },
+  ];
+
   const activePrograms = programList.filter((p) => p.status === 'progress');
   const avgCompletion = Math.round(
     programList.reduce((sum, p) => sum + p.pct, 0) / programList.length,
@@ -61,7 +63,7 @@ function DashboardPage() {
 
   return (
     <DashboardLayout
-      sidebarItems={SIDEBAR_ITEMS}
+      sidebarItems={sidebarItems}
       user={MOCK_USER}
       title="Lighthouse"
       activeKey="dashboard"
@@ -72,7 +74,7 @@ function DashboardPage() {
         {/* Welcome */}
         <div>
           <Title level={3} weight="bold" color="primary">
-            {i18n.t('dashboard.goodMorning')}, {firstName}
+            {t('dashboard.goodMorning')}, {firstName}
           </Title>
           <Text color="secondary" size="sm" className="mt-1">
             {activePrograms.length} active {activePrograms.length === 1 ? 'program' : 'programs'}
@@ -83,27 +85,27 @@ function DashboardPage() {
         {/* Stats row */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           <StatCard
-            title={i18n.t('dashboard.activePrograms')}
+            title={t('dashboard.activePrograms')}
             value={activePrograms.length}
             icon={<BookOpen size={18} />}
             iconColor={colors.navy.DEFAULT}
             trend="flat"
           />
           <StatCard
-            title={i18n.t('dashboard.avgCompletion')}
+            title={t('dashboard.avgCompletion')}
             value={`${avgCompletion}%`}
             icon={<Target size={18} />}
             iconColor={colors.teal.DEFAULT}
             change={8}
           />
           <StatCard
-            title={i18n.t('dashboard.upcomingExercises')}
+            title={t('dashboard.upcomingExercises')}
             value={upcomingCount}
             icon={<CalendarDays size={18} />}
             iconColor={colors.purple.DEFAULT}
           />
           <StatCard
-            title={i18n.t('dashboard.hoursLogged')}
+            title={t('dashboard.hoursLogged')}
             value="4.5h"
             icon={<Clock size={18} />}
             iconColor={colors.success.DEFAULT}
@@ -114,7 +116,7 @@ function DashboardPage() {
         {/* Program cards */}
         <section>
           <Title level={4} weight="semibold" color="primary" className="mb-4">
-            {i18n.t('dashboard.myPrograms')}
+            {t('dashboard.myPrograms')}
           </Title>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             {programList.map((program) => (
@@ -135,7 +137,7 @@ function DashboardPage() {
         {availableReports.length > 0 && (
           <section>
             <Title level={4} weight="semibold" color="primary" className="mb-4">
-              {i18n.t('dashboard.recentReports')}
+              {t('dashboard.recentReports')}
             </Title>
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
               {availableReports.map((report) => (

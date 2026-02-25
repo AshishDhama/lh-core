@@ -67,8 +67,8 @@ function CenterCard({ item, isSelected, onSelect }: CenterCardProps) {
         'flex flex-col gap-3 p-5 rounded-xl border cursor-pointer',
         'transition-all duration-150',
         isSelected
-          ? 'border-[#002C77] bg-[#EEF6FA] shadow-md'
-          : 'border-[#e2e8f0] bg-surface-primary hover:border-[#A3C5E5] hover:shadow-sm',
+          ? 'border-navy dark:border-navy-400 bg-navy-50 dark:bg-navy-900/20 shadow-md'
+          : 'border-border bg-surface-primary hover:border-navy-200 hover:shadow-sm',
         item.status === 'inactive' && 'opacity-60',
       )}
       onClick={() => onSelect?.(item.id)}
@@ -88,7 +88,7 @@ function CenterCard({ item, isSelected, onSelect }: CenterCardProps) {
           <div
             className={cn(
               'flex-shrink-0 flex items-center justify-center w-9 h-9 rounded-lg',
-              isSelected ? 'bg-[#002C77]' : 'bg-[#EEF6FA]',
+              isSelected ? 'bg-navy dark:bg-navy-400' : 'bg-navy-50 dark:bg-navy-900/20',
             )}
             aria-hidden="true"
           >
@@ -102,7 +102,7 @@ function CenterCard({ item, isSelected, onSelect }: CenterCardProps) {
             level={4}
             className={cn(
               '!text-sm !font-semibold !mb-0 truncate',
-              isSelected ? '!text-[#002C77]' : '!text-[#0f172a]',
+              isSelected ? '!text-navy dark:!text-navy-200' : '!text-content-primary',
             )}
           >
             {item.name}
@@ -138,10 +138,10 @@ function CenterCard({ item, isSelected, onSelect }: CenterCardProps) {
                 className={cn(
                   'ml-1',
                   occupancyPercent >= 90
-                    ? 'text-[#ef4444]'
+                    ? 'text-error'
                     : occupancyPercent >= 70
-                      ? 'text-[#eab308]'
-                      : 'text-[#22c55e]',
+                      ? 'text-warning'
+                      : 'text-success',
                 )}
               >
                 ({occupancyPercent}%)
