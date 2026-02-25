@@ -25,12 +25,14 @@ export interface ProgramCardProps {
 const statusConfig: Record<ProgramStatus, { label: string; color: string; bgColor: string }> = {
   active: {
     label: 'In Progress',
-    color: colors.warning.DEFAULT,
+    // warning.dark (#a16207) = 4.92:1 on white — WCAG AA ✓ (was warning.DEFAULT #eab308 at ~2.3:1)
+    color: colors.warning.dark,
     bgColor: `${colors.warning.DEFAULT}12`,
   },
   completed: {
     label: 'Completed',
-    color: colors.success.DEFAULT,
+    // success.dark (#15803d) = 5.02:1 on white — WCAG AA ✓ (was success.DEFAULT #22c55e at ~2.3:1)
+    color: colors.success.dark,
     bgColor: `${colors.success.DEFAULT}12`,
   },
   locked: {
