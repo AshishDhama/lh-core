@@ -5,6 +5,12 @@ export {
   type AssessmentType,
   type AssessmentStatus,
 } from './AssessmentCard';
+export {
+  ChatMessage,
+  type ChatMessageProps,
+  type ChatMessageSender,
+  type ChatMessageType,
+} from './ChatMessage';
 export { CountdownTimer, type CountdownTimerProps } from './CountdownTimer';
 export { FormField, type FormFieldProps } from './FormField';
 export {
