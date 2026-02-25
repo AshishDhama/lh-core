@@ -1,6 +1,8 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
+import type { AppLocale } from '@/i18n';
+import { setLocale as applyLocale } from '@/i18n';
 import type { DesignMode } from '@/types/common';
 import type { ThemeMode } from '@/types/theme';
 
@@ -8,9 +10,11 @@ interface ThemeState {
   mode: ThemeMode;
   designMode: DesignMode;
   sidebarCollapsed: boolean;
+  locale: AppLocale;
   toggleMode: () => void;
   setDesignMode: (mode: DesignMode) => void;
   toggleSidebar: () => void;
+  setLocale: (locale: AppLocale) => void;
 }
 
 function getSystemPreference(): ThemeMode {
@@ -30,6 +34,7 @@ export const useThemeStore = create<ThemeState>()(
       mode: getSystemPreference(),
       designMode: 'scrolly',
       sidebarCollapsed: false,
+      locale: 'en',
       toggleMode: () =>
         set((state) => {
           const newMode: ThemeMode =
@@ -40,12 +45,17 @@ export const useThemeStore = create<ThemeState>()(
       setDesignMode: (designMode) => set({ designMode }),
       toggleSidebar: () =>
         set((state) => ({ sidebarCollapsed: !state.sidebarCollapsed })),
+      setLocale: (locale) => {
+        applyLocale(locale);
+        set({ locale });
+      },
     }),
     {
       name: 'lighthouse-theme',
       onRehydrateStorage: () => (state) => {
         if (state) {
           applyModeToDOM(state.mode);
+          applyLocale(state.locale ?? 'en');
         }
       },
     },

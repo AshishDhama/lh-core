@@ -1,12 +1,14 @@
 import { I18n } from 'i18n-js';
 
 import { en } from './en';
+import { hi } from './hi';
 
 export type { Translations } from './en';
+export type AppLocale = 'en' | 'hi';
 
 const i18n = new I18n();
 
-i18n.store(en);
+i18n.store({ en, hi });
 i18n.defaultLocale = 'en';
 i18n.locale = 'en';
 i18n.enableFallback = true;
