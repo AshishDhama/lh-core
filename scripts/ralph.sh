@@ -636,7 +636,7 @@ smart_run() {
   local workers=${2:-3}
   check_deps
 
-  local orch_prompt_file="$SCRIPT_DIR/ralph-orchestrator-prompt.md"
+  local orch_prompt_file="$SCRIPT_DIR/ralph-smart-prompt.md"
   if [[ ! -f "$orch_prompt_file" ]]; then
     log_err "Missing orchestrator prompt: $orch_prompt_file"
     exit 1
