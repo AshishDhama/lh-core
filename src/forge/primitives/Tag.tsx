@@ -17,7 +17,7 @@ export interface TagProps {
   color?: TagColor;
   closable?: boolean;
   icon?: ReactNode;
-  bordered?: boolean;
+  variant?: 'outlined' | 'filled' | 'solid';
   onClose?: () => void;
   className?: string;
   children?: ReactNode;
@@ -37,7 +37,7 @@ export function Tag({
   color = 'default',
   closable = false,
   icon,
-  bordered = true,
+  variant = 'outlined',
   onClose,
   className,
   children,
@@ -47,7 +47,7 @@ export function Tag({
       color={colorMap[color]}
       closable={closable}
       icon={icon}
-      bordered={bordered}
+      variant={variant}
       onClose={onClose}
       className={cn(className)}
     >

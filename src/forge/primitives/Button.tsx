@@ -12,7 +12,7 @@ export interface ButtonProps {
   size?: ButtonSize;
   fullWidth?: boolean;
   icon?: ReactNode;
-  iconPosition?: 'start' | 'end';
+  iconPlacement?: 'start' | 'end';
   loading?: boolean;
   disabled?: boolean;
   href?: string;

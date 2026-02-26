@@ -176,7 +176,7 @@ function ExerciseDetail({ exercise }: ExerciseDetailProps) {
           type="info"
           showIcon
           icon={<Lock size={14} />}
-          message={t('programs.lockedExerciseMessage')}
+          title={t('programs.lockedExerciseMessage')}
         />
       )}
     </div>
@@ -202,7 +202,7 @@ function ProgramTasksPage() {
     return (
       <DashboardLayout sidebarItems={sidebarItems} user={MOCK_USER} title="Lighthouse" activeKey="programs">
         <div className="p-6">
-          <Alert type="error" message="Program not found" showIcon />
+          <Alert type="error" title="Program not found" showIcon />
         </div>
       </DashboardLayout>
     );

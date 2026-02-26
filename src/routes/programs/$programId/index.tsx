@@ -44,7 +44,7 @@ function ProgramInstructionsPage() {
         <div className="p-6">
           <Alert
             type="error"
-            message="Program not found"
+            title="Program not found"
             description={`No program with id "${programId}" exists.`}
             showIcon
           />
