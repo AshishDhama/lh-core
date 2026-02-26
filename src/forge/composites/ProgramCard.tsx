@@ -85,7 +85,7 @@ export const ProgramCard = memo(function ProgramCard({
           {/* Status + deadline row */}
           <div className="mb-1.5 flex items-center gap-2">
             <AntTag
-              bordered={false}
+              variant="filled"
               style={{
                 color: config.color,
                 backgroundColor: config.bgColor,

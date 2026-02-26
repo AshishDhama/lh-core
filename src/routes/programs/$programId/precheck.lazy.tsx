@@ -151,7 +151,7 @@ function GuidelinesStep({ onContinue }: GuidelinesStepProps) {
           disabled={!consented}
           onClick={onContinue}
           icon={<ChevronRight size={16} style={{ color: colors.content.inverse }} />}
-          iconPosition="end"
+          iconPlacement="end"
         >
           Continue
         </Button>

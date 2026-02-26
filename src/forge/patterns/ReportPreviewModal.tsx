@@ -114,7 +114,7 @@ export function ReportPreviewModal({ report, open, onClose }: ReportPreviewModal
       className="report-preview-modal"
       styles={{
         body: { padding: 0 },
-        content: { borderRadius: 16, overflow: 'hidden' },
+        root: { borderRadius: 16, overflow: 'hidden' },
       }}
     >
       <div className="flex flex-col max-h-[85vh] overflow-y-auto">
