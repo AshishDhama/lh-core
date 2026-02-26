@@ -30,19 +30,6 @@ export { SearchBar, type SearchBarProps, type SearchFilterOption } from './Searc
 export { SkillCard, type SkillCardProps } from './SkillCard';
 export { StatCard, type StatCardProps, type StatTrend } from './StatCard';
 export {
-  BrilliantStreakCard,
-  type BrilliantStreakCardProps,
-} from './BrilliantStreakCard';
-export {
-  BrilliantPremiumCard,
-  type BrilliantPremiumCardProps,
-} from './BrilliantPremiumCard';
-export {
-  BrilliantLeagueCard,
-  type BrilliantLeagueCardProps,
-  type LeagueEntry,
-} from './BrilliantLeagueCard';
-export {
   BrilliantHeroAssessmentCard,
   type BrilliantHeroAssessmentCardProps,
 } from './BrilliantHeroAssessmentCard';

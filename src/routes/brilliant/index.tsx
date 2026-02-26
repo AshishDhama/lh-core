@@ -1,82 +1,66 @@
 import { createFileRoute } from '@tanstack/react-router';
 
-import { BrilliantHeader } from '@/forge/patterns/BrilliantHeader';
-import { BrilliantStreakCard } from '@/forge/composites/BrilliantStreakCard';
-import { BrilliantPremiumCard } from '@/forge/composites/BrilliantPremiumCard';
-import { BrilliantLeagueCard } from '@/forge/composites/BrilliantLeagueCard';
-import { BrilliantHeroAssessmentCard } from '@/forge/composites/BrilliantHeroAssessmentCard';
-import { BrilliantLessonStepList } from '@/forge/composites/BrilliantLessonStepList';
-import type { LessonStep } from '@/forge/composites/BrilliantLessonStepList';
+import { CalmWelcomeHero } from '@/forge/composites/CalmWelcomeHero';
+import { CalmProgrammeCard } from '@/forge/composites/CalmProgrammeCard';
+import { CalmDeadlineStrip } from '@/forge/composites/CalmDeadlineStrip';
 import { programList } from '@/data/programs';
 
 export const Route = createFileRoute('/brilliant/')({
-  component: BrilliantHomePage,
+  component: CalmHomePage,
 });
 
-const MOCK_STREAK = {
-  count: 7,
-  weekDays: [true, true, true, true, true, false, false],
-};
-
-function buildLessonSteps(): LessonStep[] {
-  const program = programList[0];
-  if (!program) return [];
-  return program.seqExercises.map((ex) => ({
-    id: ex.id,
-    label: ex.name,
-    status: ex.status,
-    duration: ex.time,
-  }));
+function getOverallStats() {
+  let completed = 0;
+  let total = 0;
+  for (const p of programList) {
+    const all = [...p.seqExercises, ...p.openExercises];
+    completed += all.filter((e) => e.status === 'complete').length;
+    total += all.length;
+  }
+  return { completed, total };
 }
 
-function BrilliantHomePage() {
-  const steps = buildLessonSteps();
-  const currentExercise = programList[0]?.seqExercises.find(
-    (e) => e.status === 'progress',
-  );
+function getNextExerciseName(): string | undefined {
+  for (const p of programList) {
+    const inProgress =
+      p.seqExercises.find((e) => e.status === 'progress') ??
+      p.openExercises.find((e) => e.status === 'progress');
+    if (inProgress) return inProgress.name;
+  }
+  return undefined;
+}
+
+function CalmHomePage() {
+  const { completed, total } = getOverallStats();
+  const nextExerciseName = getNextExerciseName();
+  const activeProgrammes = programList.filter((p) => p.status !== 'complete');
+
+  const deadlines = activeProgrammes.map((p) => ({
+    id: p.id,
+    name: p.name,
+    due: p.due,
+    daysLeft: p.daysLeft,
+  }));
 
   return (
-    <div className="min-h-screen bg-surface-primary">
-      <BrilliantHeader
-        activeTab="home"
-        streakCount={MOCK_STREAK.count}
-        energyCount={42}
+    <main className="max-w-[960px] mx-auto px-6 py-12">
+      <CalmWelcomeHero
         userName="Priya Sharma"
+        programmeCount={activeProgrammes.length}
+        completedExercises={completed}
+        totalExercises={total}
+        nextExerciseName={nextExerciseName}
       />
 
-      <main className="max-w-[1200px] mx-auto px-6 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-          {/* Left column — streak, premium, league */}
-          <div className="lg:col-span-4 space-y-5">
-            <BrilliantStreakCard
-              streakCount={MOCK_STREAK.count}
-              weekDays={MOCK_STREAK.weekDays}
-              motivationalText="You're on a 7-day streak! Keep it going!"
-            />
-            <BrilliantPremiumCard />
-            <BrilliantLeagueCard locked />
-          </div>
+      <div className="mt-12 mb-12">
+        <CalmDeadlineStrip deadlines={deadlines} />
+      </div>
 
-          {/* Right column — hero assessment + lesson steps */}
-          <div className="lg:col-span-8 space-y-5">
-            <BrilliantHeroAssessmentCard
-              overline="CONTINUE LEARNING"
-              title={currentExercise?.name ?? 'Cognitive Ability Test'}
-              description={currentExercise?.desc ?? 'Verbal, numerical, and abstract reasoning.'}
-              illustration="cognitive"
-              subjectColor="code"
-              ctaText="Continue"
-            />
-
-            <div className="rounded-4xl bg-surface-card shadow-soft p-8">
-              <BrilliantLessonStepList
-                steps={steps}
-                subjectColor="code"
-              />
-            </div>
-          </div>
-        </div>
-      </main>
-    </div>
+      <div className="flex flex-col gap-8">
+        {activeProgrammes.map((programme) => (
+          <CalmProgrammeCard key={programme.id} programme={programme} />
+        ))}
+      </div>
+    </main>
   );
 }

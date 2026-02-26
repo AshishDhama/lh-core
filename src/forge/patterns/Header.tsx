@@ -1,10 +1,13 @@
 import { useRef, useState, type ReactNode } from 'react';
+import { useNavigate } from '@tanstack/react-router';
 
 import { Avatar } from '@/forge/primitives/Avatar';
 import { Badge } from '@/forge/primitives/Badge';
 import { Button } from '@/forge/primitives/Button';
 import { Icon } from '@/forge/primitives/Icon';
+import type { IconName } from '@/forge/primitives/Icon';
 import { Text } from '@/forge/primitives/Typography';
+import type { DesignMode } from '@/types/common';
 import { useThemeStore } from '@/stores/useThemeStore';
 import { cn } from '@/forge/utils';
 import { useTranslation } from '@/i18n';
@@ -38,6 +41,85 @@ export interface HeaderProps {
   className?: string;
 }
 
+const designModes: { mode: DesignMode; icon: IconName; label: string }[] = [
+  { mode: 'scrolly', icon: 'Layers', label: 'Scrolly' },
+  { mode: 'bento', icon: 'LayoutGrid', label: 'Bento' },
+  { mode: 'editorial', icon: 'FileText', label: 'Editorial' },
+  { mode: 'notion', icon: 'StickyNote', label: 'Notion' },
+  { mode: 'm3', icon: 'Palette', label: 'M3' },
+  { mode: 'brilliant', icon: 'Sparkles', label: 'Brilliant' },
+];
+
+function DesignModeSwitcher() {
+  const designMode = useThemeStore((s) => s.designMode);
+  const setDesignMode = useThemeStore((s) => s.setDesignMode);
+  const navigate = useNavigate();
+  const [open, setOpen] = useState(false);
+  const panelRef = useRef<HTMLDivElement>(null);
+
+  useClickOutside(panelRef, () => setOpen(false));
+
+  return (
+    <div ref={panelRef}>
+      {/* Expanded panel */}
+      {open && (
+        <div
+          className="fixed bottom-20 left-6 z-50 rounded-2xl border border-border bg-surface-primary shadow-2xl p-2"
+          role="group"
+          aria-label="Design mode"
+        >
+          {designModes.map(({ mode, icon, label }) => {
+            const isActive = designMode === mode;
+            return (
+              <button
+                key={mode}
+                type="button"
+                onClick={() => {
+                  setDesignMode(mode);
+                  setOpen(false);
+                  if (mode === 'brilliant') {
+                    navigate({ to: '/brilliant' });
+                  } else if (designMode === 'brilliant') {
+                    navigate({ to: '/' });
+                  }
+                }}
+                className={cn(
+                  'flex items-center gap-3 w-full rounded-lg px-3 py-2 text-sm font-medium transition-colors duration-150',
+                  isActive
+                    ? 'bg-navy text-white'
+                    : 'text-content-secondary hover:bg-surface-tertiary',
+                  'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-1',
+                )}
+              >
+                <Icon name={icon} size="sm" />
+                {label}
+              </button>
+            );
+          })}
+        </div>
+      )}
+
+      {/* FAB trigger */}
+      <button
+        type="button"
+        onClick={() => setOpen((o) => !o)}
+        className={cn(
+          'fixed bottom-6 left-6 z-50',
+          'flex items-center justify-center w-12 h-12 rounded-full',
+          'bg-navy text-white shadow-lg',
+          'hover:bg-navy-600 active:scale-95',
+          'transition-all duration-200',
+          'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-2',
+        )}
+        aria-label={open ? 'Close design modes' : 'Design modes'}
+        aria-expanded={open}
+      >
+        <Icon name={open ? 'X' : 'Palette'} size="md" />
+      </button>
+    </div>
+  );
+}
+
 export function Header({
   title,
   user,
@@ -68,6 +150,7 @@ export function Header({
   useClickOutside(notifRef, () => setNotifOpen(false));
 
   return (
+    <>
     <header
       className={cn(
         'fixed top-0 left-0 right-0 z-50',
@@ -292,5 +375,8 @@ export function Header({
         </div>
       )}
     </header>
+
+    <DesignModeSwitcher />
+    </>
   );
 }
