@@ -6,7 +6,7 @@ import { colors } from '@/forge/tokens';
 
 type ProgressStatus = 'success' | 'exception' | 'active' | 'normal';
 type ProgressType = 'line' | 'circle';
-type ProgressSize = 'sm' | 'md' | 'lg';
+type ProgressSize = 'xs' | 'sm' | 'md' | 'lg';
 
 export interface ProgressBarProps {
   percent: number;
@@ -22,6 +22,7 @@ export interface ProgressBarProps {
 }
 
 const sizeMap: Record<ProgressSize, { strokeWidth: number; width?: number }> = {
+  xs: { strokeWidth: 2, width: 40 },
   sm: { strokeWidth: 4, width: 60 },
   md: { strokeWidth: 8, width: 80 },
   lg: { strokeWidth: 12, width: 120 },

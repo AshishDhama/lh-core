@@ -145,6 +145,7 @@ const designModes: { mode: DesignMode; icon: IconName; label: string }[] = [
   { mode: 'editorial', icon: 'FileText', label: 'Editorial' },
   { mode: 'notion', icon: 'StickyNote', label: 'Notion' },
   { mode: 'm3', icon: 'Palette', label: 'M3' },
+  { mode: 'brilliant', icon: 'Sparkles', label: 'Brilliant' },
 ];
 
 function DesignModeSwitcher() {

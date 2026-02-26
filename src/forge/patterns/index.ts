@@ -51,3 +51,5 @@ export {
   type SystemCheck,
   type CheckStatus,
 } from './SystemCheckPanel';
+export { BrilliantCarousel, type BrilliantCarouselProps } from './BrilliantCarousel';
+export { BrilliantHeader, type BrilliantHeaderProps } from './BrilliantHeader';

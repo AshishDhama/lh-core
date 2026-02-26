@@ -5,6 +5,7 @@ import { cn } from '@/forge/utils';
 
 type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'danger' | 'link';
 type ButtonSize = 'sm' | 'md' | 'lg';
+type SubjectColor = 'code' | 'science' | 'math' | 'logic';
 
 export interface ButtonProps {
   variant?: ButtonVariant;
@@ -17,6 +18,7 @@ export interface ButtonProps {
   href?: string;
   htmlType?: 'button' | 'submit' | 'reset';
   onClick?: React.MouseEventHandler<HTMLElement>;
+  subjectColor?: SubjectColor;
   className?: string;
   children?: ReactNode;
 }
@@ -27,10 +29,18 @@ const sizeMap: Record<ButtonSize, 'small' | 'middle' | 'large'> = {
   lg: 'large',
 };
 
+const subjectColorClasses: Record<SubjectColor, string> = {
+  code: 'bg-subject-code hover:bg-subject-code-dark text-white border-transparent',
+  science: 'bg-subject-science hover:bg-subject-science-dark text-content-primary border-transparent',
+  math: 'bg-subject-math hover:bg-subject-math-dark text-white border-transparent',
+  logic: 'bg-subject-logic hover:bg-subject-logic-dark text-white border-transparent',
+};
+
 export function Button({
   variant = 'primary',
   size = 'md',
   fullWidth = false,
+  subjectColor,
   className,
   ...props
 }: ButtonProps) {
@@ -62,7 +72,13 @@ export function Button({
       danger={danger}
       size={sizeMap[size]}
       block={fullWidth}
-      className={cn('font-medium', className)}
+      className={cn(
+        'font-medium',
+        'transition-all duration-fast ease-out',
+        'hover:-translate-y-px active:scale-[0.97]',
+        subjectColor && subjectColorClasses[subjectColor],
+        className,
+      )}
       {...props}
     />
   );

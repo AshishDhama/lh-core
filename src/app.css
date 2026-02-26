@@ -35,8 +35,41 @@
   --color-teal-800: #003730;
   --color-teal-900: #001D19;
 
-  /* Purple */
-  --color-purple: #7B61FF;
+  /* Purple (expanded scale) */
+  --color-purple:     #7B61FF;
+  --color-purple-50:  #FAF5FF;
+  --color-purple-100: #F3E8FF;
+  --color-purple-200: #E9D5FF;
+  --color-purple-300: #D8B4FE;
+  --color-purple-400: #C084FC;
+  --color-purple-500: #A855F7;
+  --color-purple-600: #9333EA;
+  --color-purple-700: #7E22CE;
+  --color-purple-800: #6B21A8;
+  --color-purple-900: #581C87;
+
+  /* Subject palette (Brilliant-inspired) */
+  --color-subject-code:         #8B5CF6;
+  --color-subject-code-light:   #EDE9FE;
+  --color-subject-code-dark:    #6D28D9;
+  --color-subject-science:       #FACC15;
+  --color-subject-science-light: #FEF9C3;
+  --color-subject-science-dark:  #CA8A04;
+  --color-subject-math:          #10B981;
+  --color-subject-math-light:    #D1FAE5;
+  --color-subject-math-dark:     #059669;
+  --color-subject-logic:         #F97316;
+  --color-subject-logic-light:   #FFEDD5;
+  --color-subject-logic-dark:    #EA580C;
+
+  /* Border variants */
+  --color-border-subtle: #F0F0F0;
+  --color-border-muted:  #E5E5E5;
+
+  /* Warm surfaces */
+  --color-surface-warm:     #F9F9FB;
+  --color-surface-warm-alt: #F8F7F4;
+  --color-surface-card:     #FFFFFF;
 
   /* Semantic — success */
   --color-success:       #22c55e;
@@ -53,6 +86,38 @@
   --color-error-light: #fca5a5;
   --color-error-dark:  #b91c1c;
 
+  /* Radii — 3xl, 4xl */
+  --radius-3xl: 24px;
+  --radius-4xl: 32px;
+
+  /* Shadows — soft, hoverCard */
+  --shadow-soft:       0 4px 20px 0 rgb(0 0 0 / 0.04);
+  --shadow-hover-card: 0 8px 30px 0 rgb(0 0 0 / 0.10);
+
+  /* Font sizes — 6xl, 7xl */
+  --font-size-6xl: 3.75rem;
+  --font-size-7xl: 4.5rem;
+
+  /* Letter spacing */
+  --tracking-tighter: -0.04em;
+  --tracking-tight:   -0.02em;
+  --tracking-normal:   0em;
+  --tracking-wide:     0.04em;
+  --tracking-wider:    0.08em;
+  --tracking-widest:   0.16em;
+
+  /* Motion — durations */
+  --duration-instant:  100ms;
+  --duration-fast:     150ms;
+  --duration-base:     200ms;
+  --duration-moderate: 300ms;
+  --duration-slow:     500ms;
+
+  /* Motion — easings */
+  --ease-out:     cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in:      cubic-bezier(0.55, 0.055, 0.675, 0.19);
+  --ease-in-out:  cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-spring:  cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 @theme inline {
@@ -120,4 +185,22 @@ body {
   --lh-content-tertiary:  #94a3b8;
   --lh-content-inverse:   #0f172a;
   --lh-border:            #334155;
+}
+
+/* ─── Brilliant design mode — warm surface overrides ───────────────────────── */
+
+.brilliant {
+  --lh-surface-primary:   #F9F9FB;
+  --lh-surface-secondary: #F8F7F4;
+  --lh-surface-tertiary:  #F0F0F0;
+  --lh-surface-elevated:  #FFFFFF;
+  --lh-border:            #E5E5E5;
+}
+
+.brilliant.dark {
+  --lh-surface-primary:   #1a1625;
+  --lh-surface-secondary: #231e30;
+  --lh-surface-tertiary:  #2d2640;
+  --lh-surface-elevated:  #231e30;
+  --lh-border:            #3d3555;
 }

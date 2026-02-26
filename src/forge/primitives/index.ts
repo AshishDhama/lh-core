@@ -38,8 +38,10 @@ export {
   Text,
   Paragraph,
   Label,
+  Overline,
   type TitleProps,
   type TextProps,
   type ParagraphProps,
   type LabelProps,
+  type OverlineProps,
 } from './Typography';

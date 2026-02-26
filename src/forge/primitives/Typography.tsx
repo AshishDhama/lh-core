@@ -40,11 +40,19 @@ const alignClasses: Record<TextAlign, string> = {
 
 // --- Title ---
 
+type HeroSize = '6xl' | '7xl';
+
+const heroSizeClasses: Record<HeroSize, string> = {
+  '6xl': 'text-6xl leading-tight tracking-tighter',
+  '7xl': 'text-7xl leading-tight tracking-tighter',
+};
+
 export interface TitleProps {
   level?: 1 | 2 | 3 | 4;
   weight?: FontWeight;
   color?: TextColor;
   align?: TextAlign;
+  heroSize?: HeroSize;
   className?: string;
   children?: ReactNode;
 }
@@ -54,6 +62,7 @@ export function Title({
   weight = 'bold',
   color,
   align,
+  heroSize,
   className,
   children,
 }: TitleProps) {
@@ -64,11 +73,41 @@ export function Title({
         weightClasses[weight],
         color && colorClasses[color],
         align && alignClasses[align],
+        heroSize && heroSizeClasses[heroSize],
         className,
       )}
     >
       {children}
     </AntTypography.Title>
+  );
+}
+
+// --- Overline ---
+
+export interface OverlineProps {
+  color?: TextColor;
+  align?: TextAlign;
+  className?: string;
+  children?: ReactNode;
+}
+
+export function Overline({
+  color = 'tertiary',
+  align,
+  className,
+  children,
+}: OverlineProps) {
+  return (
+    <span
+      className={cn(
+        'text-xs font-semibold uppercase tracking-wider',
+        colorClasses[color],
+        align && alignClasses[align],
+        className,
+      )}
+    >
+      {children}
+    </span>
   );
 }
 

@@ -14,6 +14,7 @@ export { bentoTokens } from './bento';
 export { editorialTokens } from './editorial';
 export { notionTokens } from './notion';
 export { m3Tokens } from './m3';
+export { brilliantTokens } from './brilliant';
 
 import type { DesignMode } from '@/types/common';
 import type { ModeTokenOverrides } from './utils';
@@ -22,6 +23,7 @@ import { bentoTokens } from './bento';
 import { editorialTokens } from './editorial';
 import { notionTokens } from './notion';
 import { m3Tokens } from './m3';
+import { brilliantTokens } from './brilliant';
 
 export const modeTokenMap: Record<DesignMode, ModeTokenOverrides> = {
   scrolly: scrollyTokens,
@@ -29,4 +31,5 @@ export const modeTokenMap: Record<DesignMode, ModeTokenOverrides> = {
   editorial: editorialTokens,
   notion: notionTokens,
   m3: m3Tokens,
+  brilliant: brilliantTokens,
 };
