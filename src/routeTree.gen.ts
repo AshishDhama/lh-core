@@ -24,16 +24,22 @@ import { Route as ModesM3RouteImport } from './routes/modes/m3'
 import { Route as ModesEditorialRouteImport } from './routes/modes/editorial'
 import { Route as ModesBentoRouteImport } from './routes/modes/bento'
 import { Route as BrilliantJourneyRouteImport } from './routes/brilliant/journey'
+import { Route as BrilliantFocusRouteImport } from './routes/brilliant/focus'
 import { Route as BrilliantDashboardRouteImport } from './routes/brilliant/dashboard'
+import { Route as BrilliantBentoRouteImport } from './routes/brilliant/bento'
+import { Route as BrilliantAnalyticsRouteImport } from './routes/brilliant/analytics'
 import { Route as ProgramsProgramIdIndexRouteImport } from './routes/programs/$programId/index'
 import { Route as BrilliantProgrammesIndexRouteImport } from './routes/brilliant/programmes/index'
 import { Route as ProgramsProgramIdTasksRouteImport } from './routes/programs/$programId/tasks'
 import { Route as ProgramsProgramIdPrecheckRouteImport } from './routes/programs/$programId/precheck'
 import { Route as BrilliantProgrammesTimelineRouteImport } from './routes/brilliant/programmes/timeline'
 import { Route as BrilliantProgrammesTableRouteImport } from './routes/brilliant/programmes/table'
+import { Route as BrilliantProgrammesSkillmapRouteImport } from './routes/brilliant/programmes/skillmap'
+import { Route as BrilliantProgrammesMosaicRouteImport } from './routes/brilliant/programmes/mosaic'
 import { Route as BrilliantProgrammesMagazineRouteImport } from './routes/brilliant/programmes/magazine'
 import { Route as BrilliantProgrammesKanbanRouteImport } from './routes/brilliant/programmes/kanban'
 import { Route as BrilliantProgrammesDetailRouteImport } from './routes/brilliant/programmes/detail'
+import { Route as BrilliantProgrammesChecklistRouteImport } from './routes/brilliant/programmes/checklist'
 
 const SchedulingRoute = SchedulingRouteImport.update({
   id: '/scheduling',
@@ -110,9 +116,24 @@ const BrilliantJourneyRoute = BrilliantJourneyRouteImport.update({
   path: '/journey',
   getParentRoute: () => BrilliantRouteRoute,
 } as any)
+const BrilliantFocusRoute = BrilliantFocusRouteImport.update({
+  id: '/focus',
+  path: '/focus',
+  getParentRoute: () => BrilliantRouteRoute,
+} as any)
 const BrilliantDashboardRoute = BrilliantDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
+  getParentRoute: () => BrilliantRouteRoute,
+} as any)
+const BrilliantBentoRoute = BrilliantBentoRouteImport.update({
+  id: '/bento',
+  path: '/bento',
+  getParentRoute: () => BrilliantRouteRoute,
+} as any)
+const BrilliantAnalyticsRoute = BrilliantAnalyticsRouteImport.update({
+  id: '/analytics',
+  path: '/analytics',
   getParentRoute: () => BrilliantRouteRoute,
 } as any)
 const ProgramsProgramIdIndexRoute = ProgramsProgramIdIndexRouteImport.update({
@@ -155,6 +176,18 @@ const BrilliantProgrammesTableRoute =
     path: '/programmes/table',
     getParentRoute: () => BrilliantRouteRoute,
   } as any)
+const BrilliantProgrammesSkillmapRoute =
+  BrilliantProgrammesSkillmapRouteImport.update({
+    id: '/programmes/skillmap',
+    path: '/programmes/skillmap',
+    getParentRoute: () => BrilliantRouteRoute,
+  } as any)
+const BrilliantProgrammesMosaicRoute =
+  BrilliantProgrammesMosaicRouteImport.update({
+    id: '/programmes/mosaic',
+    path: '/programmes/mosaic',
+    getParentRoute: () => BrilliantRouteRoute,
+  } as any)
 const BrilliantProgrammesMagazineRoute =
   BrilliantProgrammesMagazineRouteImport.update({
     id: '/programmes/magazine',
@@ -173,6 +206,12 @@ const BrilliantProgrammesDetailRoute =
     path: '/programmes/detail',
     getParentRoute: () => BrilliantRouteRoute,
   } as any)
+const BrilliantProgrammesChecklistRoute =
+  BrilliantProgrammesChecklistRouteImport.update({
+    id: '/programmes/checklist',
+    path: '/programmes/checklist',
+    getParentRoute: () => BrilliantRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -181,7 +220,10 @@ export interface FileRoutesByFullPath {
   '/discovery': typeof DiscoveryRoute
   '/insights': typeof InsightsRoute
   '/scheduling': typeof SchedulingRoute
+  '/brilliant/analytics': typeof BrilliantAnalyticsRoute
+  '/brilliant/bento': typeof BrilliantBentoRoute
   '/brilliant/dashboard': typeof BrilliantDashboardRoute
+  '/brilliant/focus': typeof BrilliantFocusRoute
   '/brilliant/journey': typeof BrilliantJourneyRoute
   '/modes/bento': typeof ModesBentoRoute
   '/modes/editorial': typeof ModesEditorialRoute
@@ -191,9 +233,12 @@ export interface FileRoutesByFullPath {
   '/brilliant/': typeof BrilliantIndexRoute
   '/programs-v2/': typeof ProgramsV2IndexRoute
   '/programs/': typeof ProgramsIndexRoute
+  '/brilliant/programmes/checklist': typeof BrilliantProgrammesChecklistRoute
   '/brilliant/programmes/detail': typeof BrilliantProgrammesDetailRoute
   '/brilliant/programmes/kanban': typeof BrilliantProgrammesKanbanRoute
   '/brilliant/programmes/magazine': typeof BrilliantProgrammesMagazineRoute
+  '/brilliant/programmes/mosaic': typeof BrilliantProgrammesMosaicRoute
+  '/brilliant/programmes/skillmap': typeof BrilliantProgrammesSkillmapRoute
   '/brilliant/programmes/table': typeof BrilliantProgrammesTableRoute
   '/brilliant/programmes/timeline': typeof BrilliantProgrammesTimelineRoute
   '/programs/$programId/precheck': typeof ProgramsProgramIdPrecheckRoute
@@ -207,7 +252,10 @@ export interface FileRoutesByTo {
   '/discovery': typeof DiscoveryRoute
   '/insights': typeof InsightsRoute
   '/scheduling': typeof SchedulingRoute
+  '/brilliant/analytics': typeof BrilliantAnalyticsRoute
+  '/brilliant/bento': typeof BrilliantBentoRoute
   '/brilliant/dashboard': typeof BrilliantDashboardRoute
+  '/brilliant/focus': typeof BrilliantFocusRoute
   '/brilliant/journey': typeof BrilliantJourneyRoute
   '/modes/bento': typeof ModesBentoRoute
   '/modes/editorial': typeof ModesEditorialRoute
@@ -217,9 +265,12 @@ export interface FileRoutesByTo {
   '/brilliant': typeof BrilliantIndexRoute
   '/programs-v2': typeof ProgramsV2IndexRoute
   '/programs': typeof ProgramsIndexRoute
+  '/brilliant/programmes/checklist': typeof BrilliantProgrammesChecklistRoute
   '/brilliant/programmes/detail': typeof BrilliantProgrammesDetailRoute
   '/brilliant/programmes/kanban': typeof BrilliantProgrammesKanbanRoute
   '/brilliant/programmes/magazine': typeof BrilliantProgrammesMagazineRoute
+  '/brilliant/programmes/mosaic': typeof BrilliantProgrammesMosaicRoute
+  '/brilliant/programmes/skillmap': typeof BrilliantProgrammesSkillmapRoute
   '/brilliant/programmes/table': typeof BrilliantProgrammesTableRoute
   '/brilliant/programmes/timeline': typeof BrilliantProgrammesTimelineRoute
   '/programs/$programId/precheck': typeof ProgramsProgramIdPrecheckRoute
@@ -235,7 +286,10 @@ export interface FileRoutesById {
   '/discovery': typeof DiscoveryRoute
   '/insights': typeof InsightsRoute
   '/scheduling': typeof SchedulingRoute
+  '/brilliant/analytics': typeof BrilliantAnalyticsRoute
+  '/brilliant/bento': typeof BrilliantBentoRoute
   '/brilliant/dashboard': typeof BrilliantDashboardRoute
+  '/brilliant/focus': typeof BrilliantFocusRoute
   '/brilliant/journey': typeof BrilliantJourneyRoute
   '/modes/bento': typeof ModesBentoRoute
   '/modes/editorial': typeof ModesEditorialRoute
@@ -245,9 +299,12 @@ export interface FileRoutesById {
   '/brilliant/': typeof BrilliantIndexRoute
   '/programs-v2/': typeof ProgramsV2IndexRoute
   '/programs/': typeof ProgramsIndexRoute
+  '/brilliant/programmes/checklist': typeof BrilliantProgrammesChecklistRoute
   '/brilliant/programmes/detail': typeof BrilliantProgrammesDetailRoute
   '/brilliant/programmes/kanban': typeof BrilliantProgrammesKanbanRoute
   '/brilliant/programmes/magazine': typeof BrilliantProgrammesMagazineRoute
+  '/brilliant/programmes/mosaic': typeof BrilliantProgrammesMosaicRoute
+  '/brilliant/programmes/skillmap': typeof BrilliantProgrammesSkillmapRoute
   '/brilliant/programmes/table': typeof BrilliantProgrammesTableRoute
   '/brilliant/programmes/timeline': typeof BrilliantProgrammesTimelineRoute
   '/programs/$programId/precheck': typeof ProgramsProgramIdPrecheckRoute
@@ -264,7 +321,10 @@ export interface FileRouteTypes {
     | '/discovery'
     | '/insights'
     | '/scheduling'
+    | '/brilliant/analytics'
+    | '/brilliant/bento'
     | '/brilliant/dashboard'
+    | '/brilliant/focus'
     | '/brilliant/journey'
     | '/modes/bento'
     | '/modes/editorial'
@@ -274,9 +334,12 @@ export interface FileRouteTypes {
     | '/brilliant/'
     | '/programs-v2/'
     | '/programs/'
+    | '/brilliant/programmes/checklist'
     | '/brilliant/programmes/detail'
     | '/brilliant/programmes/kanban'
     | '/brilliant/programmes/magazine'
+    | '/brilliant/programmes/mosaic'
+    | '/brilliant/programmes/skillmap'
     | '/brilliant/programmes/table'
     | '/brilliant/programmes/timeline'
     | '/programs/$programId/precheck'
@@ -290,7 +353,10 @@ export interface FileRouteTypes {
     | '/discovery'
     | '/insights'
     | '/scheduling'
+    | '/brilliant/analytics'
+    | '/brilliant/bento'
     | '/brilliant/dashboard'
+    | '/brilliant/focus'
     | '/brilliant/journey'
     | '/modes/bento'
     | '/modes/editorial'
@@ -300,9 +366,12 @@ export interface FileRouteTypes {
     | '/brilliant'
     | '/programs-v2'
     | '/programs'
+    | '/brilliant/programmes/checklist'
     | '/brilliant/programmes/detail'
     | '/brilliant/programmes/kanban'
     | '/brilliant/programmes/magazine'
+    | '/brilliant/programmes/mosaic'
+    | '/brilliant/programmes/skillmap'
     | '/brilliant/programmes/table'
     | '/brilliant/programmes/timeline'
     | '/programs/$programId/precheck'
@@ -317,7 +386,10 @@ export interface FileRouteTypes {
     | '/discovery'
     | '/insights'
     | '/scheduling'
+    | '/brilliant/analytics'
+    | '/brilliant/bento'
     | '/brilliant/dashboard'
+    | '/brilliant/focus'
     | '/brilliant/journey'
     | '/modes/bento'
     | '/modes/editorial'
@@ -327,9 +399,12 @@ export interface FileRouteTypes {
     | '/brilliant/'
     | '/programs-v2/'
     | '/programs/'
+    | '/brilliant/programmes/checklist'
     | '/brilliant/programmes/detail'
     | '/brilliant/programmes/kanban'
     | '/brilliant/programmes/magazine'
+    | '/brilliant/programmes/mosaic'
+    | '/brilliant/programmes/skillmap'
     | '/brilliant/programmes/table'
     | '/brilliant/programmes/timeline'
     | '/programs/$programId/precheck'
@@ -464,11 +539,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BrilliantJourneyRouteImport
       parentRoute: typeof BrilliantRouteRoute
     }
+    '/brilliant/focus': {
+      id: '/brilliant/focus'
+      path: '/focus'
+      fullPath: '/brilliant/focus'
+      preLoaderRoute: typeof BrilliantFocusRouteImport
+      parentRoute: typeof BrilliantRouteRoute
+    }
     '/brilliant/dashboard': {
       id: '/brilliant/dashboard'
       path: '/dashboard'
       fullPath: '/brilliant/dashboard'
       preLoaderRoute: typeof BrilliantDashboardRouteImport
+      parentRoute: typeof BrilliantRouteRoute
+    }
+    '/brilliant/bento': {
+      id: '/brilliant/bento'
+      path: '/bento'
+      fullPath: '/brilliant/bento'
+      preLoaderRoute: typeof BrilliantBentoRouteImport
+      parentRoute: typeof BrilliantRouteRoute
+    }
+    '/brilliant/analytics': {
+      id: '/brilliant/analytics'
+      path: '/analytics'
+      fullPath: '/brilliant/analytics'
+      preLoaderRoute: typeof BrilliantAnalyticsRouteImport
       parentRoute: typeof BrilliantRouteRoute
     }
     '/programs/$programId/': {
@@ -513,6 +609,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BrilliantProgrammesTableRouteImport
       parentRoute: typeof BrilliantRouteRoute
     }
+    '/brilliant/programmes/skillmap': {
+      id: '/brilliant/programmes/skillmap'
+      path: '/programmes/skillmap'
+      fullPath: '/brilliant/programmes/skillmap'
+      preLoaderRoute: typeof BrilliantProgrammesSkillmapRouteImport
+      parentRoute: typeof BrilliantRouteRoute
+    }
+    '/brilliant/programmes/mosaic': {
+      id: '/brilliant/programmes/mosaic'
+      path: '/programmes/mosaic'
+      fullPath: '/brilliant/programmes/mosaic'
+      preLoaderRoute: typeof BrilliantProgrammesMosaicRouteImport
+      parentRoute: typeof BrilliantRouteRoute
+    }
     '/brilliant/programmes/magazine': {
       id: '/brilliant/programmes/magazine'
       path: '/programmes/magazine'
@@ -534,28 +644,47 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BrilliantProgrammesDetailRouteImport
       parentRoute: typeof BrilliantRouteRoute
     }
+    '/brilliant/programmes/checklist': {
+      id: '/brilliant/programmes/checklist'
+      path: '/programmes/checklist'
+      fullPath: '/brilliant/programmes/checklist'
+      preLoaderRoute: typeof BrilliantProgrammesChecklistRouteImport
+      parentRoute: typeof BrilliantRouteRoute
+    }
   }
 }
 
 interface BrilliantRouteRouteChildren {
+  BrilliantAnalyticsRoute: typeof BrilliantAnalyticsRoute
+  BrilliantBentoRoute: typeof BrilliantBentoRoute
   BrilliantDashboardRoute: typeof BrilliantDashboardRoute
+  BrilliantFocusRoute: typeof BrilliantFocusRoute
   BrilliantJourneyRoute: typeof BrilliantJourneyRoute
   BrilliantIndexRoute: typeof BrilliantIndexRoute
+  BrilliantProgrammesChecklistRoute: typeof BrilliantProgrammesChecklistRoute
   BrilliantProgrammesDetailRoute: typeof BrilliantProgrammesDetailRoute
   BrilliantProgrammesKanbanRoute: typeof BrilliantProgrammesKanbanRoute
   BrilliantProgrammesMagazineRoute: typeof BrilliantProgrammesMagazineRoute
+  BrilliantProgrammesMosaicRoute: typeof BrilliantProgrammesMosaicRoute
+  BrilliantProgrammesSkillmapRoute: typeof BrilliantProgrammesSkillmapRoute
   BrilliantProgrammesTableRoute: typeof BrilliantProgrammesTableRoute
   BrilliantProgrammesTimelineRoute: typeof BrilliantProgrammesTimelineRoute
   BrilliantProgrammesIndexRoute: typeof BrilliantProgrammesIndexRoute
 }
 
 const BrilliantRouteRouteChildren: BrilliantRouteRouteChildren = {
+  BrilliantAnalyticsRoute: BrilliantAnalyticsRoute,
+  BrilliantBentoRoute: BrilliantBentoRoute,
   BrilliantDashboardRoute: BrilliantDashboardRoute,
+  BrilliantFocusRoute: BrilliantFocusRoute,
   BrilliantJourneyRoute: BrilliantJourneyRoute,
   BrilliantIndexRoute: BrilliantIndexRoute,
+  BrilliantProgrammesChecklistRoute: BrilliantProgrammesChecklistRoute,
   BrilliantProgrammesDetailRoute: BrilliantProgrammesDetailRoute,
   BrilliantProgrammesKanbanRoute: BrilliantProgrammesKanbanRoute,
   BrilliantProgrammesMagazineRoute: BrilliantProgrammesMagazineRoute,
+  BrilliantProgrammesMosaicRoute: BrilliantProgrammesMosaicRoute,
+  BrilliantProgrammesSkillmapRoute: BrilliantProgrammesSkillmapRoute,
   BrilliantProgrammesTableRoute: BrilliantProgrammesTableRoute,
   BrilliantProgrammesTimelineRoute: BrilliantProgrammesTimelineRoute,
   BrilliantProgrammesIndexRoute: BrilliantProgrammesIndexRoute,

@@ -12,15 +12,21 @@ const HOME_TABS = [
   { label: 'Calm', to: '/brilliant' },
   { label: 'Dashboard', to: '/brilliant/dashboard' },
   { label: 'Journey', to: '/brilliant/journey' },
+  { label: 'Focus', to: '/brilliant/focus' },
+  { label: 'Bento', to: '/brilliant/bento' },
+  { label: 'Analytics', to: '/brilliant/analytics' },
 ] as const;
 
 const PROGRAMMES_TABS = [
   { label: 'Grid', to: '/brilliant/programmes' },
+  { label: 'Checklist', to: '/brilliant/programmes/checklist' },
   { label: 'Detail', to: '/brilliant/programmes/detail' },
   { label: 'Kanban', to: '/brilliant/programmes/kanban' },
   { label: 'Timeline', to: '/brilliant/programmes/timeline' },
   { label: 'Table', to: '/brilliant/programmes/table' },
   { label: 'Magazine', to: '/brilliant/programmes/magazine' },
+  { label: 'Mosaic', to: '/brilliant/programmes/mosaic' },
+  { label: 'Skill Map', to: '/brilliant/programmes/skillmap' },
 ] as const;
 
 function BrilliantLayout() {
