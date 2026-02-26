@@ -479,7 +479,7 @@ function ProgrammeAccordionItem({
           )}
 
           {/* Footer CTA row */}
-          <div className="flex items-center justify-between px-5 py-4 border-t border-border-subtle bg-surface-warm/50">
+          <div className="flex items-center justify-between px-5 py-5 border-t border-border-subtle bg-surface-warm/50">
             <div className="flex items-center gap-3">
               <ProgressBar
                 percent={program.pct}

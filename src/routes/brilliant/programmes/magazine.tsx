@@ -830,7 +830,7 @@ function MagazineProgrammeSection({ program, featured }: MagazineProgrammeSectio
         </div>
 
         {/* Right column: exercise list */}
-        <div className="py-2">
+        <div className="py-4">
           {/* Featured / current exercise callout (inside the section) */}
           {currentEx && (
             <div className="px-6 pt-5 pb-3">
@@ -880,7 +880,7 @@ function MagazineProgrammeSection({ program, featured }: MagazineProgrammeSectio
             <div>
               <div
                 className={cn(
-                  'flex items-center gap-2 px-6 py-3 border-b border-border-subtle bg-surface-tertiary/30',
+                  'flex items-center gap-2 px-6 py-4 border-b border-border-subtle bg-surface-tertiary/30',
                   hasSeq && 'border-t border-border-subtle',
                 )}
               >

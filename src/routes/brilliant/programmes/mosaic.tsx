@@ -365,7 +365,7 @@ function MediumCard({ exercise }: MediumCardProps) {
       />
 
       {/* Illustration area — medium height, muted */}
-      <div className="relative flex items-center justify-center px-6 pt-6 pb-5 bg-surface-tertiary/40">
+      <div className="relative flex items-center justify-center p-6 bg-surface-tertiary/40">
         {/* Checkmark overlay circle */}
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
           <div className="w-12 h-12 rounded-full bg-success-light/80 flex items-center justify-center z-20 shadow-soft">

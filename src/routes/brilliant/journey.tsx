@@ -92,7 +92,7 @@ function JourneyHomePage() {
                 {programme.desc}
               </Text>
 
-              <div className="rounded-2xl bg-surface-card shadow-soft px-4 py-2 mb-6">
+              <div className="rounded-2xl bg-surface-card shadow-soft px-4 py-4 mb-6">
                 <JourneyTimeline exercises={allExercises} />
               </div>
 

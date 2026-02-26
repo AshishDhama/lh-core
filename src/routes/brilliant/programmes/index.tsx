@@ -244,7 +244,7 @@ function ExerciseCard({ exercise, seqIndex }: ExerciseCardProps) {
       </div>
 
       {/* Body */}
-      <div className="flex flex-col gap-2 p-4 flex-1">
+      <div className="flex flex-col gap-3 p-5 flex-1">
         <Text
           size="sm"
           weight="semibold"
@@ -259,7 +259,7 @@ function ExerciseCard({ exercise, seqIndex }: ExerciseCardProps) {
         </Text>
 
         {/* Footer row */}
-        <div className="mt-auto pt-2 flex items-center gap-2 flex-wrap">
+        <div className="mt-auto pt-2 flex items-center gap-3 flex-wrap">
           <div className="flex items-center gap-1 shrink-0">
             <Icon name="Clock" size={12} className="text-content-tertiary" />
             <Text size="xs" color="tertiary">

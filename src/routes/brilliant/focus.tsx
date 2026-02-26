@@ -145,7 +145,7 @@ function PositionDots({
                 : 'w-2 h-2 opacity-20',
           )}
           style={{
-            backgroundColor: i <= current ? accent : '#94a3b8',
+            backgroundColor: i <= current ? accent : 'var(--color-slate-400, #94a3b8)',
           }}
         />
       ))}
@@ -242,7 +242,7 @@ function FocusHomePage() {
   const isInProgress = focusExercise.status === 'progress';
 
   return (
-    <main className="max-w-[640px] mx-auto px-4 py-12 flex flex-col items-center gap-0">
+    <main className="max-w-[640px] mx-auto px-6 py-12 flex flex-col items-center gap-0">
 
       {/* ── Ambient programme label ── */}
       <div className="flex items-center gap-2 mb-10">

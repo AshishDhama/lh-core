@@ -22,10 +22,10 @@ export function BrilliantHeader({
     <header
       className={cn(
         'sticky top-0 z-30 w-full bg-surface-card border-b border-border-subtle',
-        'flex items-center justify-between px-6 h-14',
         className,
       )}
     >
+      <div className="max-w-[1200px] mx-auto px-6 h-14 flex items-center justify-between">
       {/* Left section */}
       <div className="flex items-center gap-6">
         <Link to="/brilliant" className="flex items-center gap-2 no-underline">
@@ -69,6 +69,7 @@ export function BrilliantHeader({
           size={32}
           className="cursor-pointer"
         />
+      </div>
       </div>
     </header>
   );

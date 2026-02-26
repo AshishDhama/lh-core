@@ -6,6 +6,7 @@ import { ProgressBar } from '@/forge/primitives/ProgressBar';
 import { Icon } from '@/forge/primitives/Icon';
 import { Button } from '@/forge/primitives/Button';
 import { programList } from '@/data/programs';
+import { cn } from '@/forge/utils';
 
 import type { Program, Exercise } from '@/types/program';
 import type { ItemStatus } from '@/types/common';
@@ -63,29 +64,29 @@ const STATUS_CFG: Record<
   complete: {
     icon: 'CircleCheckBig',
     label: 'Completed',
-    glowColor: 'rgba(34,197,94,0.35)',
-    ringColor: '#22c55e',
+    glowColor: 'rgba(34,197,94,0.15)',
+    ringColor: 'var(--color-success)',
     dimmed: false,
   },
   progress: {
     icon: 'CircleDot',
     label: 'In Progress',
-    glowColor: 'rgba(139,92,246,0.5)',
-    ringColor: '#8B5CF6',
+    glowColor: 'rgba(139,92,246,0.18)',
+    ringColor: 'var(--color-subject-code)',
     dimmed: false,
   },
   notstarted: {
     icon: 'Circle',
     label: 'Not Started',
-    glowColor: 'rgba(255,255,255,0.05)',
-    ringColor: 'rgba(255,255,255,0.2)',
+    glowColor: 'rgba(0,0,0,0.03)',
+    ringColor: 'var(--color-border-muted)',
     dimmed: true,
   },
   locked: {
     icon: 'Lock',
     label: 'Locked',
-    glowColor: 'rgba(255,255,255,0.02)',
-    ringColor: 'rgba(255,255,255,0.1)',
+    glowColor: 'rgba(0,0,0,0.02)',
+    ringColor: 'var(--color-border)',
     dimmed: true,
   },
 };
@@ -233,7 +234,7 @@ function Connector({ from, to, isSeq, toStatus, accentColor }: ConnectorProps) {
       <path
         d={pathD}
         fill="none"
-        stroke="rgba(255,255,255,0.12)"
+        stroke="var(--color-border)"
         strokeWidth={1}
         strokeDasharray="4 6"
         strokeLinecap="round"
@@ -243,11 +244,11 @@ function Connector({ from, to, isSeq, toStatus, accentColor }: ConnectorProps) {
 
   // Sequential connector — solid, colored when active
   const strokeColor = isLocked
-    ? 'rgba(255,255,255,0.08)'
+    ? 'var(--color-border-muted)'
     : isComplete
-      ? '#22c55e'
+      ? 'var(--color-success)'
       : accentColor;
-  const opacity = isLocked ? 0.4 : 0.7;
+  const opacity = isLocked ? 0.4 : 0.6;
 
   return (
     <>
@@ -258,7 +259,7 @@ function Connector({ from, to, isSeq, toStatus, accentColor }: ConnectorProps) {
           fill="none"
           stroke={strokeColor}
           strokeWidth={6}
-          opacity={0.15}
+          opacity={0.10}
           strokeLinecap="round"
         />
       )}
@@ -297,15 +298,15 @@ function ExerciseNode({ node, accentColor, isHovered, onHover, onClick }: Exerci
   const isInProgress = exercise.status === 'progress';
 
   const nodeColor = isComplete
-    ? '#22c55e'
+    ? '#dcfce7'
     : isInProgress
-      ? accentColor
+      ? 'var(--color-subject-code-light)'
       : isLocked
-        ? '#334155'
-        : '#1e293b';
+        ? 'var(--color-surface-tertiary)'
+        : 'var(--color-surface-card)';
 
   const borderColor = isComplete
-    ? '#22c55e'
+    ? 'var(--color-success)'
     : isInProgress
       ? accentColor
       : cfg.ringColor;
@@ -382,7 +383,7 @@ function ExerciseNode({ node, accentColor, isHovered, onHover, onClick }: Exerci
           y={pos.y + translateY + 5}
           textAnchor="middle"
           fontSize={14}
-          fill="rgba(255,255,255,0.3)"
+          fill="var(--color-content-tertiary)"
           style={{ pointerEvents: 'none' }}
         >
           🔒
@@ -394,7 +395,7 @@ function ExerciseNode({ node, accentColor, isHovered, onHover, onClick }: Exerci
         cx={pos.x + r * 0.67}
         cy={pos.y + translateY + r * 0.67}
         r={9}
-        fill="#0f172a"
+        fill="var(--color-surface-secondary)"
         stroke={borderColor}
         strokeWidth={1.5}
         style={{ transition: 'all 0.2s ease' }}
@@ -407,8 +408,8 @@ function ExerciseNode({ node, accentColor, isHovered, onHover, onClick }: Exerci
             cx={pos.x - r * 0.67}
             cy={pos.y + translateY - r * 0.67}
             r={9}
-            fill="#0f172a"
-            stroke="rgba(255,255,255,0.25)"
+            fill="var(--color-surface-secondary)"
+            stroke="var(--color-border)"
             strokeWidth={1}
           />
           <text
@@ -417,7 +418,7 @@ function ExerciseNode({ node, accentColor, isHovered, onHover, onClick }: Exerci
             textAnchor="middle"
             fontSize={9}
             fontWeight="700"
-            fill="rgba(255,255,255,0.7)"
+            fill="var(--color-content-secondary)"
             style={{ pointerEvents: 'none' }}
           >
             {seqIndex + 1}
@@ -434,12 +435,12 @@ function ExerciseNode({ node, accentColor, isHovered, onHover, onClick }: Exerci
         fontWeight={isInProgress ? '700' : '500'}
         fill={
           isLocked
-            ? 'rgba(255,255,255,0.25)'
+            ? 'var(--color-content-tertiary)'
             : isComplete
-              ? '#86efac'
+              ? 'var(--color-success-dark)'
               : isInProgress
-                ? 'rgba(255,255,255,0.95)'
-                : 'rgba(255,255,255,0.6)'
+                ? 'var(--color-content-primary)'
+                : 'var(--color-content-secondary)'
         }
         style={{ pointerEvents: 'none', transition: 'all 0.2s ease' }}
       >
@@ -452,7 +453,7 @@ function ExerciseNode({ node, accentColor, isHovered, onHover, onClick }: Exerci
         y={pos.y + translateY + r + 30}
         textAnchor="middle"
         fontSize={9}
-        fill="rgba(255,255,255,0.3)"
+        fill="var(--color-content-tertiary)"
         style={{ pointerEvents: 'none' }}
       >
         {exercise.time}
@@ -464,7 +465,7 @@ function ExerciseNode({ node, accentColor, isHovered, onHover, onClick }: Exerci
           cx={pos.x - r * 0.67}
           cy={pos.y + translateY + r * 0.67}
           r={4}
-          fill="#8B5CF6"
+          fill="var(--color-subject-code)"
           opacity={0.9}
         />
       )}
@@ -504,7 +505,7 @@ function HubNode({ program, pos, isHovered, onHover }: HubNodeProps) {
         fill="none"
         stroke={accentHex}
         strokeWidth={1}
-        opacity={isHovered ? 0.3 : 0.12}
+        opacity={isHovered ? 0.15 : 0.06}
         style={{ transition: 'opacity 0.3s ease' }}
       />
       <circle
@@ -514,7 +515,7 @@ function HubNode({ program, pos, isHovered, onHover }: HubNodeProps) {
         fill="none"
         stroke={accentHex}
         strokeWidth={0.5}
-        opacity={isHovered ? 0.15 : 0.06}
+        opacity={isHovered ? 0.08 : 0.03}
         strokeDasharray="3 8"
         style={{ transition: 'opacity 0.3s ease' }}
       />
@@ -524,10 +525,10 @@ function HubNode({ program, pos, isHovered, onHover }: HubNodeProps) {
         cx={pos.x}
         cy={pos.y}
         r={r}
-        fill="#1e293b"
+        fill="var(--color-surface-card)"
         stroke={accentHex}
         strokeWidth={isInProgress ? 3 : 2}
-        opacity={0.95}
+        opacity={1}
       />
 
       {/* Progress ring using SVG arc */}
@@ -537,7 +538,7 @@ function HubNode({ program, pos, isHovered, onHover }: HubNodeProps) {
           cy={pos.y}
           r={r - 4}
           fill="none"
-          stroke={isComplete ? '#22c55e' : accentHex}
+          stroke={isComplete ? 'var(--color-success)' : accentHex}
           strokeWidth={5}
           strokeLinecap="round"
           strokeDasharray={`${((program.pct / 100) * 2 * Math.PI * (r - 4)).toFixed(1)} ${(2 * Math.PI * (r - 4)).toFixed(1)}`}
@@ -565,7 +566,7 @@ function HubNode({ program, pos, isHovered, onHover }: HubNodeProps) {
         textAnchor="middle"
         fontSize={14}
         fontWeight="700"
-        fill={isComplete ? '#86efac' : 'rgba(255,255,255,0.9)'}
+        fill={isComplete ? 'var(--color-success-dark)' : 'var(--color-content-primary)'}
         style={{ pointerEvents: 'none' }}
       >
         {program.pct}%
@@ -599,45 +600,17 @@ function ConstellationCluster({ program }: ClusterProps) {
 
   return (
     <section
-      className="relative rounded-3xl overflow-hidden"
-      style={{
-        background: 'linear-gradient(145deg, #0f172a 0%, #111827 50%, #0d1117 100%)',
-        border: `1px solid rgba(255,255,255,0.07)`,
-        boxShadow: `0 0 40px ${accentColor}18, inset 0 1px 0 rgba(255,255,255,0.05)`,
-      }}
+      className="relative rounded-3xl overflow-hidden bg-surface-card border border-border-subtle shadow-soft"
     >
-      {/* Subtle star-field background */}
-      <svg
-        className="absolute inset-0 w-full h-full pointer-events-none"
-        aria-hidden="true"
-        preserveAspectRatio="xMidYMid slice"
-      >
-        {/* Static star dots */}
-        {[
-          [8, 12], [95, 8], [30, 88], [72, 35], [15, 55], [88, 75], [42, 20],
-          [60, 92], [78, 50], [22, 70], [50, 5], [90, 40], [35, 60], [65, 15],
-        ].map(([cx, cy], i) => (
-          <circle
-            key={i}
-            cx={`${cx}%`}
-            cy={`${cy}%`}
-            r={Math.random() > 0.5 ? 1 : 0.5}
-            fill="white"
-            opacity={0.15 + (i % 3) * 0.08}
-          />
-        ))}
-      </svg>
-
       {/* Programme header strip */}
-      <div className="relative px-7 pt-6 pb-4 flex items-start justify-between gap-4 flex-wrap">
+      <div className="relative px-7 pt-6 pb-5 flex items-start justify-between gap-4 flex-wrap">
         <div className="flex items-start gap-4">
           {/* Accent orb */}
           <div
             className="w-11 h-11 rounded-2xl flex items-center justify-center shrink-0 mt-0.5"
             style={{
-              background: `${accentColor}22`,
-              border: `1px solid ${accentColor}40`,
-              boxShadow: `0 0 12px ${accentColor}30`,
+              background: `${accentColor}15`,
+              border: `1px solid ${accentColor}25`,
             }}
           >
             <Icon name="Orbit" size="md" style={{ color: accentColor }} />
@@ -645,38 +618,24 @@ function ConstellationCluster({ program }: ClusterProps) {
 
           <div>
             <div className="flex items-center gap-2 flex-wrap mb-1">
-              <h3 className="font-bold !mb-0" style={{ color: 'rgba(255,255,255,0.95)' }}>
+              <h3 className="font-bold !mb-0 text-content-primary">
                 {program.name}
               </h3>
               <span
-                className="flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold shrink-0"
-                style={{
-                  background:
-                    program.status === 'complete'
-                      ? 'rgba(34,197,94,0.15)'
-                      : program.status === 'progress'
-                        ? 'rgba(139,92,246,0.15)'
-                        : 'rgba(255,255,255,0.08)',
-                  color:
-                    program.status === 'complete'
-                      ? '#86efac'
-                      : program.status === 'progress'
-                        ? '#c4b5fd'
-                        : 'rgba(255,255,255,0.5)',
-                  border: `1px solid ${
-                    program.status === 'complete'
-                      ? 'rgba(34,197,94,0.25)'
-                      : program.status === 'progress'
-                        ? 'rgba(139,92,246,0.3)'
-                        : 'rgba(255,255,255,0.12)'
-                  }`,
-                }}
+                className={cn(
+                  'flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold shrink-0',
+                  program.status === 'complete'
+                    ? 'bg-success-light text-success-dark'
+                    : program.status === 'progress'
+                      ? 'bg-subject-code-light text-subject-code-dark'
+                      : 'bg-surface-tertiary text-content-tertiary',
+                )}
               >
                 <Icon name={statusCfg.icon} size={11} />
                 <span className="ml-1">{statusCfg.label}</span>
               </span>
             </div>
-            <span className="text-sm block" style={{ color: 'rgba(255,255,255,0.45)' }}>
+            <span className="text-sm block text-content-tertiary">
               {program.desc}
             </span>
           </div>
@@ -688,28 +647,31 @@ function ConstellationCluster({ program }: ClusterProps) {
             <Icon
               name="Calendar"
               size="sm"
-              style={{ color: isUrgent ? '#fca5a5' : 'rgba(255,255,255,0.35)' }}
+              className={isUrgent ? 'text-error-dark' : 'text-content-tertiary'}
             />
             <span
-              className="text-sm font-semibold"
-              style={{ color: isUrgent ? '#fca5a5' : 'rgba(255,255,255,0.6)' }}
+              className={cn(
+                'text-sm font-semibold',
+                isUrgent ? 'text-error-dark' : 'text-content-secondary',
+              )}
             >
               {program.due}
             </span>
             <span
-              className="px-2 py-0.5 rounded-full text-xs font-bold"
-              style={{
-                background: isUrgent ? 'rgba(239,68,68,0.15)' : 'rgba(255,255,255,0.07)',
-                color: isUrgent ? '#fca5a5' : 'rgba(255,255,255,0.35)',
-              }}
+              className={cn(
+                'px-2 py-0.5 rounded-full text-xs font-bold',
+                isUrgent
+                  ? 'bg-error-light text-error-dark'
+                  : 'bg-surface-tertiary text-content-tertiary',
+              )}
             >
               {program.daysLeft}d
             </span>
           </div>
           <Button
-            variant="primary"
+            variant="secondary"
             size="sm"
-            className="!rounded-full !bg-transparent !border !border-white/20 !text-white/70 hover:!bg-white/10 hover:!text-white"
+            className="!rounded-full"
           >
             {program.status === 'complete' ? 'View Report' : 'Continue'}
           </Button>
@@ -717,31 +679,30 @@ function ConstellationCluster({ program }: ClusterProps) {
       </div>
 
       {/* Legend row */}
-      <div className="px-7 pb-3 flex items-center gap-5 flex-wrap">
+      <div className="px-7 pb-4 flex items-center gap-5 flex-wrap">
         <div className="flex items-center gap-1.5">
           <svg width={20} height={8}>
             <line x1={0} y1={4} x2={20} y2={4} stroke={accentColor} strokeWidth={1.5} opacity={0.7} />
             <circle cx={20} cy={4} r={3} fill={accentColor} opacity={0.8} />
           </svg>
-          <span className="text-xs" style={{ color: 'rgba(255,255,255,0.35)' }}>
+          <span className="text-xs text-content-tertiary">
             Sequential chain
           </span>
         </div>
         <div className="flex items-center gap-1.5">
           <svg width={20} height={8}>
-            <line x1={0} y1={4} x2={20} y2={4} stroke="rgba(255,255,255,0.25)" strokeWidth={1} strokeDasharray="3 4" />
-            <circle cx={20} cy={4} r={3} fill="rgba(255,255,255,0.25)" />
+            <line x1={0} y1={4} x2={20} y2={4} stroke="var(--color-border)" strokeWidth={1} strokeDasharray="3 4" />
+            <circle cx={20} cy={4} r={3} fill="var(--color-border)" />
           </svg>
-          <span className="text-xs" style={{ color: 'rgba(255,255,255,0.35)' }}>
+          <span className="text-xs text-content-tertiary">
             Open (anytime)
           </span>
         </div>
         <div className="flex items-center gap-1.5">
           <div
-            className="w-2 h-2 rounded-full"
-            style={{ background: '#8B5CF6' }}
+            className="w-2 h-2 rounded-full bg-subject-code"
           />
-          <span className="text-xs" style={{ color: 'rgba(255,255,255,0.35)' }}>
+          <span className="text-xs text-content-tertiary">
             Proctored
           </span>
         </div>
@@ -836,26 +797,15 @@ function ExerciseDrawer({ exercise, accentColor, onClose }: ExerciseDrawerProps)
   const isInProgress = exercise.status === 'progress';
   const isLocked = exercise.status === 'locked';
 
-  const statusColor = isComplete
-    ? '#86efac'
+  const statusClasses = isComplete
+    ? 'bg-success-light text-success-dark'
     : isInProgress
-      ? '#c4b5fd'
-      : 'rgba(255,255,255,0.4)';
-
-  const statusBg = isComplete
-    ? 'rgba(34,197,94,0.12)'
-    : isInProgress
-      ? 'rgba(139,92,246,0.12)'
-      : 'rgba(255,255,255,0.05)';
+      ? 'bg-subject-code-light text-subject-code-dark'
+      : 'bg-surface-tertiary text-content-tertiary';
 
   return (
     <div
-      className="mx-4 mb-4 rounded-2xl p-5 flex flex-col gap-4"
-      style={{
-        background: 'rgba(255,255,255,0.04)',
-        border: `1px solid rgba(255,255,255,0.08)`,
-        boxShadow: `0 0 20px ${accentColor}15`,
-      }}
+      className="mx-4 mb-4 rounded-2xl p-5 flex flex-col gap-4 bg-surface-warm border border-border-subtle shadow-soft"
     >
       <div className="flex items-start gap-4">
         {/* Illustration */}
@@ -879,18 +829,17 @@ function ExerciseDrawer({ exercise, accentColor, onClose }: ExerciseDrawerProps)
         {/* Title + meta */}
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 flex-wrap mb-1">
-            <span className="text-base font-bold block" style={{ color: 'rgba(255,255,255,0.92)' }}>
+            <span className="text-base font-bold block text-content-primary">
               {exercise.name}
             </span>
             <span
-              className="flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold"
-              style={{ background: statusBg, color: statusColor }}
+              className={cn('flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold', statusClasses)}
             >
               <Icon name={cfg.icon} size={10} />
               <span className="ml-0.5">{cfg.label}</span>
             </span>
           </div>
-          <span className="text-sm block leading-relaxed" style={{ color: 'rgba(255,255,255,0.45)' }}>
+          <span className="text-sm block leading-relaxed text-content-tertiary">
             {exercise.desc}
           </span>
         </div>
@@ -898,8 +847,7 @@ function ExerciseDrawer({ exercise, accentColor, onClose }: ExerciseDrawerProps)
         {/* Close */}
         <button
           onClick={onClose}
-          className="shrink-0 w-7 h-7 rounded-full flex items-center justify-center transition-colors"
-          style={{ background: 'rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.4)' }}
+          className="shrink-0 w-7 h-7 rounded-full flex items-center justify-center transition-colors bg-surface-tertiary text-content-tertiary"
           aria-label="Close"
         >
           <Icon name="X" size={14} />
@@ -909,23 +857,23 @@ function ExerciseDrawer({ exercise, accentColor, onClose }: ExerciseDrawerProps)
       {/* Stats row */}
       <div className="flex items-center gap-4 flex-wrap">
         <div className="flex items-center gap-1.5">
-          <Icon name="Clock" size={13} style={{ color: 'rgba(255,255,255,0.35)' }} />
-          <span className="text-xs" style={{ color: 'rgba(255,255,255,0.45)' }}>
+          <Icon name="Clock" size={13} className="text-content-tertiary" />
+          <span className="text-xs text-content-secondary">
             {exercise.time}
           </span>
         </div>
         {exercise.proctored && (
           <div className="flex items-center gap-1.5">
-            <Icon name="ShieldCheck" size={13} style={{ color: '#c4b5fd' }} />
-            <span className="text-xs" style={{ color: '#c4b5fd' }}>
+            <Icon name="ShieldCheck" size={13} className="text-subject-code-dark" />
+            <span className="text-xs text-subject-code-dark">
               Proctored
             </span>
           </div>
         )}
         {exercise.hasReport && isComplete && (
           <div className="flex items-center gap-1.5">
-            <Icon name="FileText" size={13} style={{ color: '#86efac' }} />
-            <span className="text-xs" style={{ color: '#86efac' }}>
+            <Icon name="FileText" size={13} className="text-success-dark" />
+            <span className="text-xs text-success-dark">
               Report available
             </span>
           </div>
@@ -936,10 +884,10 @@ function ExerciseDrawer({ exercise, accentColor, onClose }: ExerciseDrawerProps)
       {isInProgress && exercise.pct > 0 && (
         <div>
           <div className="flex items-center justify-between mb-1.5">
-            <span className="text-xs" style={{ color: 'rgba(255,255,255,0.4)' }}>
+            <span className="text-xs text-content-tertiary">
               Progress
             </span>
-            <span className="text-xs font-bold" style={{ color: '#c4b5fd' }}>
+            <span className="text-xs font-bold text-subject-code-dark">
               {exercise.pct}%
             </span>
           </div>
@@ -949,7 +897,7 @@ function ExerciseDrawer({ exercise, accentColor, onClose }: ExerciseDrawerProps)
             size="xs"
             showInfo={false}
             strokeColor={accentColor}
-            trailColor="rgba(255,255,255,0.08)"
+            trailColor="rgba(0,0,0,0.06)"
           />
         </div>
       )}
@@ -965,7 +913,7 @@ function ExerciseDrawer({ exercise, accentColor, onClose }: ExerciseDrawerProps)
             {isComplete ? 'Review' : isInProgress ? 'Continue' : 'Start'}
           </Button>
           {exercise.hasReport && isComplete && (
-            <Button variant="secondary" size="sm" className="!rounded-full !bg-transparent !border-white/20 !text-white/60">
+            <Button variant="secondary" size="sm" className="!rounded-full">
               View Report
             </Button>
           )}
@@ -988,7 +936,7 @@ function SkillMapSummary({ programs }: { programs: Program[] }) {
   const progInProgress = programs.filter((p) => p.status === 'progress').length;
 
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-10">
+    <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-10">
       {[
         {
           icon: 'Orbit' as IconName,
@@ -1022,33 +970,30 @@ function SkillMapSummary({ programs }: { programs: Program[] }) {
       ].map((s) => (
         <div
           key={s.label}
-          className="rounded-2xl px-5 py-4 flex items-start gap-3"
-          style={{
-            background: 'linear-gradient(135deg, #1e293b 0%, #0f172a 100%)',
-            border: '1px solid rgba(255,255,255,0.07)',
-            boxShadow: `0 0 20px ${s.glowColor}18`,
-          }}
+          className="rounded-2xl px-5 py-4 flex items-start gap-3 bg-surface-card border border-border-subtle shadow-soft"
         >
           <div
             className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0 mt-0.5"
             style={{
-              background: `${s.glowColor}20`,
-              border: `1px solid ${s.glowColor}30`,
+              background: `${s.glowColor}12`,
+              border: `1px solid ${s.glowColor}20`,
             }}
           >
-            <Icon name={s.icon} size="sm" style={{ color: s.urgent ? '#fca5a5' : s.glowColor }} />
+            <Icon name={s.icon} size="sm" className={s.urgent ? 'text-error-dark' : undefined} style={s.urgent ? undefined : { color: s.glowColor }} />
           </div>
           <div className="min-w-0">
-            <span className="text-xs font-semibold uppercase tracking-wider block mb-0.5" style={{ color: 'rgba(255,255,255,0.35)' }}>
+            <span className="text-xs font-semibold uppercase tracking-wider block mb-0.5 text-content-tertiary">
               {s.label}
             </span>
             <div
-              className="text-xl font-bold leading-tight"
-              style={{ color: s.urgent ? '#fca5a5' : 'rgba(255,255,255,0.9)' }}
+              className={cn(
+                'text-xl font-bold leading-tight',
+                s.urgent ? 'text-error-dark' : 'text-content-primary',
+              )}
             >
               {s.value}
             </div>
-            <div className="text-xs mt-0.5 truncate" style={{ color: 'rgba(255,255,255,0.3)' }}>
+            <div className="text-xs mt-0.5 truncate text-content-tertiary">
               {s.sub}
             </div>
           </div>
@@ -1072,12 +1017,11 @@ function SkillMapProgrammesPage() {
       <header className="mb-8">
         <div className="flex items-center gap-2 mb-2">
           <div
-            className="w-7 h-7 rounded-xl flex items-center justify-center"
-            style={{ background: 'rgba(139,92,246,0.15)', border: '1px solid rgba(139,92,246,0.3)' }}
+            className="w-7 h-7 rounded-xl flex items-center justify-center bg-subject-code-light border border-subject-code/20"
           >
-            <Icon name="Orbit" size={14} style={{ color: '#8B5CF6' }} />
+            <Icon name="Orbit" size={14} className="text-subject-code" />
           </div>
-          <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: 'rgba(139,92,246,0.8)' }}>Skill Map</span>
+          <span className="text-xs font-semibold uppercase tracking-wider text-subject-code-dark">Skill Map</span>
         </div>
         <div className="flex items-end justify-between gap-4 flex-wrap">
           <div>
@@ -1103,34 +1047,30 @@ function SkillMapProgrammesPage() {
 
       {/* Legend card */}
       <div
-        className="mt-8 rounded-2xl px-6 py-5 flex items-center gap-8 flex-wrap"
-        style={{
-          background: 'linear-gradient(135deg, #1e293b 0%, #0f172a 100%)',
-          border: '1px solid rgba(255,255,255,0.06)',
-        }}
+        className="mt-8 rounded-2xl px-6 py-5 flex items-center gap-8 flex-wrap bg-surface-card border border-border-subtle shadow-soft"
       >
-        <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: 'rgba(255,255,255,0.3)' }}>Node size &amp; glow = status</span>
+        <span className="text-xs font-semibold uppercase tracking-wider text-content-tertiary">Node size &amp; glow = status</span>
         {[
           {
-            color: '#8B5CF6',
+            color: 'var(--color-subject-code)',
             glow: true,
             label: 'In Progress',
             size: 14,
           },
           {
-            color: '#22c55e',
+            color: 'var(--color-success)',
             glow: false,
             label: 'Complete',
             size: 11,
           },
           {
-            color: 'rgba(255,255,255,0.3)',
+            color: '#cbd5e1',
             glow: false,
             label: 'Not Started',
             size: 9,
           },
           {
-            color: 'rgba(255,255,255,0.12)',
+            color: 'var(--color-border)',
             glow: false,
             label: 'Locked',
             size: 7,
@@ -1157,7 +1097,7 @@ function SkillMapProgrammesPage() {
                 opacity={item.glow ? 1 : 0.7}
               />
             </svg>
-            <span className="text-xs" style={{ color: 'rgba(255,255,255,0.4)' }}>
+            <span className="text-xs text-content-tertiary">
               {item.label}
             </span>
           </div>

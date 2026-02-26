@@ -277,7 +277,7 @@ function SortHeader({ label, sortKey, currentKey, currentDir, onClick, className
   return (
     <th
       className={cn(
-        'px-3 py-2.5 text-left cursor-pointer select-none whitespace-nowrap group',
+        'px-3 py-3 text-left cursor-pointer select-none whitespace-nowrap group',
         'hover:bg-surface-warm transition-colors duration-fast',
         className,
       )}
@@ -332,7 +332,7 @@ function GroupHeaderRow({ programName, programAccent, programDue, programDaysLef
     <tr className="border-t-2 border-border-muted">
       <td
         colSpan={10}
-        className="px-3 py-2"
+        className="px-3 py-4"
         style={{ borderLeftWidth: 3, borderLeftColor: programAccent }}
       >
         <div className="flex items-center gap-3 flex-wrap">
@@ -419,15 +419,15 @@ function TableRow({ row, globalIndex, isEven }: TableRowProps) {
       )}
     >
       {/* # */}
-      <td className="px-3 py-2 w-10 shrink-0 text-center">
+      <td className="px-3 py-3.5 w-10 shrink-0 text-center">
         <Text size="xs" color="tertiary" className="tabular-nums leading-none">
           {globalIndex}
         </Text>
       </td>
 
       {/* Exercise name + illustration */}
-      <td className="px-3 py-2 min-w-0">
-        <div className="flex items-center gap-2.5 min-w-0">
+      <td className="px-3 py-3.5 min-w-0">
+        <div className="flex items-center gap-3 min-w-0">
           {/* Illustration — capped at 28px */}
           <div className="shrink-0 w-7 h-7 rounded-lg overflow-hidden flex items-center justify-center bg-surface-tertiary/50">
             <Illustration
@@ -454,7 +454,7 @@ function TableRow({ row, globalIndex, isEven }: TableRowProps) {
       </td>
 
       {/* Programme tag */}
-      <td className="px-3 py-2 whitespace-nowrap">
+      <td className="px-3 py-3.5 whitespace-nowrap">
         <span
           className="inline-flex items-center gap-1.5 px-2 py-1 rounded-full text-[10px] font-semibold leading-none max-w-[180px] truncate"
           style={{ backgroundColor: row.programAccent + '18', color: row.programAccent }}
@@ -469,7 +469,7 @@ function TableRow({ row, globalIndex, isEven }: TableRowProps) {
       </td>
 
       {/* Type badge */}
-      <td className="px-3 py-2 whitespace-nowrap">
+      <td className="px-3 py-3.5 whitespace-nowrap">
         {row.type === 'sequential' ? (
           <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md bg-subject-code-light text-subject-code-dark text-[10px] font-semibold leading-none">
             <Icon name="ArrowRight" size={9} className="text-subject-code-dark shrink-0" />
@@ -484,7 +484,7 @@ function TableRow({ row, globalIndex, isEven }: TableRowProps) {
       </td>
 
       {/* Duration */}
-      <td className="px-3 py-2 whitespace-nowrap">
+      <td className="px-3 py-3.5 whitespace-nowrap">
         <div className="flex items-center gap-1">
           <Icon name="Clock" size={11} className="text-content-tertiary shrink-0" />
           <Text size="xs" color="secondary" className="tabular-nums">
@@ -494,7 +494,7 @@ function TableRow({ row, globalIndex, isEven }: TableRowProps) {
       </td>
 
       {/* Status badge */}
-      <td className="px-3 py-2 whitespace-nowrap">
+      <td className="px-3 py-3.5 whitespace-nowrap">
         <span
           className={cn(
             'inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold leading-none',
@@ -508,7 +508,7 @@ function TableRow({ row, globalIndex, isEven }: TableRowProps) {
       </td>
 
       {/* Progress bar */}
-      <td className="px-3 py-2 w-32">
+      <td className="px-3 py-3.5 w-32">
         <div className="flex items-center gap-2">
           <div className="flex-1 min-w-[60px]">
             {row.status === 'locked' ? (
@@ -534,7 +534,7 @@ function TableRow({ row, globalIndex, isEven }: TableRowProps) {
       </td>
 
       {/* Proctored */}
-      <td className="px-3 py-2 text-center w-16">
+      <td className="px-3 py-3.5 text-center w-16">
         {row.proctored ? (
           <div className="inline-flex items-center justify-center" title="Proctored">
             <Icon name="ShieldCheck" size={14} className="text-warning-dark" />
@@ -547,7 +547,7 @@ function TableRow({ row, globalIndex, isEven }: TableRowProps) {
       </td>
 
       {/* Report */}
-      <td className="px-3 py-2 text-center w-16">
+      <td className="px-3 py-3.5 text-center w-16">
         {row.hasReport && isComplete ? (
           <button
             type="button"
@@ -564,7 +564,7 @@ function TableRow({ row, globalIndex, isEven }: TableRowProps) {
       </td>
 
       {/* Action */}
-      <td className="px-3 py-2 text-right whitespace-nowrap w-24">
+      <td className="px-3 py-3.5 text-right whitespace-nowrap w-24">
         {isLocked ? (
           <div className="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-surface-tertiary">
             <Icon name="Lock" size={12} className="text-content-tertiary" />
@@ -758,7 +758,7 @@ function TableProgrammesPage() {
   ];
 
   return (
-    <main className="max-w-[1280px] mx-auto px-4 sm:px-6 py-6">
+    <main className="max-w-[1280px] mx-auto px-4 sm:px-6 py-8">
 
       {/* Page header */}
       <header className="mb-5">
@@ -891,15 +891,15 @@ function TableProgrammesPage() {
                   onClick={handleSort}
                   className="w-36"
                 />
-                <th className="px-3 py-2.5 text-center w-16">
+                <th className="px-3 py-3 text-center w-16">
                   <div className="flex items-center justify-center gap-1">
                     <Overline color="tertiary" className="!text-[10px]">Proctored</Overline>
                   </div>
                 </th>
-                <th className="px-3 py-2.5 text-center w-16">
+                <th className="px-3 py-3 text-center w-16">
                   <Overline color="tertiary" className="!text-[10px]">Report</Overline>
                 </th>
-                <th className="px-3 py-2.5 text-right w-24">
+                <th className="px-3 py-3 text-right w-24">
                   <Overline color="tertiary" className="!text-[10px]">Action</Overline>
                 </th>
               </tr>

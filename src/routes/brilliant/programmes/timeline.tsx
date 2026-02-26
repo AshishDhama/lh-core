@@ -337,7 +337,7 @@ function ProgrammeMilestone({ program, programIndex }: ProgrammeMilestoneProps) 
             borderLeftColor: program.accent,
           }}
         >
-          <div className="px-5 py-4">
+          <div className="px-5 py-5">
             {/* Top row */}
             <div className="flex items-start justify-between gap-3 mb-3">
               <div className="min-w-0 flex-1">
@@ -519,7 +519,7 @@ function ExerciseNode({ exercise, kind, index, isLast, programAccent }: Exercise
             isLocked && 'bg-surface-tertiary border-border-subtle cursor-not-allowed',
           )}
         >
-          <div className="flex items-center gap-3 p-3">
+          <div className="flex items-center gap-3 p-4">
             {/* Illustration */}
             {exercise.illustration && (
               <div

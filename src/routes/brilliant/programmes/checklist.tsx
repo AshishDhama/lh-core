@@ -185,7 +185,7 @@ function ExerciseRow({ exercise, stepNumber, isLast, accentColor, showConnector 
       {/* Row content */}
       <div
         className={cn(
-          'flex-1 flex items-center gap-3 pl-3 pr-2 py-3 rounded-xl min-w-0',
+          'flex-1 flex items-center gap-3 px-3 py-4 rounded-xl min-w-0',
           'transition-colors duration-fast',
           isLocked
             ? 'opacity-40 cursor-not-allowed'
@@ -442,7 +442,7 @@ function ProgrammeSection({ program }: ProgrammeSectionProps) {
                   doneCount={seqDone}
                 />
               )}
-              <div className="mt-2">
+              <div className="mt-3">
                 {program.seqExercises.map((ex, i) => (
                   <ExerciseRow
                     key={ex.id}
@@ -465,7 +465,7 @@ function ProgrammeSection({ program }: ProgrammeSectionProps) {
                 count={program.openExercises.length}
                 doneCount={openDone}
               />
-              <div className="mt-2">
+              <div className="mt-3">
                 {program.openExercises.map((ex, i) => (
                   <ExerciseRow
                     key={ex.id}

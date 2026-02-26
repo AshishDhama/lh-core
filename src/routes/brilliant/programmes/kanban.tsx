@@ -228,7 +228,7 @@ function LockedCard({ exercise }: { exercise: FlatExercise }) {
   return (
     <div
       className={cn(
-        'flex items-center gap-3 rounded-2xl border border-border-subtle p-3',
+        'flex items-center gap-3 rounded-2xl border border-border-subtle p-4',
         'bg-surface-tertiary opacity-60',
       )}
     >
@@ -251,7 +251,7 @@ function CompletedCard({ exercise }: { exercise: FlatExercise }) {
   return (
     <div
       className={cn(
-        'flex flex-col gap-2.5 rounded-2xl border border-border-subtle p-4',
+        'flex flex-col gap-3 rounded-2xl border border-border-subtle p-4',
         'bg-surface-card shadow-soft',
       )}
     >
@@ -405,7 +405,7 @@ function KanbanProgrammesPage() {
         {/* ---- IN PROGRESS ---- */}
         <div
           className={cn(
-            'rounded-3xl p-4 border',
+            'rounded-3xl p-5 border',
             inProgress.length > 0
               ? 'bg-subject-code-light border-transparent'
               : 'bg-surface-card border-border-subtle shadow-soft',
@@ -435,7 +435,7 @@ function KanbanProgrammesPage() {
         </div>
 
         {/* ---- UP NEXT ---- */}
-        <div className="rounded-3xl bg-surface-card border border-border-subtle shadow-soft p-4">
+        <div className="rounded-3xl bg-surface-card border border-border-subtle shadow-soft p-5">
           <ColumnHeader
             label="Up Next"
             count={notStarted.length + locked.length}
@@ -480,7 +480,7 @@ function KanbanProgrammesPage() {
         </div>
 
         {/* ---- COMPLETED ---- */}
-        <div className="rounded-3xl bg-surface-card border border-border-subtle shadow-soft p-4">
+        <div className="rounded-3xl bg-surface-card border border-border-subtle shadow-soft p-5">
           <ColumnHeader
             label="Completed"
             count={completed.length}
