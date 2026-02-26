@@ -16,12 +16,14 @@ import { Route as DevelopmentRouteImport } from './routes/development'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ProgramsIndexRouteImport } from './routes/programs/index'
 import { Route as ProgramsV2IndexRouteImport } from './routes/programs-v2/index'
+import { Route as BrilliantIndexRouteImport } from './routes/brilliant/index'
 import { Route as ModesScrollyRouteImport } from './routes/modes/scrolly'
 import { Route as ModesNotionRouteImport } from './routes/modes/notion'
 import { Route as ModesM3RouteImport } from './routes/modes/m3'
 import { Route as ModesEditorialRouteImport } from './routes/modes/editorial'
 import { Route as ModesBentoRouteImport } from './routes/modes/bento'
 import { Route as ProgramsProgramIdIndexRouteImport } from './routes/programs/$programId/index'
+import { Route as BrilliantProgrammesIndexRouteImport } from './routes/brilliant/programmes/index'
 import { Route as ProgramsProgramIdTasksRouteImport } from './routes/programs/$programId/tasks'
 import { Route as ProgramsProgramIdPrecheckRouteImport } from './routes/programs/$programId/precheck'
 
@@ -60,6 +62,11 @@ const ProgramsV2IndexRoute = ProgramsV2IndexRouteImport.update({
   path: '/programs-v2/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BrilliantIndexRoute = BrilliantIndexRouteImport.update({
+  id: '/brilliant/',
+  path: '/brilliant/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ModesScrollyRoute = ModesScrollyRouteImport.update({
   id: '/modes/scrolly',
   path: '/modes/scrolly',
@@ -92,6 +99,12 @@ const ProgramsProgramIdIndexRoute = ProgramsProgramIdIndexRouteImport.update({
 } as any).lazy(() =>
   import('./routes/programs/$programId/index.lazy').then((d) => d.Route),
 )
+const BrilliantProgrammesIndexRoute =
+  BrilliantProgrammesIndexRouteImport.update({
+    id: '/brilliant/programmes/',
+    path: '/brilliant/programmes/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ProgramsProgramIdTasksRoute = ProgramsProgramIdTasksRouteImport.update({
   id: '/programs/$programId/tasks',
   path: '/programs/$programId/tasks',
@@ -119,10 +132,12 @@ export interface FileRoutesByFullPath {
   '/modes/m3': typeof ModesM3Route
   '/modes/notion': typeof ModesNotionRoute
   '/modes/scrolly': typeof ModesScrollyRoute
+  '/brilliant/': typeof BrilliantIndexRoute
   '/programs-v2/': typeof ProgramsV2IndexRoute
   '/programs/': typeof ProgramsIndexRoute
   '/programs/$programId/precheck': typeof ProgramsProgramIdPrecheckRoute
   '/programs/$programId/tasks': typeof ProgramsProgramIdTasksRoute
+  '/brilliant/programmes/': typeof BrilliantProgrammesIndexRoute
   '/programs/$programId/': typeof ProgramsProgramIdIndexRoute
 }
 export interface FileRoutesByTo {
@@ -136,10 +151,12 @@ export interface FileRoutesByTo {
   '/modes/m3': typeof ModesM3Route
   '/modes/notion': typeof ModesNotionRoute
   '/modes/scrolly': typeof ModesScrollyRoute
+  '/brilliant': typeof BrilliantIndexRoute
   '/programs-v2': typeof ProgramsV2IndexRoute
   '/programs': typeof ProgramsIndexRoute
   '/programs/$programId/precheck': typeof ProgramsProgramIdPrecheckRoute
   '/programs/$programId/tasks': typeof ProgramsProgramIdTasksRoute
+  '/brilliant/programmes': typeof BrilliantProgrammesIndexRoute
   '/programs/$programId': typeof ProgramsProgramIdIndexRoute
 }
 export interface FileRoutesById {
@@ -154,10 +171,12 @@ export interface FileRoutesById {
   '/modes/m3': typeof ModesM3Route
   '/modes/notion': typeof ModesNotionRoute
   '/modes/scrolly': typeof ModesScrollyRoute
+  '/brilliant/': typeof BrilliantIndexRoute
   '/programs-v2/': typeof ProgramsV2IndexRoute
   '/programs/': typeof ProgramsIndexRoute
   '/programs/$programId/precheck': typeof ProgramsProgramIdPrecheckRoute
   '/programs/$programId/tasks': typeof ProgramsProgramIdTasksRoute
+  '/brilliant/programmes/': typeof BrilliantProgrammesIndexRoute
   '/programs/$programId/': typeof ProgramsProgramIdIndexRoute
 }
 export interface FileRouteTypes {
@@ -173,10 +192,12 @@ export interface FileRouteTypes {
     | '/modes/m3'
     | '/modes/notion'
     | '/modes/scrolly'
+    | '/brilliant/'
     | '/programs-v2/'
     | '/programs/'
     | '/programs/$programId/precheck'
     | '/programs/$programId/tasks'
+    | '/brilliant/programmes/'
     | '/programs/$programId/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -190,10 +211,12 @@ export interface FileRouteTypes {
     | '/modes/m3'
     | '/modes/notion'
     | '/modes/scrolly'
+    | '/brilliant'
     | '/programs-v2'
     | '/programs'
     | '/programs/$programId/precheck'
     | '/programs/$programId/tasks'
+    | '/brilliant/programmes'
     | '/programs/$programId'
   id:
     | '__root__'
@@ -207,10 +230,12 @@ export interface FileRouteTypes {
     | '/modes/m3'
     | '/modes/notion'
     | '/modes/scrolly'
+    | '/brilliant/'
     | '/programs-v2/'
     | '/programs/'
     | '/programs/$programId/precheck'
     | '/programs/$programId/tasks'
+    | '/brilliant/programmes/'
     | '/programs/$programId/'
   fileRoutesById: FileRoutesById
 }
@@ -225,10 +250,12 @@ export interface RootRouteChildren {
   ModesM3Route: typeof ModesM3Route
   ModesNotionRoute: typeof ModesNotionRoute
   ModesScrollyRoute: typeof ModesScrollyRoute
+  BrilliantIndexRoute: typeof BrilliantIndexRoute
   ProgramsV2IndexRoute: typeof ProgramsV2IndexRoute
   ProgramsIndexRoute: typeof ProgramsIndexRoute
   ProgramsProgramIdPrecheckRoute: typeof ProgramsProgramIdPrecheckRoute
   ProgramsProgramIdTasksRoute: typeof ProgramsProgramIdTasksRoute
+  BrilliantProgrammesIndexRoute: typeof BrilliantProgrammesIndexRoute
   ProgramsProgramIdIndexRoute: typeof ProgramsProgramIdIndexRoute
 }
 
@@ -283,6 +310,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProgramsV2IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/brilliant/': {
+      id: '/brilliant/'
+      path: '/brilliant'
+      fullPath: '/brilliant/'
+      preLoaderRoute: typeof BrilliantIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/modes/scrolly': {
       id: '/modes/scrolly'
       path: '/modes/scrolly'
@@ -325,6 +359,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProgramsProgramIdIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/brilliant/programmes/': {
+      id: '/brilliant/programmes/'
+      path: '/brilliant/programmes'
+      fullPath: '/brilliant/programmes/'
+      preLoaderRoute: typeof BrilliantProgrammesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/programs/$programId/tasks': {
       id: '/programs/$programId/tasks'
       path: '/programs/$programId/tasks'
@@ -353,10 +394,12 @@ const rootRouteChildren: RootRouteChildren = {
   ModesM3Route: ModesM3Route,
   ModesNotionRoute: ModesNotionRoute,
   ModesScrollyRoute: ModesScrollyRoute,
+  BrilliantIndexRoute: BrilliantIndexRoute,
   ProgramsV2IndexRoute: ProgramsV2IndexRoute,
   ProgramsIndexRoute: ProgramsIndexRoute,
   ProgramsProgramIdPrecheckRoute: ProgramsProgramIdPrecheckRoute,
   ProgramsProgramIdTasksRoute: ProgramsProgramIdTasksRoute,
+  BrilliantProgrammesIndexRoute: BrilliantProgrammesIndexRoute,
   ProgramsProgramIdIndexRoute: ProgramsProgramIdIndexRoute,
 }
 export const routeTree = rootRouteImport

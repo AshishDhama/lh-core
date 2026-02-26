@@ -28,6 +28,14 @@ function applyModeToDOM(mode: ThemeMode) {
   document.documentElement.classList.toggle('dark', mode === 'dark');
 }
 
+function applyDesignModeToDOM(designMode: DesignMode) {
+  const el = document.documentElement;
+  el.classList.remove('brilliant');
+  if (designMode === 'brilliant') {
+    el.classList.add('brilliant');
+  }
+}
+
 export const useThemeStore = create<ThemeState>()(
   persist(
     (set) => ({
@@ -42,7 +50,10 @@ export const useThemeStore = create<ThemeState>()(
           applyModeToDOM(newMode);
           return { mode: newMode };
         }),
-      setDesignMode: (designMode) => set({ designMode }),
+      setDesignMode: (designMode) => {
+        applyDesignModeToDOM(designMode);
+        set({ designMode });
+      },
       toggleSidebar: () =>
         set((state) => ({ sidebarCollapsed: !state.sidebarCollapsed })),
       setLocale: (locale) => {
@@ -55,6 +66,7 @@ export const useThemeStore = create<ThemeState>()(
       onRehydrateStorage: () => (state) => {
         if (state) {
           applyModeToDOM(state.mode);
+          applyDesignModeToDOM(state.designMode);
           applyLocale(state.locale ?? 'en');
         }
       },

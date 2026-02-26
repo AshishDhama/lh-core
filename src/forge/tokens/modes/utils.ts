@@ -1,6 +1,6 @@
 import type { ThemeConfig } from 'antd';
 
-export type ModeKey = 'scrolly' | 'bento' | 'editorial' | 'notion' | 'm3';
+export type ModeKey = 'scrolly' | 'bento' | 'editorial' | 'notion' | 'm3' | 'brilliant';
 
 export interface ModeTokenOverrides {
   antd: Partial<ThemeConfig>;

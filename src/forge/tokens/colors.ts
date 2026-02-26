@@ -28,6 +28,16 @@ export const colors = {
   },
   purple: {
     DEFAULT: '#7B61FF',
+    50: '#FAF5FF',
+    100: '#F3E8FF',
+    200: '#E9D5FF',
+    300: '#D8B4FE',
+    400: '#C084FC',
+    500: '#A855F7',
+    600: '#9333EA',
+    700: '#7E22CE',
+    800: '#6B21A8',
+    900: '#581C87',
   },
 
   // Semantic
@@ -35,8 +45,18 @@ export const colors = {
   warning: { light: '#fde047', DEFAULT: '#eab308', dark: '#a16207' },
   error: { light: '#fca5a5', DEFAULT: '#ef4444', dark: '#b91c1c' },
 
+  // Subject palette (Brilliant-inspired)
+  subject: {
+    code: { light: '#EDE9FE', DEFAULT: '#8B5CF6', dark: '#6D28D9' },
+    science: { light: '#FEF9C3', DEFAULT: '#FACC15', dark: '#CA8A04' },
+    math: { light: '#D1FAE5', DEFAULT: '#10B981', dark: '#059669' },
+    logic: { light: '#FFEDD5', DEFAULT: '#F97316', dark: '#EA580C' },
+  },
+
   // Border
   border: '#e2e8f0',
+  borderSubtle: '#F0F0F0',
+  borderMuted: '#E5E5E5',
 
   // Surfaces (light mode)
   surface: {
@@ -44,6 +64,9 @@ export const colors = {
     secondary: '#fafbfc',
     tertiary: '#f1f5f9',
     elevated: '#ffffff',
+    warm: '#F9F9FB',
+    warmAlt: '#F8F7F4',
+    card: '#FFFFFF',
   },
 
   // Surfaces (dark mode)
@@ -69,5 +92,12 @@ export const colors = {
     secondary: '#cbd5e1',
     tertiary: '#64748b',
     inverse: '#0f172a',
+  },
+
+  // Gradients (CSS strings referencing CSS vars)
+  gradients: {
+    premiumDark: 'linear-gradient(135deg, var(--color-subject-code-dark) 0%, var(--color-purple-900) 100%)',
+    warmSurface: 'linear-gradient(180deg, var(--color-surface-warm) 0%, var(--color-surface-warm-alt) 100%)',
+    subjectCode: 'linear-gradient(135deg, var(--color-subject-code) 0%, var(--color-purple-500) 100%)',
   },
 };
